@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 
-class Test extends Component {
+class TrackCard extends Component {
 	render () {
 		//console.log(this.props.track.name)
 		return (
@@ -54,7 +54,7 @@ class PareDown extends Component {
 					{	
 						this.state.tracks ?
 							this.state.tracks.reverse().map((track, i) => 
-							<Test track={track.track} key={i} num={i}/>)
+							<TrackCard track={track.track} key={i} num={i}/>)
 						:
 						<p>Nope</p>
 					}
@@ -74,7 +74,7 @@ class Step extends Component {
 		}
 		else if (this.props.step === 2) {
 			return(
-				<p>{this.props.step}</p>
+				<h3 className="step--header">{this.props.step}. Check if this is the playlist you want to pare down (if not refresh page) and select options for paring it down. </h3>
 			)
 		}
 		else {
