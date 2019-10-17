@@ -2,6 +2,69 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 
+class Test extends Component {
+	render () {
+		//console.log(this.props.track.name)
+		return (
+			<div>
+				<p>{this.props.num + 1}. {this.props.track.name}</p>
+			</div>
+		)
+	}
+}
+
+class PareDown extends Component {
+	constructor() {
+		super();
+		this.state = {
+		}
+	}
+	componentDidMount() {
+		//console.log(this.props.id)
+		let ID = this.props.id;
+		let parsed = queryString.parse(window.location.search);
+		let accessToken = parsed.access_token;
+		fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}?fields=name,images,tracks.total`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images[0].url,
+			how: fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
+			headers: {'Authorization': 'Bearer ' + accessToken}
+				})
+				.then(response => response.json())
+				.then(data => this.setState({
+					tracks: data.items,
+				}))
+		}))
+	}
+
+	render() {
+		console.log(this.state)
+		return(
+			<div id="paredown">
+				<div id="paredown__left">
+					<div id="paredown__details">
+						<img src={this.state.imageUrl} style={{width: '120px', height:'120px'}} alt={this.state.name} title={this.state.name}/>
+						<h1>{this.state.name}</h1>
+					</div>
+					<div className="paredown__playlist">
+					{	
+						this.state.tracks ?
+							this.state.tracks.reverse().map((track, i) => 
+							<Test track={track.track} key={i} num={i}/>)
+						:
+						<p>Nope</p>
+					}
+					</div>
+				</div>
+			</div>
+		)
+	}
+}
+
 class Step extends Component {
 	render() {
 		if(this.props.step === 1){
@@ -82,7 +145,6 @@ class App extends Component {
 
 
 	render() {
-		console.log(this.state.id)
 		let playlistToRender = 
 		this.state.user && 
 		this.state.playlists 
@@ -107,7 +169,7 @@ class App extends Component {
 					</div>
 				:
 				this.state.user && this.state.step === 2 ?
-					<p>abc</p>
+					<PareDown id={this.state.id}/>
 				:
 				<div className="btn" onClick={() => {
 					window.location = window.location.href.includes('localhost') 
