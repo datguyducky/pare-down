@@ -2,23 +2,26 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 
+
 class TrackCard extends Component {
+	shouldComponentUpdate(nextProps) {
+		if (this.props.track !== nextProps.track) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 	render () {
 		//console.log(this.props.track.name)
 		return (
 			<div>
-				<p>{this.props.num + 1}. {this.props.track.name}</p>
+				<p>{this.props.num + 1}. <span style={{opacity: '0.6'}}>{this.props.track.name}.</span></p>
 			</div>
 		)
 	}
 }
 
 class PareDown extends Component {
-	constructor() {
-		super();
-		this.state = {
-		}
-	}
 	componentDidMount() {
 		//console.log(this.props.id)
 		let ID = this.props.id;
@@ -31,6 +34,7 @@ class PareDown extends Component {
 		.then(data => this.setState({
 			name: data.name,
 			imageUrl: data.images[0].url,
+			tracksNum: data.tracks.total,
 			how: fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
 			headers: {'Authorization': 'Bearer ' + accessToken}
 				})
@@ -39,6 +43,15 @@ class PareDown extends Component {
 					tracks: data.items,
 				}))
 		}))
+	}
+
+	constructor() {
+		super();
+		this.state = {
+			reverse: true,
+			inputValue: 0,
+			sort: true,
+		}
 	}
 
 	render() {
@@ -51,17 +64,72 @@ class PareDown extends Component {
 						<h1>{this.state.name}</h1>
 					</div>
 					<div className="paredown__playlist">
+						<p style={{textAlign: 'center', fontWeight: 'bold', fontSize: 16}}>
+							{
+								this.state.tracksNum <= 100 ?
+								<span>{this.state.tracksNum} latest songs from selected playlist:</span>
+								:
+								<span>100 latest songs from selected playlist:</span>
+							}
+							
+						</p>
 					{	
 						this.state.tracks ?
-							this.state.tracks.reverse().map((track, i) => 
+							this.state.reverse === true ?
+								this.state.tracks.reverse().map((track, i) => 
+								<TrackCard track={track.track} key={i} num={i}/>)
+							:
+							this.state.tracks.map((track, i) => 
 							<TrackCard track={track.track} key={i} num={i}/>)
 						:
 						<p>Nope</p>
 					}
 					</div>
 				</div>
+				<div id="paredown__right">
+					<form>
+						<p className="options__header">Pare it down to/by...</p>
+							<div style={{textAlign:'center'}}>
+								<input type="number" min="0" id="new-num" onChange={evt => this.updateInputValue(evt, this.state.tracksNum)}/>
+								<input type="checkbox" id="percent--btn" />
+							</div>
+							<p id="new-num__show">New playlist will have: {this.state.inputValue} songs.</p>
+						
+						<p className="options__header" style={{marginTop: 21}}>
+							Add songs from selected playlist sorted by: 
+							<input type="checkbox" id="sort--btn" onClick={() => this.setState({sort: true ? false : true})}/>
+						</p>
+						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue)}>Create new playlist</div>
+					</form>
+				</div>
 			</div>
 		)
+	}
+	updateInputValue(evt, max) {
+		const PERCENT = document.getElementById('percent--btn');
+		console.log(max);
+		if(!PERCENT.checked) {
+			if(evt.target.value <= max) {
+				this.setState({
+					inputValue: evt.target.value
+				});
+			} else {
+				this.setState({
+					inputValue: max
+				});
+			}
+			
+		} else {
+			if(evt.target.value <= 100){
+				this.setState({
+					inputValue: ((max * evt.target.value)/100).toFixed(0)
+				});
+			} else {
+				this.setState({
+					inputValue: max
+				});
+			}
+		}
 	}
 }
 
@@ -75,6 +143,11 @@ class Step extends Component {
 		else if (this.props.step === 2) {
 			return(
 				<h3 className="step--header">{this.props.step}. Check if this is the playlist you want to pare down (if not refresh page) and select options for paring it down. </h3>
+			)
+		}
+		else if (this.props.step === 3) {
+			return(
+				<h3 className="step--header">{this.props.step}. wow, it's working </h3>
 			)
 		}
 		else {
@@ -98,8 +171,9 @@ class PlaylistCards extends Component {
 	  }
 }
 
-function updateStep(step, id) {
-	this.setState({ step, id })
+function updateStep(step, id, check, songNum) {
+	console.log(arguments);
+	this.setState({ step, id, check, songNum })
 }
 
 class App extends Component {
@@ -170,6 +244,9 @@ class App extends Component {
 				:
 				this.state.user && this.state.step === 2 ?
 					<PareDown id={this.state.id}/>
+				:
+				this.state.user && this.state.step === 3 ?
+					<p>{console.log(this.state)}</p>
 				:
 				<div className="btn" onClick={() => {
 					window.location = window.location.href.includes('localhost') 
