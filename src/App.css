@@ -245,3 +245,10 @@ body {
 #create--btn:hover {
 	opacity: 0.8;
 }
+
+#creation-error {
+	text-align: center;
+	font-size: 24px;
+	cursor: pointer;
+	color: #b91d1d;
+}
