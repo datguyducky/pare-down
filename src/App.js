@@ -2,99 +2,156 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 
-//TrackCard component, used on step 2
-class TrackCard extends Component {
-	//without this, component re-renders itself on input value change (after sort-button was clicked)
-	//so don't delete it :)
-	shouldComponentUpdate(nextProps) {
-		if(this.props.iValue !== nextProps.iValue) {
-			 return false
+//function to change current step
+function updateStep(step, id, sort, userTrackNum, playlistName, tracksUri) {
+	//console.log(arguments);
+	this.setState({ step, id, sort, userTrackNum, playlistName, tracksUri })
+}
+
+//main component of pare down
+class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+		  filterString: '',
 		}
-		return true
+		updateStep = updateStep.bind(this)
 	}
-	   
-	render () {
+
+	//send request to Spotify API to get all playlists that are public or private and display them in step 1
+	componentDidMount() {
+		//checking address bar for access token from Spotify API.
+		let parsed = queryString.parse(window.location.search);
+		let accessToken = parsed.access_token;
+		if (!accessToken)
+		return;
+
+		//getting user id, used by other requests to Spotify API
+		fetch('https://api.spotify.com/v1/me', {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({userID: data.id}))
+		
+		fetch(`https://api.spotify.com/v1/me/playlists`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		//setting playlists state with response that is an array of playlists, and setting step state to 1
+		.then(data => this.setState({
+			playlists: data.items.map(item => {
+				if(item.images.length === 0){
+					item.images.push('')
+				}
+				return {
+					name: item.name,
+					imageUrl: item.images[0].url, 
+					songsNum: item.tracks.total,
+					id: item.id
+				}
+			}),
+			step: 1
+		}))
+	}
+
+
+	render() {
+		//function to map all playlists, then creating for every of one of them playlist-card that shows name, total number of songs in playlist and name of it.
+		//console.log(this.state)
+		let playlistToRender = 
+		this.state.playlists 
+		  ? this.state.playlists.filter(playlist => 
+			playlist.name.toLowerCase().includes(
+			  this.state.filterString.toLowerCase()),
+			  )
+		  : []
+		
 		return (
-			<div>
-				{/* Track Number (1-100) : Track Title*/}
-				<p>{this.props.num + 1}. <span style={{opacity: '0.6'}}>{this.props.track.name}.</span></p>
+			<div className="App">
+				<h1 className="app-name">Pare Down for Spotify</h1>
+				<h2 className="app-name__sub">Create copy of your playlist pared down to number of songs you have chosen to.</h2>
+			
+				{/* displaying current step and text for it on top of site and proper component for this step */ }
+				{/* 
+				if access token wasn't find - show button to login with Spotify, and on backend we use auth, where user grant pare down permission to access and/or modify the user’s own data - in this case: 
+				- Read and modify user private playlists.
+				- Read and modify user public playlists.
+				*/}
+				<Step step={this.state.step}/>
+				{
+				this.state.playlists && this.state.step === 1 ? 
+					<div className="playlist-grid">
+						{	
+							playlistToRender.map((playlist, i) => 
+							<PlaylistCards playlist={playlist} step={this.state.step} key={i} userID={this.state.userID}/>
+						)}
+					</div>
+				:
+				this.state.playlists && this.state.step === 2 ?
+					<PareDown id={this.state.id} userID={this.state.userID}/>
+				:
+				this.state.playlists && this.state.step === 3 ?
+					<ResultsPreview id={this.state.id}
+						sort={this.state.sort} 
+						userTrackNum={this.state.userTrackNum} 
+						userID={this.state.userID} 
+						playlistName={this.state.playlistName}
+						tracksUri={this.state.tracksUri}
+					/>
+				:
+				<div className="btn" onClick={() => {
+					window.location = window.location.href.includes('localhost') 
+					? 'http://localhost:8888/login' 
+					: 'change it' 
+					this.setState({step: 1})
+				}
+					
+				}>login in with spotify</div>
+				}
 			</div>
-		)
+		);
 	}
 }
 
-//function with request to Spotify API, only used on step 2.
-function step2Fetch() {
-	let ID = this.props.id;
-	//checking address bar for access token from Spotify API.
-	let parsed = queryString.parse(window.location.search);
-	let accessToken = parsed.access_token;
-
-	//sending proper request to Spotify API with sort state in consideration.
-	if(this.state.sort === true) {
-		/*
-		for playlist sorted by: 'recently added' we send 2 requests to Spotify API: 
-		1) to get name, image of playlist and most important - how many songs there're total in this playlist,
-		2) to get list of tracks, using offset atribute in Spotify API: total num of songs in playlist - 100. We substract 100 from it, because that's the maximum number of songs we can get in one request and we want all songs from this playlist starting (by using offset) on song that is on position of: total num of songs - 100.
-
-		We also check if there're less than 100 songs, if yes then we don't use offset attribute.
-		*/
-		fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}?fields=name,images,tracks.total`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images[0].url,
-				tracksNum: data.tracks.total,
-				how: fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
-				headers: {'Authorization': 'Bearer ' + accessToken}
-					})
-					.then(response => response.json())
-					.then(data => this.setState({
-						tracks: data.items,
-					}))
-			}))
-	} else if (this.state.sort === false) {
-		//for whatever reason Spotify API playlist request returns songs that were first added to playlist, we use this behaviour only when sort state is set to false.
-		fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images[0].url,
-				tracksNum: data.tracks.total,
-				tracks: data.tracks.items,
-			}))
-	} else if(!this.state.sort) {
-		//on first render of component the sort state is not created yet. So we send request to Spotify API with tracks being sorted by recently added to playlist.
-		fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}?fields=name,images,tracks.total`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images[0].url,
-				tracksNum: data.tracks.total,
-				how: fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
-				headers: {'Authorization': 'Bearer ' + accessToken}
-					})
-					.then(response => response.json())
-					.then(data => this.setState({
-						tracks: data.items,
-					}))
-			}))
-		//setting new sort state, so on first sort-button click we'll get tracks sorted by: 'being first' added to playlist
-		this.setState({sort: false})
+//component to display proper message for current state
+class Step extends Component {
+	render() {
+		if(this.props.step === 1){
+			return(
+				<h3 className="step--header">{this.props.step}. Select which playlist you would like to pare down: </h3>
+			)
+		}
+		else if (this.props.step === 2) {
+			return(
+				<h3 className="step--header">{this.props.step}. Check if this is the playlist you want to pare down (if not refresh page) and select options for paring it down. </h3>
+			)
+		}
+		else if (this.props.step === 3) {
+			return(
+				<h3 className="step--header">{this.props.step}. Your pare down process: </h3>
+			)
+		}
+		else {
+			return null;
+		}
 	}
 }
 
-function changeSort() {
-	//used by sort-button, to change which tracks are displayed by TracksCard component (recently added to playlist or the ones that were first added to playlist)
-	this.setState({sort: !this.state.sort});
-	//calling fetch function again, so proper request can be send to Spotify API to get tracks properly sorted by
-	step2Fetch();
+//component used in step 1, displaying name, cover and total number of songs in all of playlists of current 'logged-in' user.
+class PlaylistCards extends Component {
+	render() {
+		let playlist = this.props.playlist
+		//after user click on one of his playlists we set state with selected playlist id, and set step state to 2
+		return (
+			<div className="playlist" onClick={() => updateStep(2, this.props.playlist.id)}>
+				<p className="playlist__song-count">Number of songs: {playlist.songsNum}</p>
+				<div className="playlist__cover">
+					<img src={playlist.imageUrl} style={{width: '210px', height:'210px'}} alt={playlist.name} title={playlist.name}/>
+				</div>
+				<p className="playlist__name">{playlist.name}</p>
+		 	 </div>
+		);
+	  }
 }
 
 //main component for step 2
@@ -113,7 +170,7 @@ class PareDown extends Component {
 	}
 
 	render() {
-		//console.log(this.state)
+		console.log(this.state)
 		return(
 			<div id="paredown">
 				<div id="paredown__left">
@@ -168,7 +225,7 @@ class PareDown extends Component {
 						</p>
 
 						{/* button to pass all needed states, used by another component in step 3 - where pare down process is done behind scenes and result is displayed for user */}
-						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue)}>Create new playlist</div>
+						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue, this.state.name, this.state.tracksUri)}>Create new playlist</div>
 					</form>
 				</div>
 			</div>
@@ -178,7 +235,7 @@ class PareDown extends Component {
 	//function to set state with input value typed by user
 	updateInputValue(evt, max) {
 		const PERCENT = document.getElementById('percent--btn');
-		console.log(max);
+		//console.log(max);
 		
 		//checking if button for percents was clicked by user.
 		if(!PERCENT.checked) {
@@ -208,69 +265,148 @@ class PareDown extends Component {
 	}
 }
 
-//component to display proper message for current state
-class Step extends Component {
-	render() {
-		if(this.props.step === 1){
-			return(
-				<h3 className="step--header">{this.props.step}. Select which playlist you would like to pare down: </h3>
-			)
+//TrackCard component, used in step 2
+class TrackCard extends Component {
+	//without this, component re-renders itself on input value change (after sort-button was clicked)
+	//so don't delete it :)
+	shouldComponentUpdate(nextProps) {
+		if(this.props.iValue !== nextProps.iValue) {
+			 return false
 		}
-		else if (this.props.step === 2) {
-			return(
-				<h3 className="step--header">{this.props.step}. Check if this is the playlist you want to pare down (if not refresh page) and select options for paring it down. </h3>
-			)
-		}
-		else if (this.props.step === 3) {
-			return(
-				<h3 className="step--header">{this.props.step}. Your pare down process: </h3>
-			)
-		}
-		else {
-			return null;
-		}
+		return true
+	}
+	   
+	render () {
+		return (
+			<div>
+				{/* Track Number (1-100) : Track Title*/}
+				<p>{this.props.num + 1}. <span style={{opacity: '0.6'}}>{this.props.track.name}.</span></p>
+			</div>
+		)
 	}
 }
 
+//function with request to Spotify API, only used on step 2.
+function step2Fetch() {
+	let ID = this.props.id;
+	//checking address bar for access token from Spotify API.
+	let parsed = queryString.parse(window.location.search);
+	let accessToken = parsed.access_token;
 
-//component used in step 1, displaying name, cover and total number of songs in all of playlists of current 'logged-in' user.
-class PlaylistCards extends Component {
-	render() {
-		let playlist = this.props.playlist
-		//after user click on one of his playlists we set state with selected playlist id, and set step state to 2
-		return (
-			<div className="playlist" onClick={() => updateStep(2, this.props.playlist.id)}>
-				<p className="playlist__song-count">Number of songs: {playlist.songsNum}</p>
-				<div className="playlist__cover">
-					<img src={playlist.imageUrl} style={{width: '210px', height:'210px'}} alt={playlist.name} title={playlist.name}/>
-				</div>
-				<p className="playlist__name">{playlist.name}</p>
-		 	 </div>
-		);
-	  }
+	//sending proper request to Spotify API with sort state in consideration.
+	if(this.state.sort === true) {
+		/*
+		for playlist sorted by: 'recently added' we send 2 requests to Spotify API: 
+		1) to get name, image of playlist and most important - how many songs there're total in this playlist,
+		2) to get list of tracks, using offset atribute in Spotify API: total num of songs in playlist - 100. We substract 100 from it, because that's the maximum number of songs we can get in one request and we want all songs from this playlist starting (by using offset) on song that is on position of: total num of songs - 100.
+
+		We also check if there're less than 100 songs, if yes then we don't use offset attribute.
+		*/
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			how: fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
+			headers: {'Authorization': 'Bearer ' + accessToken}
+			})
+			.then(response => response.json())
+			.then(data => this.setState({
+				tracks: data.items,
+			}))
+		}))
+	
+	}else if (this.state.sort === false) {
+		//for whatever reason Spotify API playlist request returns songs that were first added to playlist, we use this behaviour only when sort state is set to false.
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			tracks: data.tracks.items,
+		}))
+
+	}else if(!this.state.sort) {
+		//on first render of component the sort state is not created yet. So we send request to Spotify API with tracks being sorted by recently added to playlist.
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			how: 
+				fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
+				headers: {'Authorization': 'Bearer ' + accessToken}
+				})
+				.then(response => response.json())
+				.then(data => this.setState({
+					tracks: data.items,
+				}))	
+			}))
+		//setting new sort state, so on first sort-button click we'll get tracks sorted by: 'being first' added to playlist
+		this.setState({sort: false})
+	}
 }
 
-//function to change current step
-function updateStep(step, id, sort, userTrackNum) {
-	//console.log(arguments);
-	this.setState({ step, id, sort, userTrackNum })
+function changeSort() {
+	//used by sort-button, to change which tracks are displayed by TracksCard component (recently added to playlist or the ones that were first added to playlist)
+	this.setState({sort: !this.state.sort});
+	//calling fetch function again, so proper request can be send to Spotify API to get tracks properly sorted by
+	step2Fetch();
 }
 
 //component used in step 3, displaying end result of pare down process - if user typed '0' as value for songs in new playlist: display error and let user click on it to bring him back to step 1...
-class FinalResult extends Component {
+class ResultsPreview extends Component {
+	constructor() {
+		super();
+		this.state = {
+			uris: []
+		}
+	}
+
 	componentDidMount() {
-		//send request to Spotify API to...
+		const USER_TRACK_NUM = this.props.userTrackNum;
 		const ID = this.props.id;
+		//send request to Spotify API to...
 		//checking address bar for access token from Spotify API.
 		let parsed = queryString.parse(window.location.search);
 		let accessToken = parsed.access_token;
 		if (!accessToken)
 		return;
-		fetch(`https://api.spotify.com/v1/users/***REMOVED***/playlists/${ID}`, {
-		headers: {'Authorization': 'Bearer ' + accessToken}
-		})
-		.then(response => response.json())
-		.then(data => console.log(data))
+
+		if(USER_TRACK_NUM > 0){
+			/*fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
+				method: 'POST',
+				body: JSON.stringify({
+					"name": this.props.playlistName + ' - Pared Down',
+				}),
+				headers: {'Authorization': 'Bearer ' + accessToken}
+			})*/
+
+			for(let i=0; i<USER_TRACK_NUM; i+=100){
+				let limit = 100
+				if(USER_TRACK_NUM-i < 100) {
+					limit = USER_TRACK_NUM-i;
+				}
+				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${i}`, {
+				headers: {'Authorization': 'Bearer ' + accessToken}
+				})
+				.then(response => response.json())
+				//setting playlists state with response that is an array of playlists, and setting step state to 1
+				.then(data => this.setState(prevState => ({
+					uris: [...prevState.uris, data.items.map((track) => track.track.uri)],
+					img4: data.items.map((track) => track.track.album.images[1])
+				})))
+			}
+		}
 	}
 
 	render() {
@@ -286,95 +422,6 @@ class FinalResult extends Component {
 			}
 			</div>
 		)
-	}
-}
-
-
-//main component of pare down
-class App extends Component {
-	constructor() {
-		super();
-		this.state = {
-		  filterString: '',
-		}
-		updateStep = updateStep.bind(this)
-	}
-
-	//send request to Spotify API to get all playlists that are public or private and display them in step 1
-	componentDidMount() {
-		//checking address bar for access token from Spotify API.
-		let parsed = queryString.parse(window.location.search);
-		let accessToken = parsed.access_token;
-		if (!accessToken)
-		return;
-
-		fetch('https://api.spotify.com/v1/me/playlists', {
-		headers: {'Authorization': 'Bearer ' + accessToken}
-		})
-		.then(response => response.json())
-		//setting playlists state with response that is an array of playlists, and setting step state to 1
-		.then(data => this.setState({
-			playlists: data.items.map(item => {
-				return {
-					name: item.name,
-					imageUrl: item.images[0].url, 
-					songsNum: item.tracks.total,
-					id: item.id
-				}
-			}),
-			step: 1
-		}))
-	}
-
-
-	render() {
-		//function to map all playlists, then creating for every of one of them playlist-card that shows name, total number of songs in playlist and name of it.
-		let playlistToRender = 
-		this.state.playlists 
-		  ? this.state.playlists.filter(playlist => 
-			playlist.name.toLowerCase().includes(
-			  this.state.filterString.toLowerCase()),
-			  )
-		  : []
-		
-		return (
-			<div className="App">
-				<h1 className="app-name">Pare Down for Spotify</h1>
-				<h2 className="app-name__sub">Create copy of your playlist pared down to number of songs you have chosen to.</h2>
-			
-				{/* displaying current step and text for it on top of site and proper component for this step */ }
-				{/* 
-				if access token wasn't find - show button to login with Spotify, and on backend we use auth, where user grant pare down permission to access and/or modify the user’s own data - in this case: 
-				- Read and modify user private playlists.
-				- Read and modify user public playlists.
-				*/}
-				<Step step={this.state.step}/>
-				{
-				this.state.playlists && this.state.step === 1 ? 
-					<div className="playlist-grid">
-						{	
-							playlistToRender.map((playlist, i) => 
-							<PlaylistCards playlist={playlist} step={this.state.step} key={i}/>
-						)}
-					</div>
-				:
-				this.state.playlists && this.state.step === 2 ?
-					<PareDown id={this.state.id}/>
-				:
-				this.state.playlists && this.state.step === 3 ?
-					<FinalResult id={this.state.id} sort={this.state.sort} userTrackNum={this.state.userTrackNum}/>
-				:
-				<div className="btn" onClick={() => {
-					window.location = window.location.href.includes('localhost') 
-					? 'http://localhost:8888/login' 
-					: 'change it' 
-					this.setState({step: 1})
-				}
-					
-				}>login in with spotify</div>
-				}
-			</div>
-		);
 	}
 }
 
