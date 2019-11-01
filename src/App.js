@@ -437,7 +437,7 @@ class ResultsPreview extends Component {
 	}
 
 	render() {
-		console.log(this.state)
+		console.log(this.props)
 		const USER_TRACK_NUM = this.props.userTrackNum;
 		return (
 			<div>
@@ -461,7 +461,7 @@ class ResultsPreview extends Component {
 					</div>
 
 					<div id="preview-btns">
-						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep({step: 4, uris: this.state.uris})}>Create</div>
+						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep({step: 4, uris: this.state.uris, playlistName: this.props.playlistName})}>Create</div>
 						<div id="preview-btn--cancel" className="preview-btn" onClick={() => updateStep({step: 1})}>Cancel</div>
 					</div>
 					
@@ -492,8 +492,9 @@ class ResultsPreview extends Component {
 
 class Results extends Component {
 	componentDidMount() {
+		let uris = this.props.uris;
 		//checking address bar for access token from Spotify API.
-		/*let parsed = queryString.parse(window.location.search);
+		let parsed = queryString.parse(window.location.search);
 		let accessToken = parsed.access_token;
 		if (!accessToken)
 		return;
@@ -505,7 +506,17 @@ class Results extends Component {
 			headers: {'Authorization': 'Bearer ' + accessToken}
 		})
 		.then(response => response.json())
-		.then(data => console.log(data.id))*/
+		.then((data) => {
+			for(let i=0; i<uris.length; i++){
+				fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks`, {
+				method: 'POST',
+				body: JSON.stringify({
+					"uris": this.props.uris[i]
+				}),
+				headers: {'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json'}
+				})
+			}
+		})
 	}
 	render() {
 		console.log(this.props)
