@@ -3,9 +3,9 @@ import './App.css';
 import queryString from 'query-string';
 
 //function to change current step
-function updateStep(step, id, sort, userTrackNum, playlistName, tracksUri) {
+function updateStep(step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum) {
 	//console.log(arguments);
-	this.setState({ step, id, sort, userTrackNum, playlistName, tracksUri })
+	this.setState({ step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum})
 }
 
 //main component of pare down
@@ -96,8 +96,12 @@ class App extends Component {
 						userTrackNum={this.state.userTrackNum} 
 						userID={this.state.userID} 
 						playlistName={this.state.playlistName}
-						tracksUri={this.state.tracksUri}
+						imageUrl={this.state.imageUrl}
+						tracksNum={this.state.tracksNum}
 					/>
+				:
+				this.state.playlists && this.state.step === 4 ?
+					<Results></Results>
 				:
 				<div className="btn" onClick={() => {
 					window.location = window.location.href.includes('localhost') 
@@ -123,12 +127,17 @@ class Step extends Component {
 		}
 		else if (this.props.step === 2) {
 			return(
-				<h3 className="step--header">{this.props.step}. Check if this is the playlist you want to pare down (if not refresh page) and select options for paring it down. </h3>
+				<h3 className="step--header">{this.props.step}. Personalize playlist that will be created by pare down process: </h3>
 			)
 		}
 		else if (this.props.step === 3) {
 			return(
-				<h3 className="step--header">{this.props.step}. Your pare down process: </h3>
+				<h3 className="step--header">{this.props.step}. Preview your pare down process: </h3>
+			)
+		}
+		else if (this.props.step === 4) {
+			return(
+				<h3 className="step--header">{this.props.step}. Pare down process was: </h3>
 			)
 		}
 		else {
@@ -225,7 +234,7 @@ class PareDown extends Component {
 						</p>
 
 						{/* button to pass all needed states, used by another component in step 3 - where pare down process is done behind scenes and result is displayed for user */}
-						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue, this.state.name, this.state.tracksUri)}>Create new playlist</div>
+						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue, this.state.name, this.state.imageUrl, this.state.tracksNum)}>Create new playlist</div>
 					</form>
 				</div>
 			</div>
@@ -363,7 +372,7 @@ function changeSort() {
 	step2Fetch();
 }
 
-//component used in step 3, displaying end result of pare down process - if user typed '0' as value for songs in new playlist: display error and let user click on it to bring him back to step 1...
+//component used in step 3: preview of pare down process.
 class ResultsPreview extends Component {
 	constructor() {
 		super();
@@ -375,22 +384,18 @@ class ResultsPreview extends Component {
 	componentDidMount() {
 		const USER_TRACK_NUM = this.props.userTrackNum;
 		const ID = this.props.id;
-		//send request to Spotify API to...
 		//checking address bar for access token from Spotify API.
 		let parsed = queryString.parse(window.location.search);
 		let accessToken = parsed.access_token;
 		if (!accessToken)
 		return;
 
+		/*
+		1) Making sure if user wants to have more than 0 songs in new playlist.
+		2) With Spotify API we can only get 100 songs in one request - so, we send as many request as needed to have array with all uris to songs that number of was typed by user.playlist.
+		3) As result of this we have arrays inside one main array that's stored in state: 'uris'.
+		*/
 		if(USER_TRACK_NUM > 0){
-			/*fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
-				method: 'POST',
-				body: JSON.stringify({
-					"name": this.props.playlistName + ' - Pared Down',
-				}),
-				headers: {'Authorization': 'Bearer ' + accessToken}
-			})*/
-
 			for(let i=0; i<USER_TRACK_NUM; i+=100){
 				let limit = 100
 				if(USER_TRACK_NUM-i < 100) {
@@ -400,10 +405,10 @@ class ResultsPreview extends Component {
 				headers: {'Authorization': 'Bearer ' + accessToken}
 				})
 				.then(response => response.json())
-				//setting playlists state with response that is an array of playlists, and setting step state to 1
+				//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
 				.then(data => this.setState(prevState => ({
-					uris: [...prevState.uris, data.items.map((track) => track.track.uri)],
-					img4: data.items.map((track) => track.track.album.images[1])
+					uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
+					img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url)
 				})))
 			}
 		}
@@ -414,13 +419,69 @@ class ResultsPreview extends Component {
 		const USER_TRACK_NUM = this.props.userTrackNum;
 		return (
 			<div>
-			{
+			{	
+				//displaying error if user selected 0 or less songs in previous step
 				USER_TRACK_NUM === 0 ?
 				<p id="creation-error"onClick={() => updateStep(1)}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to restart pare down process.</p>
 				:
-				<p>asdsadlasdj</p>
+				/*
+				preview of pare down process: 
+				- on left original playlist (with cover, title of it and num of songs)
+				and between of these two are buttons: create(setting step to 4) and cancel(setting step to 1);
+				- on right playlist after pare down (with cover, title of it and num songs)
+				*/
+				<div id="preview-box">
+					<div id="preview-selected">
+						<p className="preview-header">SELECTED PLAYLIST:</p>
+						<img src={this.props.imageUrl} className="preview-selected-img" alt={this.props.playlistName} title={this.props.playlistName}/>
+						<p className="preview-name">Name: <span style={{opacity: 0.5}}>{this.props.playlistName}</span></p>
+						<p className="preview-num">Num of songs: <span style={{opacity: 0.5}}>{this.props.tracksNum}</span></p>
+					</div>
+
+					<div id="preview-btns">
+						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep(4)}>Create</div>
+						<div id="preview-btn--cancel" className="preview-btn" onClick={() => updateStep(1)}>Cancel</div>
+					</div>
+					
+					<div id="preview-pared">
+						<p className="preview-header">AFTER PARE DOWN:</p>
+						{
+							this.state.img4 ?
+								this.state.img4.length < 4 ?
+								<img src={this.state.img4[0]} className="preview-pared-img--big" alt={this.props.playlistName + 'Pared Down'} title={this.props.playlistName + 'Pared Down'} />
+								:
+								<div id="preview-pared-img-box">
+									<img src={this.state.img4[2]} className="preview-pared-img" alt={this.props.playlistName + 'Pared Down'} title={this.props.playlistName + 'Pared Down'} />
+									<img src={this.state.img4[0]} className="preview-pared-img" alt={this.props.playlistName + 'Pared Down'} title={this.props.playlistName + 'Pared Down'} />
+									<img src={this.state.img4[3]} className="preview-pared-img" alt={this.props.playlistName + 'Pared Down'} title={this.props.playlistName + 'Pared Down'} />
+									<img src={this.state.img4[1]} className="preview-pared-img" alt={this.props.playlistName + 'Pared Down'} title={this.props.playlistName + 'Pared Down'} />
+								</div>
+							: null
+						}
+						<p className="preview-name">Name: <span style={{opacity: 0.5}}>{this.props.playlistName} - Pared Down</span></p>
+						<p className="preview-num">Num of songs: <span style={{opacity: 0.5}}>{USER_TRACK_NUM}</span></p>
+					</div>
+				</div>
 			}
 			</div>
+		)
+	}
+}
+
+class Results extends Component {
+	componentDidMount() {
+		/*
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
+			method: 'POST',
+			body: JSON.stringify({
+				"name": this.props.playlistName + ' - Pared Down',
+			}),
+			headers: {'Authorization': 'Bearer ' + accessToken}
+		})*/
+	}
+	render() {
+		return (
+			<p>C:</p>
 		)
 	}
 }
