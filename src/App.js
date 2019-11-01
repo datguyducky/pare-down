@@ -3,9 +3,9 @@ import './App.css';
 import queryString from 'query-string';
 
 //function to change current step
-function updateStep(step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum) {
+function updateStep({step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum, uris}={}) {
 	//console.log(arguments);
-	this.setState({ step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum})
+	this.setState({ step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum, uris})
 }
 
 //main component of pare down
@@ -101,7 +101,7 @@ class App extends Component {
 					/>
 				:
 				this.state.playlists && this.state.step === 4 ?
-					<Results></Results>
+					<Results uris={this.state.uris} userID={this.state.userID} playlistName={this.state.playlistName}></Results>
 				:
 				<div className="btn" onClick={() => {
 					window.location = window.location.href.includes('localhost') 
@@ -152,7 +152,7 @@ class PlaylistCards extends Component {
 		let playlist = this.props.playlist
 		//after user click on one of his playlists we set state with selected playlist id, and set step state to 2
 		return (
-			<div className="playlist" onClick={() => updateStep(2, this.props.playlist.id)}>
+			<div className="playlist" onClick={() => updateStep({step: 2, id: this.props.playlist.id})}>
 				<p className="playlist__song-count">Number of songs: {playlist.songsNum}</p>
 				<div className="playlist__cover">
 					<img src={playlist.imageUrl} style={{width: '210px', height:'210px'}} alt={playlist.name} title={playlist.name}/>
@@ -234,7 +234,7 @@ class PareDown extends Component {
 						</p>
 
 						{/* button to pass all needed states, used by another component in step 3 - where pare down process is done behind scenes and result is displayed for user */}
-						<div id="create--btn" onClick={() => updateStep(3, this.props.id, this.state.sort, this.state.inputValue, this.state.name, this.state.imageUrl, this.state.tracksNum)}>Create new playlist</div>
+						<div id="create--btn" onClick={() => updateStep({step: 3, id: this.props.id, sort: this.state.sort, userTrackNum: this.state.inputValue, playlistName: this.state.name, imageUrl: this.state.imageUrl, tracksNum: this.state.tracksNum})}>Create new playlist</div>
 					</form>
 				</div>
 			</div>
@@ -377,7 +377,8 @@ class ResultsPreview extends Component {
 	constructor() {
 		super();
 		this.state = {
-			uris: []
+			uris: [],
+			a: []
 		}
 	}
 
@@ -396,20 +397,41 @@ class ResultsPreview extends Component {
 		3) As result of this we have arrays inside one main array that's stored in state: 'uris'.
 		*/
 		if(USER_TRACK_NUM > 0){
-			for(let i=0; i<USER_TRACK_NUM; i+=100){
-				let limit = 100
-				if(USER_TRACK_NUM-i < 100) {
-					limit = USER_TRACK_NUM-i;
+			if(this.props.sort === false) {
+				for(let i=0; i<USER_TRACK_NUM; i+=100){
+					let limit = 100;
+					if(USER_TRACK_NUM-i < 100) {
+						limit = USER_TRACK_NUM-i;
+					}
+					
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${this.props.tracksNum - (i + 100)}`, {
+					headers: {'Authorization': 'Bearer ' + accessToken}
+					})
+					.then(response => response.json())
+					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
+					.then(data => this.setState(prevState => ({
+						uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
+						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
+					})))
 				}
-				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${i}`, {
-				headers: {'Authorization': 'Bearer ' + accessToken}
-				})
-				.then(response => response.json())
-				//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
-				.then(data => this.setState(prevState => ({
-					uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
-					img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url)
-				})))
+			}
+			else if(this.props.sort === true) {
+				for(let i=0; i<USER_TRACK_NUM; i+=100){
+					let limit = 100
+					if(USER_TRACK_NUM-i < 100) {
+						limit = USER_TRACK_NUM-i;
+					}
+					
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${i}`, {
+					headers: {'Authorization': 'Bearer ' + accessToken}
+					})
+					.then(response => response.json())
+					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
+					.then(data => this.setState(prevState => ({
+						uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
+						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
+					})))
+				}
 			}
 		}
 	}
@@ -422,7 +444,7 @@ class ResultsPreview extends Component {
 			{	
 				//displaying error if user selected 0 or less songs in previous step
 				USER_TRACK_NUM === 0 ?
-				<p id="creation-error"onClick={() => updateStep(1)}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to restart pare down process.</p>
+				<p id="creation-error"onClick={() => updateStep({step: 1})}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to restart pare down process.</p>
 				:
 				/*
 				preview of pare down process: 
@@ -439,8 +461,8 @@ class ResultsPreview extends Component {
 					</div>
 
 					<div id="preview-btns">
-						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep(4)}>Create</div>
-						<div id="preview-btn--cancel" className="preview-btn" onClick={() => updateStep(1)}>Cancel</div>
+						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep({step: 4, uris: this.state.uris})}>Create</div>
+						<div id="preview-btn--cancel" className="preview-btn" onClick={() => updateStep({step: 1})}>Cancel</div>
 					</div>
 					
 					<div id="preview-pared">
@@ -470,16 +492,23 @@ class ResultsPreview extends Component {
 
 class Results extends Component {
 	componentDidMount() {
-		/*
+		//checking address bar for access token from Spotify API.
+		/*let parsed = queryString.parse(window.location.search);
+		let accessToken = parsed.access_token;
+		if (!accessToken)
+		return;
 		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
 			method: 'POST',
 			body: JSON.stringify({
 				"name": this.props.playlistName + ' - Pared Down',
 			}),
 			headers: {'Authorization': 'Bearer ' + accessToken}
-		})*/
+		})
+		.then(response => response.json())
+		.then(data => console.log(data.id))*/
 	}
 	render() {
+		console.log(this.props)
 		return (
 			<p>C:</p>
 		)
