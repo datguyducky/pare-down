@@ -110,7 +110,7 @@ class App extends Component {
 					this.setState({step: 1})
 				}
 					
-				}>login in with spotify</div>
+				}>log in with spotify</div>
 				}
 			</div>
 		);
@@ -378,7 +378,7 @@ class ResultsPreview extends Component {
 		super();
 		this.state = {
 			uris: [],
-			a: []
+			a: [],
 		}
 	}
 
@@ -400,17 +400,19 @@ class ResultsPreview extends Component {
 			if(this.props.sort === false) {
 				for(let i=0; i<USER_TRACK_NUM; i+=100){
 					let limit = 100;
+					let offset = this.props.tracksNum - (i + 100);
 					if(USER_TRACK_NUM-i < 100) {
 						limit = USER_TRACK_NUM-i;
+						offset = this.props.tracksNum - i - limit;
 					}
 					
-					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${this.props.tracksNum - (i + 100)}`, {
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name, album.images))&limit=${limit}&offset=${offset}`, {
 					headers: {'Authorization': 'Bearer ' + accessToken}
 					})
 					.then(response => response.json())
 					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
 					.then(data => this.setState(prevState => ({
-						uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
+						uris: [...prevState.uris, data.items.reverse().map((id) => id.track.name)],
 						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
 					})))
 				}
@@ -422,13 +424,13 @@ class ResultsPreview extends Component {
 						limit = USER_TRACK_NUM-i;
 					}
 					
-					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${i}`, {
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name, album.images))&limit=${limit}&offset=${i}`, {
 					headers: {'Authorization': 'Bearer ' + accessToken}
 					})
 					.then(response => response.json())
 					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
 					.then(data => this.setState(prevState => ({
-						uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
+						uris: [...prevState.uris, data.items.map((id) => id.track.name)],
 						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
 					})))
 				}
@@ -437,7 +439,7 @@ class ResultsPreview extends Component {
 	}
 
 	render() {
-		console.log(this.props)
+		console.log(this.state)
 		const USER_TRACK_NUM = this.props.userTrackNum;
 		return (
 			<div>
@@ -498,7 +500,8 @@ class Results extends Component {
 		let accessToken = parsed.access_token;
 		if (!accessToken)
 		return;
-		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
+		//creating new playlist
+		/*fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
 			method: 'POST',
 			body: JSON.stringify({
 				"name": this.props.playlistName + ' - Pared Down',
@@ -506,6 +509,8 @@ class Results extends Component {
 			headers: {'Authorization': 'Bearer ' + accessToken}
 		})
 		.then(response => response.json())
+		//adding "selected" songs by user to this freshly created playlist. 
+		//Spotify API allow only to add max 100 songs per request. 'uris' state stores X ammount of arrays inside it - by looping it we can send proper ammount of requests to add all songs that we need.
 		.then((data) => {
 			for(let i=0; i<uris.length; i++){
 				fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks`, {
@@ -516,7 +521,7 @@ class Results extends Component {
 				headers: {'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json'}
 				})
 			}
-		})
+		})*/
 	}
 	render() {
 		console.log(this.props)
