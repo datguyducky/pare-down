@@ -135,11 +135,6 @@ class Step extends Component {
 				<h3 className="step--header">{this.props.step}. Preview your pare down process: </h3>
 			)
 		}
-		else if (this.props.step === 4) {
-			return(
-				<h3 className="step--header">{this.props.step}. Pare down process was: </h3>
-			)
-		}
 		else {
 			return null;
 		}
@@ -406,13 +401,13 @@ class ResultsPreview extends Component {
 						offset = this.props.tracksNum - i - limit;
 					}
 					
-					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name, album.images))&limit=${limit}&offset=${offset}`, {
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${offset}`, {
 					headers: {'Authorization': 'Bearer ' + accessToken}
 					})
 					.then(response => response.json())
 					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
 					.then(data => this.setState(prevState => ({
-						uris: [...prevState.uris, data.items.reverse().map((id) => id.track.name)],
+						uris: [...prevState.uris, data.items.reverse().map((id) => id.track.uri)],
 						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
 					})))
 				}
@@ -424,13 +419,13 @@ class ResultsPreview extends Component {
 						limit = USER_TRACK_NUM-i;
 					}
 					
-					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name, album.images))&limit=${limit}&offset=${i}`, {
+					fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri, album.images))&limit=${limit}&offset=${i}`, {
 					headers: {'Authorization': 'Bearer ' + accessToken}
 					})
 					.then(response => response.json())
 					//Apart from songs uris, we also create state 'img4' that stores links of covers of first 4 songs (in an array).
 					.then(data => this.setState(prevState => ({
-						uris: [...prevState.uris, data.items.map((id) => id.track.name)],
+						uris: [...prevState.uris, data.items.map((id) => id.track.uri)],
 						img4: data.items.slice(0, 4).map((id) => id.track.album.images[1].url),
 					})))
 				}
@@ -493,6 +488,13 @@ class ResultsPreview extends Component {
 }
 
 class Results extends Component {
+	constructor() {
+		super();
+		this.state = {
+			success: null
+		}
+	}
+	
 	componentDidMount() {
 		let uris = this.props.uris;
 		//checking address bar for access token from Spotify API.
@@ -501,7 +503,7 @@ class Results extends Component {
 		if (!accessToken)
 		return;
 		//creating new playlist
-		/*fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists`, {
 			method: 'POST',
 			body: JSON.stringify({
 				"name": this.props.playlistName + ' - Pared Down',
@@ -520,13 +522,24 @@ class Results extends Component {
 				}),
 				headers: {'Authorization': 'Bearer ' + accessToken, 'Content-Type': 'application/json'}
 				})
+				.then((response) => {
+					if(response.status === 201){
+						this.setState({
+							success: 'Playlist was created!'
+						})
+					}
+				})
 			}
-		})*/
+		})
 	}
 	render() {
-		console.log(this.props)
 		return (
-			<p>C:</p>
+			this.state.success ? 
+			<div>
+				<p className="step--header" style={{fontSize: 30}}>{this.state.success}</p> 
+				<div onClick={() => updateStep({step: 1})} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
+			</div>
+			: null
 		)
 	}
 }

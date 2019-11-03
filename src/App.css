@@ -47,6 +47,10 @@ body {
 	cursor: pointer;
 }
 
+.btn:hover {
+	opacity: 0.8;
+}
+
 .playlist-grid {
 	display: grid;
 	grid-template-columns: repeat( auto-fit, 210px);
