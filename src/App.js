@@ -106,7 +106,7 @@ class App extends Component {
 				<div className="btn" onClick={() => {
 					window.location = window.location.href.includes('localhost') 
 					? 'http://localhost:8888/login' 
-					: 'change it' 
+					: 'https://pare-down-backend.herokuapp.com/login' 
 					this.setState({step: 1})
 				}
 					
