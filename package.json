@@ -2,7 +2,7 @@
   "name": "pare-down",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://datguysheepy.github.io/pare-down/" ,
+  "homepage": "https://pare-down.mtymon.me" ,
   "dependencies": {
     "gh-pages": "^2.1.1",
     "react": "^16.10.2",
