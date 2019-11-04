@@ -14,7 +14,7 @@ body {
 
 .App {
 	width: 760px;
-	margin-bottom: 48px;
+	margin-bottom: 16px;
 }
 
 .app-name {
@@ -108,7 +108,7 @@ body {
 .step--header {
 	text-align: center;
 	margin: 0 auto;
-	margin-top: 48px;
+	margin-top: 32px;
 	margin-bottom: 18px;
 	font-size: 26px;
 	letter-spacing: 1px;
@@ -457,7 +457,6 @@ body {
 
 	.step--header {
 		font-size: 21px;
-		margin-top: 32px;
 	}
 
 	.btn {
