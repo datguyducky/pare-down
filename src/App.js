@@ -150,7 +150,7 @@ class PlaylistCards extends Component {
 			<div className="playlist" onClick={() => updateStep({step: 2, id: this.props.playlist.id})}>
 				<p className="playlist__song-count">Number of songs: {playlist.songsNum}</p>
 				<div className="playlist__cover">
-					<img src={playlist.imageUrl} style={{width: '210px', height:'210px'}} alt={playlist.name} title={playlist.name}/>
+					<img src={playlist.imageUrl} className="playlist__cover--img" alt={playlist.name} title={playlist.name}/>
 				</div>
 				<p className="playlist__name">{playlist.name}</p>
 		 	 </div>
@@ -161,72 +161,11 @@ class PlaylistCards extends Component {
 //main component for step 2
 class PareDown extends Component {
 	componentDidMount() {
-		let ID = this.props.id;
-		//checking address bar for access token from Spotify API.
-		let parsed = queryString.parse(window.location.search);
-		let accessToken = parsed.access_token;
+		step2Fetch();
+	}
 
-		//sending proper request to Spotify API with sort state in consideration.
-		if(this.state.sort === true) {
-			/*
-			for playlist sorted by: 'recently added' we send 2 requests to Spotify API: 
-			1) to get name, image of playlist and most important - how many songs there're total in this playlist,
-			2) to get list of tracks, using offset atribute in Spotify API: total num of songs in playlist - 100. We substract 100 from it, because that's the maximum number of songs we can get in one request and we want all songs from this playlist starting (by using offset) on song that is on position of: total num of songs - 100.
-
-			We also check if there're less than 100 songs, if yes then we don't use offset attribute.
-			*/
-			fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
-				tracksNum: data.tracks.total,
-				how: fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
-				headers: {'Authorization': 'Bearer ' + accessToken}
-				})
-				.then(response => response.json())
-				.then(data => this.setState({
-					tracks: data.items,
-				}))
-			}))
-		
-		}else if (this.state.sort === false) {
-			//for whatever reason Spotify API playlist request returns songs that were first added to playlist, we use this behaviour only when sort state is set to false.
-			fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
-				tracksNum: data.tracks.total,
-				tracks: data.tracks.items,
-			}))
-
-		}else if(!this.state.sort) {
-			//on first render of component the sort state is not created yet. So we send request to Spotify API with tracks being sorted by recently added to playlist.
-			fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
-			headers: {'Authorization': 'Bearer ' + accessToken}
-			})
-			.then(response => response.json())
-			.then(data => this.setState({
-				name: data.name,
-				imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
-				tracksNum: data.tracks.total,
-				how: 
-					fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
-					headers: {'Authorization': 'Bearer ' + accessToken}
-					})
-					.then(response => response.json())
-					.then(data => this.setState({
-						tracks: data.items,
-					}))	
-				}))
-			//setting new sort state, so on first sort-button click we'll get tracks sorted by: 'being first' added to playlist
-			this.setState({sort: false})
-		}
+	componentWillUnmount() {
+		console.log('a');
 	}
 
 	constructor() {
@@ -357,6 +296,70 @@ class TrackCard extends Component {
 
 //function with request to Spotify API, only used on step 2.
 function step2Fetch() {
+	let ID = this.props.id;
+	//checking address bar for access token from Spotify API.
+	let parsed = queryString.parse(window.location.search);
+	let accessToken = parsed.access_token;
+
+	//sending proper request to Spotify API with sort state in consideration.
+	if(this.state.sort === true) {
+		/*
+		for playlist sorted by: 'recently added' we send 2 requests to Spotify API: 
+		1) to get name, image of playlist and most important - how many songs there're total in this playlist,
+		2) to get list of tracks, using offset atribute in Spotify API: total num of songs in playlist - 100. We substract 100 from it, because that's the maximum number of songs we can get in one request and we want all songs from this playlist starting (by using offset) on song that is on position of: total num of songs - 100.
+
+		We also check if there're less than 100 songs, if yes then we don't use offset attribute.
+		*/
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			how: fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
+			headers: {'Authorization': 'Bearer ' + accessToken}
+			})
+			.then(response => response.json())
+			.then(data => this.setState({
+				tracks: data.items,
+			}))
+		}))
+	}else if (this.state.sort === false) {
+		//for whatever reason Spotify API playlist request returns songs that were first added to playlist, we use this behaviour only when sort state is set to false.
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			tracks: data.tracks.items,
+		}))
+	}else if(!this.state.sort) {
+		//on first render of component the sort state is not created yet. So we send request to Spotify API with tracks being sorted by recently added to playlist.
+		fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}?fields=name,images,tracks.total`, {
+		headers: {'Authorization': 'Bearer ' + accessToken}
+		})
+		.then(response => response.json())
+		.then(data => this.setState({
+			name: data.name,
+			imageUrl: data.images.length === 0 ? data.images.push('') : data.images[0].url,
+			tracksNum: data.tracks.total,
+			how: 
+				fetch(`https://api.spotify.com/v1/users/${this.props.userID}/playlists/${ID}/tracks?offset=${data.tracks.total>100 ? data.tracks.total-100 : 0}`, {
+				headers: {'Authorization': 'Bearer ' + accessToken}
+				})
+				.then(response => response.json())
+				.then(data => this.setState({
+					tracks: data.items,
+				}))	
+			}))
+		//setting new sort state, so on first sort-button click we'll get tracks sorted by: 'being first' added to playlist
+		this.setState({sort: false})
+	}
 }
 
 function changeSort() {
@@ -440,7 +443,8 @@ class ResultsPreview extends Component {
 			{	
 				//displaying error if user selected 0 or less songs in previous step
 				USER_TRACK_NUM === 0 ?
-				<p id="creation-error"onClick={() => updateStep({step: 1})}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to go back to playlist selection page.</p>
+				//by clicking error message: reload whole page, because when setting step state to '1' console starts to throw error "Can't perform a React state update on an unmounted component."
+				<p id="creation-error"onClick={() => window.location.reload()}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to go back to playlist selection page.</p>
 				:
 				/*
 				preview of pare down process: 
@@ -535,8 +539,11 @@ class Results extends Component {
 		return (
 			this.state.success ? 
 			<div>
-				<p className="step--header" style={{fontSize: 30}}>{this.state.success}</p> 
-				<div onClick={() => updateStep({step: 1})} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
+				<p className="step--header">{this.state.success}</p>
+				{
+				/*btn to pare down another playlist. We reload whole page, because when we try to set step state to '1' console throws error about "Can't perform a React state update on an unmounted component."*/
+				}
+				<div onClick={() => window.location.reload()} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
 			</div>
 			: null
 		)
