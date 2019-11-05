@@ -79,6 +79,7 @@ class App extends Component {
 				*/}
 				<Step step={this.state.step}/>
 				{
+
 				this.state.playlists && this.state.step === 1 ? 
 					<div className="playlist-grid">
 						{	
@@ -108,10 +109,10 @@ class App extends Component {
 					? 'http://localhost:8888/login' 
 					: 'http://pare-down-backend.mtymon.me/login' 
 					this.setState({step: 1})
+				}}>log in with spotify</div>
+	
 				}
-					
-				}>log in with spotify</div>
-				}
+				<Footer />
 			</div>
 		);
 	}
@@ -546,6 +547,19 @@ class Results extends Component {
 				<div onClick={() => window.location.reload()} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
 			</div>
 			: null
+		)
+	}
+}
+
+class Footer extends Component {
+	render() {
+		return (
+			<div className="footer">
+				<p>
+					<span>Copyright &copy; {new Date().getFullYear()} || </span>
+					<a href="https://github.com/datguysheepy/pare-down"> Github: datguysheepy</a>
+				</p>
+			</div>
 		)
 	}
 }
