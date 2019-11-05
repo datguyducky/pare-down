@@ -1,6 +1,28 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pare Down for Spotify
+Do you have one or more big playlists (+1000 songs) and your mobile data is limited? If so, you can use Pare Down for Spotify to create copy of selected playlist with amount of songs you've choosen to. Now you can download smaller version of your playlist and still enjoy your music without worrying about data limit.
 
-## Available Scripts
+## 📖 How to use Pare Down:
+* First you need to login with your Spotify account and grant Pare Down app permission to access some of your data (more about it here).
+* After granting permission you will be redirect to page with list of all of your playlists (you can see there name, cover and total number of songs in playlist).
+* Now, you need to select one of the displayed playlists by clicking on it - which will redirect you to another page where you can customize order and number of songs in playlist that will be created by Pare Down.
+* After clicking "CREATE NEW PLAYLIST" button you will see another page:
+On left you can see information about playlist you have selected (name, num of songs and cover) and on right you can see information about playlist that will be created after this step. If you're happy with your choices you need to click "CREATE" button, if not - by clicking "CANCEL" button you will be redirect back to step1 where you can select same or another playlist..
+* If you choose to CREATE this new playlist you will be redirect to last page, where you will see information about successful creation of playlist and button to pare down another playlist if you want to. :)
+
+## 🐞 Hey I found a bug!
+Something doesn't work like it should? Or maybe page looks way different on every device you have? If so, [go here to create issue]("https://github.com/datguysheepy/pare-down/issues/new") - please choose appropriate title and in description include everything that you think will be useful for fixing this bug that you just found!
+
+## 🙋 FAQ:
+**Q:** What data I granted permission for Pare Down to access?
+**A:** Pare Down have now access to:
+## 
+**Q:** ?
+**A:** 
+## 
+
+## 🤝 Contribution:
+
+### Available Scripts
 
 In the project directory, you can run:
 
@@ -11,58 +33,3 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.<br />
 You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
