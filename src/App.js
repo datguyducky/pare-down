@@ -204,7 +204,7 @@ class PareDown extends Component {
 						*/}
 						{	
 						this.state.tracks ?
-							this.state.sort == true ?
+							this.state.sort === true ?
 								this.state.tracks.map((track, i) => 
 								<TrackCard track={track.track} key={i} num={i} iValue={this.state.inputValue}/>)
 							:
