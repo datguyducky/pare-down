@@ -86,4 +86,4 @@ Something doesn't work like it should? Or maybe page looks way different on ever
 * Now *Log in with Spotify* button should work. Also you can test it by going to [http://localhost:8888/login](http://localhost:8888/login)
 
 ## 📝 License 
-Simple Start extension is open-source project licensed under the []().
+Simple Start extension is open-source project licensed under the [MIT License](https://github.com/datguysheepy/pare-down/blob/master/LICENSE).
