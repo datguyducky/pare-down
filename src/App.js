@@ -445,7 +445,7 @@ class ResultsPreview extends Component {
 				//displaying error if user selected 0 or less songs in previous step
 				USER_TRACK_NUM === 0 ?
 				//by clicking error message: reload whole page, because when setting step state to '1' console starts to throw error "Can't perform a React state update on an unmounted component."
-				<p id="creation-error"onClick={() => window.location.reload()}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to go back to playlist selection page.</p>
+				<p id="creation-error"onClick={() => window.location.reload(true)}>Sorry, but you choose wrong number of songs in <span style={{color: '#fff'}}>step 2</span>. Click on this text to go back to playlist selection page.</p>
 				:
 				/*
 				preview of pare down process: 
@@ -463,7 +463,7 @@ class ResultsPreview extends Component {
 
 					<div id="preview-btns">
 						<div id="preview-btn--create" className="preview-btn" onClick={() => updateStep({step: 4, uris: this.state.uris, playlistName: this.props.playlistName})}>Create</div>
-						<div id="preview-btn--cancel" className="preview-btn" onClick={() => updateStep({step: 1})}>Cancel</div>
+						<div id="preview-btn--cancel" className="preview-btn" onClick={() => window.location.reload(false)}>Cancel</div>
 					</div>
 					
 					<div id="preview-pared">
@@ -544,7 +544,7 @@ class Results extends Component {
 				{
 				/*btn to pare down another playlist. We reload whole page, because when we try to set step state to '1' console throws error about "Can't perform a React state update on an unmounted component."*/
 				}
-				<div onClick={() => window.location.reload()} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
+				<div onClick={() => window.location.reload(true)} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
 			</div>
 			: null
 		)
