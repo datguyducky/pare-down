@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import queryString from 'query-string';
 
+import Step from './Steps/Steps';
+import Footer from './Footer/Footer';
+
+
 //function to change current step
 function updateStep({step, id, sort, userTrackNum, playlistName, imageUrl, tracksNum, uris}={}) {
 	//console.log(arguments);
@@ -53,7 +57,6 @@ class App extends Component {
 			step: 1
 		}))
 	}
-
 
 	render() {
 		//function to map all playlists, then creating for every of one of them playlist-card that shows name, total number of songs in playlist and name of it.
@@ -119,28 +122,6 @@ class App extends Component {
 }
 
 //component to display proper message for current state
-class Step extends Component {
-	render() {
-		if(this.props.step === 1){
-			return(
-				<h3 className="step--header">{this.props.step}. Select which playlist you would like to pare down: </h3>
-			)
-		}
-		else if (this.props.step === 2) {
-			return(
-				<h3 className="step--header">{this.props.step}. Personalize playlist that will be created by pare down process: </h3>
-			)
-		}
-		else if (this.props.step === 3) {
-			return(
-				<h3 className="step--header">{this.props.step}. Preview your pare down process: </h3>
-			)
-		}
-		else {
-			return null;
-		}
-	}
-}
 
 //component used in step 1, displaying name, cover and total number of songs in all of playlists of current 'logged-in' user.
 class PlaylistCards extends Component {
@@ -547,19 +528,6 @@ class Results extends Component {
 				<div onClick={() => window.location.reload(true)} className="btn" style={{backgroundColor: '#333', marginTop: 0, maxWidth: 270}}>Pare down another playlist</div>
 			</div>
 			: null
-		)
-	}
-}
-
-class Footer extends Component {
-	render() {
-		return (
-			<div className="footer">
-				<p>
-					<span>Copyright &copy; {new Date().getFullYear()} || </span>
-					<a href="https://github.com/datguysheepy/pare-down"> Github: datguysheepy</a>
-				</p>
-			</div>
 		)
 	}
 }
