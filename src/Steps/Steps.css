@@ -1,0 +1,10 @@
+.step--header {
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 32px;
+	margin-bottom: 18px;
+	font-size: 26px;
+	letter-spacing: 1px;
+	color: #1DB954;
+	text-transform: uppercase;
+}
