@@ -1,0 +1,7 @@
+.appWrapper {
+	width: 910px;
+	min-height: 100vh;
+	margin: 0 auto;
+	background: radial-gradient(circle at top, rgba(250, 250, 255, 0.1) -10%, transparent 24%);
+	font-family: Source Sans Pro, sans-serif;
+}
