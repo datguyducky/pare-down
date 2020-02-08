@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import BrandBig from './BrandBig'
 import ButtonBorder from './ButtonBorder';
 
@@ -14,7 +14,7 @@ export default function Header() {
 			
 			<nav className='navWrapper'>
 				<ul>
-					<li><a href='#'>Pricing</a></li>
+					<li><a href='#pricing'>Pricing</a></li>
 					<li><a href='#'>Features</a></li>
 					<li><a href='#'>FAQ</a></li>
 					<li>

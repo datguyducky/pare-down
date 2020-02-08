@@ -113,7 +113,13 @@ export default class Home extends Component {
 		return (
 			<div className='app-wrapper'>
             	<Header/>
-				<div className='app-content'>
+				<div className='hero-wrapper'>
+					<div className='hero-overlay'>
+						<div className='hero-img'>
+							<img src={require('../assets/wave.svg')}/>
+						</div>
+						<div className='section-svg'></div>
+					</div>
 					<div className='intro'>
 						<h1 className='intro-h'>
 							DUPLICATE YOUR PLAYLIST WITH REDUCED NUMBER OF SONGS
@@ -185,6 +191,29 @@ export default class Home extends Component {
 							</div>
 						</div>
 					</div>
+				</div>
+				<div className='sections-wrapper'>
+					<section id='pricing'>
+							<h1>Free and secure</h1>
+							<ul>
+								<li>
+									PareDown offers only one plan - which is completely free to use and have access to all features.
+								</li>
+								<li>
+									Nobody likes ads and because of that we don't display them here.
+								</li>
+								<li>
+									Fully open-source. You can go and check by yourself how PareDown works behind the scenes.
+								</li>
+								<li>
+									PareDown doesn't collect or store any user data.*
+								</li>
+							</ul>
+
+							<p>
+								* May not apply to any of the music platforms used within PareDown. With any doubts regarding the processing of user data by these services, please refer to their respective Terms and Conditions of Use documents.
+							</p>
+					</section>
 				</div>
 			</div>
         );
