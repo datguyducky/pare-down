@@ -15,7 +15,7 @@ export default function Header() {
 			<nav className='navWrapper'>
 				<ul>
 					<li><a href='#pricing'>Pricing</a></li>
-					<li><a href='#'>Features</a></li>
+					<li><a href='#features'>Features</a></li>
 					<li><a href='#'>FAQ</a></li>
 					<li>
 						<ButtonBorder

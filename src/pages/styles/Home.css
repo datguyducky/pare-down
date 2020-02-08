@@ -227,18 +227,18 @@
 	width: 720px;
 }
 
-#pricing {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-
-#pricing h1 {
+.sections-wrapper h1 {
 	color: var(--gray1);
 	text-align: center;
 	font-size: 36px;
 	font-weight: 600;
 	margin-bottom: 21px;
+}
+
+#pricing {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
 }
 
 #pricing ul {
@@ -257,5 +257,59 @@
 	opacity: 0.5;
 	font-size: 13px;
 	font-weight: 600;
+	text-align: center;
+}
+
+/* features section */
+
+#features {
+	margin-top: 72px;
+	margin-bottom: 148px;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+}
+
+.f-wrapper {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-auto-rows: 128px;
+	justify-content: center;
+	grid-gap: 32px;
+}
+
+.f-card {
+	box-shadow: 4px 6px 6px 0 rgba(0, 0, 0, 0.14);
+	background-color: #fdfdff;
+	border-radius: 8px;
+	padding: 18px 16px;
+	color: var(--gray1);
+	cursor: pointer;
+}
+
+.f-card h2 {
+	font-size: 21px;
+	font-weight: 600; 
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+.f-card-t {
+	font-weight: 700;
+	color: var(--brand);
+	font-size: 12px;
+	display: block;
+}
+
+.f-card-i {
+	color: var(--brand);
+	margin-right: 8px;
+}
+
+.f-card p {
+	font-size: 17px;
+	line-height: 1.2em;
+	margin-top: 6px;
 	text-align: center;
 }

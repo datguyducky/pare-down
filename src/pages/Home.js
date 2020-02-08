@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
+import { Header, Button } from '../components';
+import { Copy, Calendar, Cloud, GitPullRequest } from 'react-feather';
+
 import '../utils/reset.css';
 import '../utils/colors.css';
 
 import './styles/Home.css'
-
-import { Header, Button } from '../components';
 
 
 export default class Home extends Component {
@@ -213,6 +214,51 @@ export default class Home extends Component {
 							<p>
 								* May not apply to any of the music platforms used within PareDown. With any doubts regarding the processing of user data by these services, please refer to their respective Terms and Conditions of Use documents.
 							</p>
+					</section>
+
+					<section id='features'>
+						<h1>Features</h1>
+						<div className='f-wrapper'>
+							<div className='f-card'>
+								<h2>
+									<Copy className='f-card-i' size={34}/>
+									Duplicate playlists
+								</h2>
+								<p>
+									Create smaller copies of your playlists quickly and easily, reduced to a certain number of songs.
+								</p>
+							</div>
+							<div className='f-card'>
+								<h2>
+									<Calendar className='f-card-i' size={34}/>
+									<span>
+										<span className='f-card-t'>NEW</span>
+										Calendar
+									</span>
+								</h2>
+								<p>
+									A place where you can check the premiers of the songs of your favorite artists.
+								</p>
+							</div>
+							<div className='f-card'>
+								<h2>
+									<Cloud className='f-card-i' size={34}/>
+									Popular platforms
+								</h2>
+								<p>
+								PareDown supports two most popular music streaming platforms (Apple Music & Spotify).
+								</p>
+							</div>
+							<div className='f-card'>
+								<h2>
+									<GitPullRequest className='f-card-i' size={34}/>
+									Actively developed
+								</h2>
+								<p>
+									You can expect even more exciting features in the future.
+								</p>
+							</div>
+						</div>
 					</section>
 				</div>
 			</div>
