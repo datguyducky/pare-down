@@ -338,7 +338,7 @@
 .faq-overlay {
 	position: absolute;
 	background-color: var(--gray1);
-	height: 720px;
+	height: 790px;
 	width: 100%;
 	left: 0;
 	z-index: -1;

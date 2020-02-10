@@ -277,39 +277,49 @@ export default class Home extends Component {
 						<div className='faq-wrapper'>
 							<h1>FAQ</h1>
 								<FAQ 
-									Q='Lorem ipsum dolor sit amet?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='Is there really only a free plan with no hidden payments? '
+									A="Yes. By clicking 'Pare Down' or 'Go to the App' button you gain access to all the features that PareDown currently supports."
 									id={0}
 								/>
 								<FAQ 
-									Q='Morbi risus erat, condimentum quis placerat id, auctor at ex?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='Are there any plans to add a paid version of PareDown?'
+									A="No. PareDown is completely free and that's how it will stay. Also it is a fully open source project, so you can go and host your own version of it for free."
 									id={1}
 								/>
 								<FAQ 
-									Q='Mauris quis quam ac turpis porttitor tincidunt id a turpis?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='Name, description and cover for the pared down playlist - Can I choose them?'
+									A='At this time, these features are not supported by PareDown.'
 									id={2}
 								/>
 								<FAQ 
-									Q='Aenean eu porta nibh. Aenean?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='I want to pare down playlist from X music platform? Is it supported?'
+									A='PareDown currently supports Spotify and Apple Music, but other music platforms will be added over time (if possible).'
 									id={3}
 								/>
 								<FAQ 
-									Q='Aenean eu porta nibh. Aenean?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='Is there an option to pare down several playlists at once?'
+									A='This is one of the features that I would like to add in the future to PareDown.'
 									id={4}
 								/>
 								<FAQ 
-									Q='Curabitur eget arcu tristique dolor pulvinar?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='It says that PareDown is currently unavailable, why?'
+									A='This is due to the temporary unavailability of one of the music platforms that are used by PareDown.'
 									id={5}
 								/>
 								<FAQ 
-									Q=' Donec semper lacinia ligula quis finibus?'
-									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									Q='I think I found a bug, where can I report it?'
+									A='You can submit it in github PareDown repository. Please choose appropriate title and description.'
 									id={6}
+								/>
+								<FAQ 
+									Q='I have this great idea for PareDown, where can I submit it?'
+									A='You can submit it in github PareDown repository. Please choose appropriate title and description.'
+									id={7}
+								/>
+								<FAQ 
+									Q='What user data is collected, accessed and saved by PareDown?'
+									A="For PareDown to work fully, you need to grant it access to one of the supported platforms. By doing that the application now have access to the following data: manage your public playlis, manage and view your private playlists, view your profile. This is the only data that is accesed by PareDown and is NOT saved or collected for later use."
+									id={8}
 								/>
 							</div>
 					</section>
