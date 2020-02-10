@@ -24,6 +24,16 @@
 	font-size: 18px;
 	line-height: 1.25em;
 	border-left: 2px solid var(--brand);
+	animation: qShow 0.8s;
+}
+
+@keyframes qShow {
+	0% {
+		opacity: 0.3;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 
 .active {

@@ -50,6 +50,15 @@ export default class Home extends Component {
 			//every 3sec random % number to pare down playlist by, then displaying new number of songs in pared down version of playlist
 			const PARE_DOWN = this.newRandomNumber(32, 88);
 			document.getElementById('playlistNewSongs').innerHTML = 'Num. of songs: ' + Math.floor(SONGS_NUM * (PARE_DOWN / 100));
+
+			const preview_l = document.getElementsByClassName('preview-card-left')[0];
+			const preview_r = document.getElementsByClassName('preview-card-right')[0];
+			preview_l.style.webkitAnimation = 'none';
+			preview_r.style.webkitAnimation = 'none';
+			setTimeout(function() {
+				preview_l.style.webkitAnimation = '';
+				preview_r.style.webkitAnimation = '';
+			}, 10);
 		}, 3000)
 	}
 
@@ -71,7 +80,7 @@ export default class Home extends Component {
 				STEP1: this.state.STEP2,
 				STEP2: this.state.STEP3,
 				STEP3: this.newRandomNumber(1, 18) - 1,
-			})
+			});
 		}, 1490)
 	}
 	

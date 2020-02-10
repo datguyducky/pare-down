@@ -32,7 +32,7 @@ export default class FAQ extends Component {
 
 
 		return (
-			<div className='faq-card' onClick={this.handleClick} id={ID}>
+			<div className='faq-card' onClick={this.handleClick} id={'faq-'+ID}>
 				<h3 className='faq-card-head'>
 					{
 						document.getElementsByClassName('faq-card-a')[ID] ?
