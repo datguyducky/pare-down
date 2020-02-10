@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Button, FAQ } from '../components';
+import { Header, Button, FAQ, Footer } from '../components';
 import { Copy, Calendar, Cloud, GitPullRequest } from 'react-feather';
 
 import '../utils/reset.css';
@@ -324,6 +324,8 @@ export default class Home extends Component {
 							</div>
 					</section>
 				</div>
+				
+				<Footer/>
 			</div>
         );
     }
