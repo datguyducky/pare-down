@@ -5,7 +5,7 @@ import { Copy, Calendar, Cloud, GitPullRequest } from 'react-feather';
 import '../utils/reset.css';
 import '../utils/colors.css';
 
-import './styles/Home.css'
+import './Home.css'
 
 
 export default class Home extends Component {
