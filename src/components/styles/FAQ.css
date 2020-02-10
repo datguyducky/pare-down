@@ -1,0 +1,31 @@
+.faq-card {
+	cursor: pointer;
+	margin-top: 36px;
+	color: var(--text1);
+}
+
+
+.faq-card h3 {
+	display: flex;
+	align-items: center;
+	font-size: 21px;
+	font-weight: 600;
+}
+
+.faq-card-i {
+	color: var(--brand);
+	margin-right: 10px;
+}
+
+.faq-card p {
+	margin-top: 12px;
+	margin-left: 36px;
+	padding-left: 12px;
+	font-size: 18px;
+	line-height: 1.25em;
+	border-left: 2px solid var(--brand);
+}
+
+.active {
+	display: block !important;
+}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Button } from '../components';
+import { Header, Button, FAQ } from '../components';
 import { Copy, Calendar, Cloud, GitPullRequest } from 'react-feather';
 
 import '../utils/reset.css';
@@ -117,7 +117,7 @@ export default class Home extends Component {
 				<div className='hero-wrapper'>
 					<div className='hero-overlay'>
 						<div className='hero-img'>
-							<img src={require('../assets/wave.svg')}/>
+							<img src={require('../assets/wave.svg')} alt=''/>
 						</div>
 						<div className='section-svg'></div>
 					</div>
@@ -259,6 +259,50 @@ export default class Home extends Component {
 								</p>
 							</div>
 						</div>
+					</section>
+					<section id='faq' key=''>
+						<div className='faq-overlay'>
+							<div className='faq-overlay-img'/>
+						</div>
+						
+						<div className='faq-wrapper'>
+							<h1>FAQ</h1>
+								<FAQ 
+									Q='Lorem ipsum dolor sit amet?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={0}
+								/>
+								<FAQ 
+									Q='Morbi risus erat, condimentum quis placerat id, auctor at ex?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={1}
+								/>
+								<FAQ 
+									Q='Mauris quis quam ac turpis porttitor tincidunt id a turpis?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={2}
+								/>
+								<FAQ 
+									Q='Aenean eu porta nibh. Aenean?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={3}
+								/>
+								<FAQ 
+									Q='Aenean eu porta nibh. Aenean?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={4}
+								/>
+								<FAQ 
+									Q='Curabitur eget arcu tristique dolor pulvinar?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={5}
+								/>
+								<FAQ 
+									Q=' Donec semper lacinia ligula quis finibus?'
+									A='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nulla sem, mollis in odio eget, laoreet dapibus risus. Nulla ut libero quis massa placerat auctor eget vel urna. Maecenas non imperdiet leo, vitae cursus eros. Morbi risus erat, condimentum quis placerat id, auctor at ex. Vestibulum ante ipsum primis.'
+									id={6}
+								/>
+							</div>
 					</section>
 				</div>
 			</div>

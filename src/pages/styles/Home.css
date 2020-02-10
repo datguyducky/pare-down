@@ -2,7 +2,7 @@
 	width: 910px;
 	min-height: 100vh;
 	margin: 0 auto;
-	background: radial-gradient(circle at top, rgba(250, 250, 255, 0.1) -10%, transparent 24%);
+	background: radial-gradient(circle at top, rgba(250, 250, 255, 0.1) -10%, transparent 8%);
 	font-family: Source Sans Pro, sans-serif;
 	color: var(--text1);
 }
@@ -222,7 +222,7 @@
 
 .sections-wrapper {
 	margin: 0 auto;
-	margin-top: 310px;
+	margin-top: 280px;
 	color: var(--text3);
 	width: 720px;
 }
@@ -263,8 +263,7 @@
 /* features section */
 
 #features {
-	margin-top: 72px;
-	margin-bottom: 148px;
+	margin: 120px 0 90px 0;
 	justify-content: center;
 	display: flex;
 	flex-direction: column;
@@ -312,4 +311,28 @@
 	line-height: 1.2em;
 	margin-top: 6px;
 	text-align: center;
+}
+
+/* faq section */
+
+.faq-overlay {
+	position: absolute;
+	background-color: var(--gray1);
+	height: 720px;
+	width: 100%;
+	left: 0;
+	z-index: -1;
+}
+
+.faq-overlay-img {
+	background-image: url('../../assets/bubbles.svg');
+	opacity: 0.12;
+	width: 100%;
+	height: 100%;
+	background-size: 80%;
+}
+
+#faq h1 {
+	padding-top: 46px;
+	color: var(--text1);
 }
