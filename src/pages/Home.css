@@ -26,7 +26,7 @@
 	position: absolute;
 	width: 100%;
 	bottom: 0px;
-	height: 82px;
+	height: 5vw;
 }
 
 .hero-img img {
@@ -356,4 +356,10 @@
 #faq h1 {
 	padding-top: 46px;
 	color: var(--text1);
+}
+
+@media (max-width: 920px) {
+	.app-wrapper {
+		width: 100%;
+	}
 }

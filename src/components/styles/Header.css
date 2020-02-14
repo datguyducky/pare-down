@@ -1,52 +1,17 @@
-.headerWrapper {
-	width: 100%;
+.header-wrapper {
+	max-width: 100%;
 	height: 64px;
 	display: flex;
 	padding: 14px 0;
 }
 
-.brandHref {
+.brand-href {
 	text-decoration: none;
 	color: inherit;
 }
 
-.navWrapper {
-	display: flex;
-	margin-left: auto;
-	color: var(--text1);
-	font-weight: 600;
-	font-size: 16px;
-	letter-spacing: 0.6px;
-	line-height: 2em;
-}
-
-.navWrapper ul {
-	display: flex;
-	list-style: none;
-	color: inherit;
-	padding: 0;
-	margin: 4px 0;
-}
-
-.navWrapper a {
-	color: inherit;
-	text-decoration: none;
-	padding: 4px 8px;
-	margin-right: 10px;
-}
-
-.navWrapper li:last-of-type a{
-	font-size: 15px;
-	font-weight: normal;
-	border-left: 1px solid var(--text1);
-	padding-left: 18px;
-	color: #b6b6ba;
-	margin-right: 0;
-	margin-left: 10px; /* to make buttonBorder to have same margin as rest of navbar */
-}
-
-.nav-app:hover {
-	background-color: var(--text1);
-	border-color: var(--text1) !important;
-	color: var(--gray1) !important;
+@media (max-width: 960px) {
+	.header-wrapper {
+		padding: 14px 32px;
+	}
 }
