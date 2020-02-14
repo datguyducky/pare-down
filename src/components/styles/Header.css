@@ -9,9 +9,3 @@
 	text-decoration: none;
 	color: inherit;
 }
-
-@media (max-width: 960px) {
-	.header-wrapper {
-		padding: 14px 32px;
-	}
-}

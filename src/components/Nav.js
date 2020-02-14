@@ -37,15 +37,6 @@ export default function Nav() {
 					<li><a href='#pricing'>Pricing</a></li>
 					<li><a href='#features'>Features</a></li>
 					<li><a href='#'>FAQ</a></li>
-					<li>
-						<ButtonBorder
-							href = '#'
-							text = 'Go to the app'
-							display = 'inline'
-							bSize = '0px'
-							bColor = 'var(--brand)'
-						/>
-					</li>
 					<li><a href='#'>English</a></li>
 				</ul>
 			</div>

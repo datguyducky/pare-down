@@ -126,6 +126,7 @@
 	text-transform: uppercase;
 	font-weight: 700;
 	color: var(--text2);
+	text-align: center;
 }
 
 .text-done, .text-next {
@@ -358,8 +359,94 @@
 	color: var(--text1);
 }
 
-@media (max-width: 920px) {
+@media (max-width: 960px) {
+	body {
+		padding: 0 32px;
+		margin: 0;
+	}
 	.app-wrapper {
 		width: 100%;
+	}
+}
+
+@media (max-width: 760px) {
+	.hero-wrapper, .sections-wrapper {
+		width: 100%;
+	}
+}
+
+@media (max-width: 690px) {
+	.intro {
+		width: 92%;
+		margin: 0 auto;
+		margin-top: 48px;
+	}
+
+	.hero-overlay {
+		height: 960px;
+	}
+
+	.preview {
+		margin-top: 64px;
+		height: 560px;
+	}
+
+	.preview-cards {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.preview-card-text {
+		margin: 24px 0;
+	}
+
+	.playlist-img {
+		width: 96px !important;
+		height: 96px !important;
+	}
+
+	.playlist-num {
+		display: block;
+	}
+
+	.playlist-name {
+		max-width: 96px;
+	}
+
+	.preview-platforms {
+		margin-top: 32px;
+		position: static;
+	}
+}
+
+@media (max-width: 460px) {
+	.preview {
+		height: auto;
+	}
+
+	.intro {
+		margin-top: 6px;
+		width: 100%;
+	}
+
+	.intro-h {
+		font-size: 24px;
+	}
+
+	.intro-desc {
+		font-size: 16px;
+		line-height: 1.1em;
+	}
+
+	.text-next, .text-done {
+		font-size: 14px;
+	}
+
+	.text-now {
+		font-size: 18px;
+	}
+
+	.hero-overlay {
+		height: 910px;
 	}
 }
