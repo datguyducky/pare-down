@@ -80,6 +80,7 @@
 .preview-cards {
 	display: grid;
 	grid-template-columns: 156px 1fr 156px;
+	overflow: hidden;
 }
 
 .preview-card-left, .preview-card-right {
@@ -229,21 +230,9 @@
 
 
 /* sections part */
-
-
-.section-svg {
-	background-image: url('../assets/circuit-board.svg');
-	width: 100%;
-	height: 610px;
-	position: absolute;
-	bottom: -610px;
-	z-index: -1;
-	opacity: 0.2;
-}
-
 .sections-wrapper {
 	margin: 0 auto;
-	margin-top: 280px;
+	margin-top: 18vw;
 	color: var(--text3);
 	width: 720px;
 }
@@ -260,6 +249,17 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
+}
+
+.section-svg {
+	background-image: url('../assets/circuit-board.svg');
+	width: 99vw;
+	height: 240%;
+	position: absolute;
+	bottom: -20%;
+	z-index: -2;
+	opacity: 0.2;
 }
 
 #pricing ul {
@@ -339,11 +339,11 @@
 .faq-overlay {
 	position: absolute;
 	background-color: var(--gray1);
-	height: 790px;
+	height: 780px;
 	width: 100%;
 	left: 0;
 	z-index: -1;
-	padding-bottom: 102px;
+	padding-bottom: 36px;
 }
 
 .faq-overlay-img {
@@ -360,18 +360,30 @@
 }
 
 @media (max-width: 960px) {
-	body {
-		padding: 0 32px;
-		margin: 0;
-	}
 	.app-wrapper {
+		width: 100%;
+	}
+
+	.intro-h, .intro-desc {
+		margin: 0 32px;
+	}
+
+	#faq {
+		position: relative;
+	}
+
+	.faq-overlay {
+		height: 100%;
+	}
+
+	.hero-wrapper, .sections-wrapper {
 		width: 100%;
 	}
 }
 
 @media (max-width: 760px) {
-	.hero-wrapper, .sections-wrapper {
-		width: 100%;
+	#pricing, #features, #faq {
+		padding: 0 1em;
 	}
 }
 
@@ -417,6 +429,24 @@
 		margin-top: 32px;
 		position: static;
 	}
+
+	.sections-wrapper h1 {
+		font-size: 28px;
+	}
+
+	#pricing ul {
+		font-size: 18px;
+	}
+
+	.f-wrapper {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.f-card {
+		width: 280px;
+	}
 }
 
 @media (max-width: 460px) {
@@ -438,6 +468,10 @@
 		line-height: 1.1em;
 	}
 
+	.intro-btn {
+		width: 80%;
+	}
+
 	.text-next, .text-done {
 		font-size: 14px;
 	}
@@ -448,5 +482,9 @@
 
 	.hero-overlay {
 		height: 910px;
+	}
+
+	.sections-wrapper {
+		margin-top: 168px;
 	}
 }

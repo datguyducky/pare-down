@@ -128,7 +128,6 @@ export default class Home extends Component {
 						<div className='hero-img'>
 							<img src={require('../assets/wave.svg')} alt=''/>
 						</div>
-						<div className='section-svg'></div>
 					</div>
 					<div className='intro'>
 						<h1 className='intro-h'>
@@ -204,6 +203,7 @@ export default class Home extends Component {
 				</div>
 				<div className='sections-wrapper'>
 					<section id='pricing'>
+						<div className='section-svg'></div>
 							<h1>Free and secure</h1>
 							<ul>
 								<li>
@@ -216,7 +216,7 @@ export default class Home extends Component {
 									Fully open-source. You can go and check by yourself how PareDown works behind the scenes.
 								</li>
 								<li>
-									PareDown doesn't collect or store any user data.*
+									PareDown does not collect or store any user data.*
 								</li>
 							</ul>
 
@@ -274,7 +274,6 @@ export default class Home extends Component {
 							<div className='faq-overlay-img'/>
 						</div>
 						
-						<div className='faq-wrapper'>
 							<h1>FAQ</h1>
 								<FAQ 
 									Q='Is there really only a free plan with no hidden payments? '
@@ -321,7 +320,6 @@ export default class Home extends Component {
 									A="For PareDown to work fully, you need to grant it access to one of the supported platforms. By doing that the application now have access to the following data: manage your public playlis, manage and view your private playlists, view your profile. This is the only data that is accesed by PareDown and is NOT saved or collected for later use."
 									id={8}
 								/>
-							</div>
 					</section>
 				</div>
 				
