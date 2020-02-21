@@ -121,91 +121,89 @@ export default class Home extends Component {
 
 
 		return (
-			<div className='app-wrapper'>
-            	<Header/>
-				<div className='hero-wrapper'>
-					<div className='hero-overlay'>
-						<div className='hero-img'>
-							<img src={require('../assets/wave.svg')} alt=''/>
-						</div>
-					</div>
-					<div className='intro'>
-						<h1 className='intro-h'>
-							DUPLICATE YOUR PLAYLIST WITH REDUCED NUMBER OF SONGS
-						</h1>
-						<p className='intro-desc'>
-							Create smaller copies of your playlists so you can use less data when downloading them to enjoy listening to music in offline mode.
-						</p>
+		<div id='app-wrapper'>
+			<div className='hero-wrapper'>
+				
+				<Header/>
+				
+				<div className="intro-wrapper">
+					<h1 className='intro-h'>
+						DUPLICATE YOUR PLAYLIST WITH REDUCED NUMBER OF SONGS
+					</h1>
+					<p className='intro-desc'>
+						Create smaller copies of your playlists so you can use less data when downloading them to enjoy listening to music in offline mode.
+					</p>
+	
+					<Button
+						text = 'Pare Down'
+						color = 'var(--text1)'
+						bgColor = 'var(--brand)'
+						href = '#'
+						className = 'intro-btn'
+					/>
+				</div>
 
-						<Button
-							text = 'Pare Down'
-							color = 'var(--text1)'
-							bgColor = 'var(--brand)'
-							href = '#'
-							className = 'intro-btn'
+				<div className='preview-wrapper'>
+					<div className='preview-card-left'>
+						<span className='playlist-num' id="playlistSongs">
+							Num. of songs: 72
+						</span>
+						<img 
+							className='playlist-img' 
+							src={COVER_URL}
+							alt='example playlist cover' 
 						/>
+						<span className='playlist-name' id="playlistName">
+							{PLAYLIST_NAME[this.state.NAME_NUM]}
+						</span>
+					</div>	
+
+					<div className='preview-card-text'>
+						<p className='text-done step'>{PD_PROGRESS[STEP1]}</p>
+						<p className='text-now step'>{PD_PROGRESS[STEP2]}</p>
+						<p className='text-next step'>{PD_PROGRESS[STEP3]}</p>
 					</div>
 
-					<div className='preview'>
-						<div className='preview-cards'>
-							{
-							<div className='preview-card-left'>
-								<span className='playlist-num' id="playlistSongs">
-									Num. of songs: 72
-								</span>
-								<img 
-									className='playlist-img' 
-									src={COVER_URL}
-									alt='example playlist cover' 
-								/>
-								<span className='playlist-name' id="playlistName">
-									{PLAYLIST_NAME[this.state.NAME_NUM]}
-								</span>
-							</div>
-							}
+					<div className='preview-card-right'>
+						<span className='playlist-num' id="playlistNewSongs">
+							Num of songs: 56
+						</span>
+						<img 
+							className='playlist-img' 
+							src={COVER_URL}
+							alt='example playlist cover' 
+						/>
+						<span className='playlist-name' id="playlistName">
+							Pared Down {PLAYLIST_NAME[NUM]}
+						</span>
+					</div>
+				</div>
 
-							<div className='preview-card-text'>
-								<p className='text-done step'>{PD_PROGRESS[STEP1]}</p>
-								<p className='text-now step'>{PD_PROGRESS[STEP2]}</p>
-								<p className='text-next step'>{PD_PROGRESS[STEP3]}</p>
-							</div>
+				<div className='platforms-wrapper'>
+					<p className='platform-text'>
+						works with:
+					</p>
 
-							{
-							<div className='preview-card-right'>
-								<span className='playlist-num' id="playlistNewSongs">
-									Num of songs: 56
-								</span>
-								<img 
-									className='playlist-img' 
-									src={COVER_URL}
-									alt='example playlist cover' 
-								/>
-								<span className='playlist-name' id="playlistName">
-									Pared Down {PLAYLIST_NAME[NUM]}
-								</span>
-							</div>
-							}
-
+					<div style={{display: 'flex'}}>
+						<div className='platform' id='p-spotify'>
+							<img src={require('../assets/spotify.png')} alt='Spotify logo'/>
 						</div>
-
-						<div className='preview-platforms'>
-							<p className='platform-text'>works with:</p>
-							<div className='platform-wrapper'>
-								<div className='platform' id='p-spotify'>
-									<img src={require('../assets/spotify.png')} alt='Spotify logo'/>
-								</div>
-								<div className='platform' id='p-apple'>
-									<img src={require('../assets/apple_music.png')} alt='Apple Music logo'/>
-								</div>
-							</div>
+						
+						<div className='platform' id='p-apple'>
+							<img src={require('../assets/apple_music.png')} alt='Apple Music logo'/>
 						</div>
 					</div>
 				</div>
-				<div className='sections-wrapper'>
-					<section id='pricing'>
-						<div className='section-svg'></div>
-							<h1>Free and secure</h1>
-							<ul>
+
+				<div className='hero-svg'><img src={require('../assets/wave.svg')} alt=''/></div>
+			</div>
+
+			<div className='sections-wrapper'>
+				<section id='pricing'>
+					<div className='pricing-svg'/>
+						
+					<h1>Free and secure</h1>
+						<ul>
 								<li>
 									PareDown offers only one plan - which is completely free to use and have access to all features.
 								</li>
@@ -223,7 +221,7 @@ export default class Home extends Component {
 							<p>
 								* May not apply to any of the music platforms used within PareDown. With any doubts regarding the processing of user data by these services, please refer to their respective Terms and Conditions of Use documents.
 							</p>
-					</section>
+				</section>
 
 					<section id='features'>
 						<h1>Features</h1>
@@ -269,6 +267,7 @@ export default class Home extends Component {
 							</div>
 						</div>
 					</section>
+
 					<section id='faq' key=''>
 						<div className='faq-overlay'>
 							<div className='faq-overlay-img'/>
@@ -321,10 +320,8 @@ export default class Home extends Component {
 									id={8}
 								/>
 					</section>
-				</div>
-				
-				<Footer/>
 			</div>
+		</div>
         );
     }
 }

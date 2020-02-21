@@ -1,18 +1,5 @@
 .header-wrapper {
-	max-width: 100%;
-	height: 64px;
 	display: flex;
-	padding: 14px 0;
-}
-
-.brand-href {
-	text-decoration: none;
-	color: inherit;
-}
-
-@media (max-width: 960px) {
-	.header-wrapper {
-		padding: 0 32px;
-		padding-top: 14px;
-	}
+	width: 920px;
+	padding: 24px 0;
 }
