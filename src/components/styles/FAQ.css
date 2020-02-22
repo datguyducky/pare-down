@@ -40,3 +40,19 @@
 .active {
 	display: block !important;
 }
+
+
+@media (max-width: 460px) {
+	.faq-card h3 {
+		font-size: 17px;
+		line-height: 1.1em;
+	}
+
+	.faq-card {
+		margin-top: 24px;
+	}
+
+	.faq-card-a {
+		font-size: 16px;
+	}
+}

@@ -186,7 +186,7 @@ html, body {
 	letter-spacing: 0.15px;
 	color: #fafaff;
 	text-transform: uppercase;
-	margin-bottom: 4px;
+	margin-bottom: 8px;
 }
 
 .platform-wrapper {
@@ -228,7 +228,7 @@ html, body {
 	text-align: center;
 	font-size: 36px;
 	font-weight: 600;
-	margin-bottom: 21px;
+	margin-bottom: 32px;
 }
 
 #pricing {
@@ -350,4 +350,73 @@ html, body {
 	background-size: 80%;
 	position: absolute;
 	pointer-events:none
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 920px) {
+	.hero-wrapper {
+		padding: 0 32px;
+		padding-bottom: 120px;
+	}
+}
+
+@media (max-width: 760px) {
+	.intro-wrapper, .preview-wrapper, #pricing, #features, .faq-card {
+		width: 92%;
+	}
+
+	.preview-wrapper {
+		flex-direction: column;
+		align-items: center;
+	}
+
+	.preview-card-text {
+		margin: 42px 0;
+	}
+
+	.f-wrapper {
+		grid-template-columns: 320px;
+	}
+}
+
+@media (max-width: 460px) {
+	.intro-wrapper {
+		padding: 41px 0 58px 0;
+	}
+
+	.intro-h {
+		font-size: 24px;
+	}
+
+	.intro-desc {
+		font-size: 17px;
+		line-height: 1.1em;
+	}
+
+	.text-done, .text-next {
+		font-size: 14px;
+	}
+
+	.text-now {
+		font-size: 21px;
+	}
+
+	.platform-text {
+		font-size: 14px;
+	}
+
+	.sections-wrapper h1 {
+		font-size: 24px;
+		margin-bottom: 21px;
+	}
+
+	#pricing ul {
+		font-size: 17px;
+		line-height: 1.1em;
+	}
+
+	.intro-btn {
+		width: 80%;
+	}
 }

@@ -3,3 +3,10 @@
 	width: 920px;
 	padding: 24px 0;
 }
+
+
+@media (max-width: 920px) {
+	.header-wrapper {
+		width: 100%;
+	}
+}
