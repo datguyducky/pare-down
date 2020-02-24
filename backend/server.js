@@ -36,10 +36,37 @@ app.get('/callback', function(req, res) {
     json: true
   }
   request.post(authOptions, function(error, response, body) {
-    var access_token = body.access_token
+	console.log('login send')
+	let refresh_token = body.refresh_token
+    let access_token = body.access_token
     let uri = process.env.FRONTEND_URI || 'http://localhost:3000'
-    res.redirect(uri + '?access_token=' + access_token)
+    res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token)
   })
+})
+
+app.get('/refresh', function(req, res) {
+	const refresh_token = req.query.refresh_token
+
+	let refreshOptions = {
+		url: 'https://accounts.spotify.com/api/token',
+		form: {
+		  grant_type: 'refresh_token',
+		  refresh_token: refresh_token
+		},
+		headers: {
+		  'Authorization': 'Basic ' + (Buffer.from(
+			process.env.SPOTIFY_CLIENT_ID + ':' + process.env.SPOTIFY_CLIENT_SECRET
+		  ).toString('base64'))
+		},
+		json: true
+	}
+	request.post(refreshOptions, function(error, response, body) {
+		console.log('refresh token send')
+		let refresh_token = body.refresh_token
+		let access_token = body.access_token
+		let uri = process.env.FRONTEND_URI || 'http://localhost:3000'
+		res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token)
+	})
 })
 
 console.log(`Listening on port ${port}. Go /login to initiate authentication flow.`)

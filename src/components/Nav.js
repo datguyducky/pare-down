@@ -17,7 +17,7 @@ export default function Nav() {
 			<ul className='nav-content'>
 				<li><a href='#pricing'>Pricing</a></li>
 				<li><a href='#features'>Features</a></li>
-				<li><a href='#'>FAQ</a></li>
+				<li><a href='#faq'>FAQ</a></li>
 				<li>
 					<ButtonBorder
 						href = '#'
@@ -40,7 +40,7 @@ export default function Nav() {
 					<X className='nav-mobile-close' size={28} onClick={closeMobile}/>
 					<li><a href='#pricing' onClick={closeMobile}>Pricing</a></li>
 					<li><a href='#features' onClick={closeMobile}>Features</a></li>
-					<li><a href='#' onClick={closeMobile}>FAQ</a></li>
+					<li><a href='#faq' onClick={closeMobile}>FAQ</a></li>
 					<li><a href='#' onClick={closeMobile}>English</a></li>
 				</ul>
 			</div>
