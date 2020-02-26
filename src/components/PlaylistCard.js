@@ -1,15 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import './styles/PlaylistCard.css';
 
 
-export default function Header(props) {
+export default function PlaylistCard(props) {
 	const playlist = props.playlist;
-
 	return (
-		<div className='playlist-card'>
-			<img src={playlist.cover} alt={playlist.name + 'cover'}/>
-			
+		<div className='playlist-card' style={{backgroundImage: `url(${playlist.cover})`}}>
 			<div className='playlist-card-info'>
 				<span className='playlist-card-n'>
 					{playlist.name}

@@ -37,11 +37,11 @@ export default class PareDown extends Component {
 		const refresh_token = localStorage.getItem('SpotifyRef');
 
 		if(refresh_token) {
-			if(refresh_token === 'undefined') {
-				console.log(refresh_token)
-				/*window.location = window.location.href.includes('localhost') 
+			console.log(refresh_token)
+			if(refresh_token !== 'undefined') {
+				window.location = window.location.href.includes('localhost') 
 				? `http://localhost:8888/refresh?refresh_token=${refresh_token}` 
-				: `http://pare-down-backend.mtymon.me/refresh?refresh_token=${refresh_token}`*/
+				: `http://pare-down-backend.mtymon.me/refresh?refresh_token=${refresh_token}`
 			}
 		}
 	}
@@ -67,11 +67,11 @@ export default class PareDown extends Component {
                 }
             })
             .then((r) => {
-				if(r.ok) {
-					return r.json();
-				} else {
+				if(r.status === 401) {
 					this.platformSyncRefresh();
-				}	
+				} else {
+					return r.json();
+				}
 			})
 			//
             .then((data) => {
