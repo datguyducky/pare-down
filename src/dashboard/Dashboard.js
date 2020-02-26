@@ -1,17 +1,16 @@
 import React, { Component } from 'react';
-import { BrandSmall, PlatformIcon, ButtonBorder, PlaylistCard } from '../../components';
+import { BrandSmall, PlatformIcon, ButtonBorder, PlaylistCard } from '../components';
 import queryString from 'query-string';
 
-import '../../utils/reset.css';
-import '../../utils/colors.css';
+import '../utils/reset.css';
+import '../utils/colors.css'
+import './Dashboard.css';
 
-import './PareDown.css';
-
-const spotify = require('../../assets/spotify.png');
-const apple_music = require('../../assets/apple_music.png');
+const spotify = require('../assets/spotify.png');
+const apple_music = require('../assets/apple_music.png');
 
 
-export default class PareDown extends Component {
+export default class Dashboard extends Component {
 	constructor() {
 		super()
 		this.state = {

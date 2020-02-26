@@ -242,7 +242,7 @@ html, body {
 }
 
 .pricing-svg {
-	background-image: url('../assets/circuit-board.svg');
+	background-image: url('../../assets/circuit-board.svg');
 	width: 99vw;
 	height: 100%;
 	position: absolute;
@@ -342,7 +342,7 @@ html, body {
 }
 
 .faq-overlay-img {
-	background-image: url('../assets/bubbles.svg');
+	background-image: url('../../assets/bubbles.svg');
 	opacity: 0.12;
 	width: 100%;
 	height: 100%;

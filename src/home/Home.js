@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Header, Button, FAQ, Footer } from '../components';
+import Header from './Header';
+import Footer from './Footer';
+import FAQ from './FAQ';
+import { Button } from '../components';
 import { Copy, Calendar, Cloud, GitPullRequest } from 'react-feather';
 
 import '../utils/reset.css';
 import '../utils/colors.css';
-
-import './Home.css'
+import './styles/Home.css'
 
 
 export default class Home extends Component {
@@ -204,23 +206,23 @@ export default class Home extends Component {
 						
 					<h1>Free and secure</h1>
 						<ul>
-								<li>
-									PareDown offers only one plan - which is completely free to use and have access to all features.
-								</li>
-								<li>
-									Nobody likes ads and because of that we don't display them here.
-								</li>
-								<li>
-									Fully open-source. You can go and check by yourself how PareDown works behind the scenes.
-								</li>
-								<li>
-									PareDown does not collect or store any user data.*
-								</li>
-							</ul>
+							<li>
+								PareDown offers only one plan - which is completely free to use and have access to all features.
+							</li>
+							<li>
+								Nobody likes ads and because of that we don't display them here.
+							</li>
+							<li>
+								Fully open-source. You can go and check by yourself how PareDown works behind the scenes.
+							</li>
+							<li>
+								PareDown does not collect or store any user data.*
+							</li>
+						</ul>
 
-							<p>
-								* May not apply to any of the music platforms used within PareDown. With any doubts regarding the processing of user data by these services, please refer to their respective Terms and Conditions of Use documents.
-							</p>
+						<p>
+							* May not apply to any of the music platforms used within PareDown. With any doubts regarding the processing of user data by these services, please refer to their respective Terms and Conditions of Use documents.
+						</p>
 				</section>
 
 					<section id='features'>

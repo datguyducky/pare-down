@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Home from './pages/Home';
 
-import PareDown from './pages/dashboard/PareDown.js';
+import Home from './home/Home';
+import Dashboard from './dashboard/Dashboard';
 
 import * as serviceWorker from './serviceWorker';
 
 
-ReactDOM.render(<PareDown />, document.getElementById('root'));
+ReactDOM.render(<Home />, document.getElementById('root'));
 document.getElementsByTagName('body')[0].style.backgroundColor = '#FAFAFF';
 document.getElementsByTagName('body')[0].style.margin = '0';
 

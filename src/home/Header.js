@@ -1,5 +1,5 @@
 import React from 'react';
-import BrandBig from './BrandBig'
+import { BrandBig } from '../components';
 import Nav from './Nav';
 
 import './styles/Header.css';

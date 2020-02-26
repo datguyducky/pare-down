@@ -1,5 +1,5 @@
 import React from 'react';
-import ButtonBorder from './ButtonBorder';
+import { ButtonBorder } from '../components';
 import { Menu, X, FileText } from 'react-feather';
 
 import './styles/Nav.css';
