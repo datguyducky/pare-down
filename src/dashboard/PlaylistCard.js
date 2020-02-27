@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import './styles/PlaylistCard.css';
+import './PlaylistCard.css';
 
 
 export default function PlaylistCard(props) {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrandSmall, PlatformIcon, ButtonBorder, PlaylistCard } from '../components';
+import { BrandSmall, PlatformIcon, ButtonBorder } from '../components';
+import PlaylistCard from './PlaylistCard';
 import queryString from 'query-string';
 
 import '../utils/reset.css';
@@ -32,7 +33,6 @@ export default class Dashboard extends Component {
 	}
 
 	platformSyncRefresh() {
-		//localStorage.setItem('SpotifyRef');
 		const refresh_token = localStorage.getItem('SpotifyRef');
 
 		if(refresh_token) {

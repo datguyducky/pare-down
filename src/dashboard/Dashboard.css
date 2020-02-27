@@ -1,6 +1,6 @@
-#root, body, html {
+/*#root, body, html {
 	background-color: var(--gray1);
-}
+}*/
 
 #dashboard-pd {
 	display: grid;

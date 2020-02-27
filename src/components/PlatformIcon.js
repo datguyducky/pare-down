@@ -1,24 +1,36 @@
 import React from 'react';
+import styled from 'styled-components';
 
-import './styles/PlatformIcon.css';
+
+const StyledPlatformIcon = styled.div`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: ${props => props.bgColor};
+	height: ${props => props.h};
+	width: ${props => props.w};
+	margin-right: ${props => props.mRight || "0px"};
+	border-radius: ${props => props.bRadius || "4px"};
+	background-image: url('${props => props.icon}');
+	background-size: 70%;
+	background-repeat: no-repeat;
+	background-position: center;
+`
 
 
 const PlatformIcon = props => {
-	const  { bgColor, name, size, sizeRadius } = props;
+	const  { bgColor, icon, size, bRadius, mRight } = props;
 
 
 	return (
-		<div 
-			className='platform-icon' 
-			style={{
-				backgroundColor: bgColor, 
-				width: size, 
-				height: size, 
-				borderRadius: sizeRadius
-			}}
-		>
-			<img src={name} alt={name}/>
-		</div>
+		<StyledPlatformIcon
+			bgColor={bgColor}
+			w={size}
+			h={size}
+			bRadius={bRadius}
+			mRight={mRight}
+			icon={icon}
+		/>
 	)
 }
 
