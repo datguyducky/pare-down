@@ -4,6 +4,7 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 
 import Home from './home/Home';
 import Dashboard from './dashboard/Dashboard';
+import PlaylistCard from './dashboard/PlaylistCard';
 
 import * as serviceWorker from './serviceWorker';
 
@@ -11,7 +12,8 @@ import * as serviceWorker from './serviceWorker';
 const routing = (
 	<Router>
 		<Route exact path="/" component={Home} />
-		<Route path='/dashboard' component={Dashboard} />
+		<Route exact path='/dashboard' component={Dashboard} />
+		<Route path='/dashboard/playlist-:uuid' component={PlaylistCard}/>
 	</Router>
 )
 

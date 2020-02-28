@@ -47,8 +47,10 @@ const PlaylistService = styled.span`
 
 export default function PlaylistCover(props) {
 	const playlist = props.playlist;
+
+
 	return (
-		<StyledPlaylistCover bgimg={playlist.cover}>
+		<StyledPlaylistCover bgimg={playlist.cover} onClick={() => props.history.push(`/dashboard/playlist-${playlist.id}`)}>
 			<PlaylistCoverDetails>
 				<PlaylistName>
 					{playlist.name}

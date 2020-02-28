@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { BrandSmall, PlatformIcon, ButtonBorder } from '../components';
+import { ButtonBorder } from '../components';
 import PlaylistCover from './PlaylistCover';
 import queryString from 'query-string';
 import styled, { createGlobalStyle } from 'styled-components';
 
 import '../utils/reset.css';
 import '../utils/colors.css'
-
-const spotify = require('../assets/spotify.png');
-const apple_music = require('../assets/apple_music.png');
+import DashboardNav from './DashboardNav';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -20,38 +18,6 @@ const GlobalStyle = createGlobalStyle`
 const StyledDashboard = styled.div`
 	display: grid;
 	grid-template-columns: 92px 1fr;
-`
-const Nav = styled.nav`
-	background-color: var(--gray2);
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	min-height: 100vh;
-	border-right: 2px solid var(--gray3);
-	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32);
-
-	& > ul > li {
-		margin-top: 18px;
-		position: relative;
-		cursor: pointer;
-	}
-`
-const NavHeader = styled.header`
-	padding: 18px 0;
-	width: 100%;
-	text-align: center;
-	border-bottom: 2px solid var(--gray3);
-`
-const PlatformIconStatus = styled.div`
-	position: absolute;
-	bottom: -4px;
-	right: -4px;
-	height: 12px;
-	width: 12px;
-	border-radius: 12px;
-	border: 1px solid var(--gray3);
-	background-color: #ed373a;
-	z-index: 100%;
 `
 const DashboardWrapper = styled.div`
 	padding: 24px 0;
@@ -107,16 +73,8 @@ export default class Dashboard extends Component {
 			filterString: '',
 		}
 
-		this.platformSync = this.platformSync.bind(this);
 		this.spotifyFetch = this.spotifyFetch.bind(this);
 		this.platformSyncRefresh = this.platformSyncRefresh.bind(this);
-	}
-
-
-	platformSync() {
-		window.location = window.location.href.includes('localhost') 
-		? 'http://localhost:8888/login' 
-		: 'http://pare-down-backend.mtymon.me/login'
 	}
 
 	platformSyncRefresh() {
@@ -202,10 +160,8 @@ export default class Dashboard extends Component {
 		this.spotifyFetch();
 	}
 
-	
+
 	render() {
-		const SpotifyAuth = this.state.SpotifyAuth;
-		const AppleAuth = this.state.AppleAuth;
 		let userPlaylistsToRender = this.state.userPlaylists 
 			? this.state.userPlaylists.filter(p =>
                 p.name.toLowerCase().includes(
@@ -218,44 +174,7 @@ export default class Dashboard extends Component {
 		return (
 			<StyledDashboard>
 				<GlobalStyle />
-				<Nav>
-					<NavHeader>
-						<BrandSmall/>
-					</NavHeader>
-					<ul>
-						<li onClick={this.platformSync}>
-							<PlatformIcon
-								bgColor='#1ed760'
-								size={'64px'}
-								bRadius={'10px'}
-								icon={spotify}
-							/>
-							<PlatformIconStatus
-								style={{
-									backgroundColor: SpotifyAuth !== 'undefined'
-									? '#37ed8f'
-									: '#ed373a'
-								}}
-							/>
-						</li>
-						
-						<li>
-							<PlatformIcon
-								bgColor='#fff'
-								size={'64px'}
-								bRadius={'10px'}
-								icon={apple_music}
-							/>
-							<PlatformIconStatus
-								style={{
-									backgroundColor: AppleAuth
-									? '#37ed8f'
-									: '#ed373a'
-								}}
-							/>
-						</li>
-					</ul>
-				</Nav>
+				<DashboardNav />
 
 				<DashboardWrapper>
 					<DashboardHeader>
@@ -280,7 +199,8 @@ export default class Dashboard extends Component {
 									<PlaylistCover
 										playlist={p} 
 										key={i} 
-										userID={this.state.userID} 
+										userID={this.state.userID}
+										history={this.props.history}
 									/>
 								)
 							: null
