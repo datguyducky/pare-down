@@ -129,7 +129,11 @@ export default class Dashboard extends Component {
 								cover: item.images[0].url,
 								songsNum: item.tracks.total,
 								id: item.id,
-								service: 'Spotify'
+								service: 'Spotify',
+								description: item.description,
+								tracks_total: item.tracks.total,
+								public: item.public,
+								owner: item.owner.display_name,
 							}
 						})
 					})

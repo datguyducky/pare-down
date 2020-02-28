@@ -23,7 +23,7 @@ const StyledLink = styled(Link)`
 
 
 const Button = props => {
-	const  { href, text, bgColor, color, fSize, width, height } = props;
+	const  { href, text, bgColor, color, fSize, width, height, icon } = props;
 
 
 	return (

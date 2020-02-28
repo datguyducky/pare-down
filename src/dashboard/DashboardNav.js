@@ -30,7 +30,7 @@ const NavHeader = styled.header`
 	padding: 18px 0;
 	width: 94px;
 	text-align: center;
-	border-bottom: 2px solid var(--gray3);
+	border-bottom: 1px solid var(--gray3);
 	position:fixed;
 	top: 0;
 `
