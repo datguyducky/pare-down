@@ -1,14 +1,101 @@
 import React, { Component } from 'react';
 import { BrandSmall, PlatformIcon, ButtonBorder } from '../components';
-import PlaylistCard from './PlaylistCard';
+import PlaylistCover from './PlaylistCover';
 import queryString from 'query-string';
+import styled, { createGlobalStyle } from 'styled-components';
 
 import '../utils/reset.css';
 import '../utils/colors.css'
-import './Dashboard.css';
 
 const spotify = require('../assets/spotify.png');
 const apple_music = require('../assets/apple_music.png');
+
+
+const GlobalStyle = createGlobalStyle`
+ 	body {
+		font-family: Source Sans Pro, sans-serif;
+		background-color: var(--gray1);
+	}
+`
+const StyledDashboard = styled.div`
+	display: grid;
+	grid-template-columns: 92px 1fr;
+`
+const Nav = styled.nav`
+	background-color: var(--gray2);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100vh;
+	border-right: 2px solid var(--gray3);
+	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32);
+
+	& > ul > li {
+		margin-top: 18px;
+		position: relative;
+		cursor: pointer;
+	}
+`
+const NavHeader = styled.header`
+	padding: 18px 0;
+	width: 100%;
+	text-align: center;
+	border-bottom: 2px solid var(--gray3);
+`
+const PlatformIconStatus = styled.div`
+	position: absolute;
+	bottom: -4px;
+	right: -4px;
+	height: 12px;
+	width: 12px;
+	border-radius: 12px;
+	border: 1px solid var(--gray3);
+	background-color: #ed373a;
+	z-index: 100%;
+`
+const DashboardWrapper = styled.div`
+	padding: 24px 0;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+`
+const DashboardHeader = styled.header`
+	color: var(--text1);
+	display: flex;
+	align-items: center;
+	padding-left: 18px;
+
+	& > h1 {
+		font-size: 36px;
+		font-weight: 600;
+		letter-spacing: 0.3px;
+		text-align: center;
+		color: var(--text1);
+		margin-right: 18px;
+	}
+
+
+	#dashboard-btn {
+		text-decoration: none;
+		color: inherit;
+		align-items: center;
+		justify-content: center;
+		padding: 4px 18px;
+
+		:hover {
+			background-color: var(--brand) !important;
+			border-color: var(--brand) !important;
+			color: var(--text1) !important;
+		}
+	}
+`
+const PlaylistsCoverWrapper = styled.div`
+	margin-top: 24px;
+	display: grid;
+	grid-template-columns: repeat(auto-fit, 180px);
+	grid-gap: 18px;
+	justify-content: center;
+`
 
 
 export default class Dashboard extends Component {
@@ -36,7 +123,6 @@ export default class Dashboard extends Component {
 		const refresh_token = localStorage.getItem('SpotifyRef');
 
 		if(refresh_token) {
-			console.log(refresh_token)
 			if(refresh_token !== 'undefined') {
 				window.location = window.location.href.includes('localhost') 
 				? `http://localhost:8888/refresh?refresh_token=${refresh_token}` 
@@ -105,8 +191,8 @@ export default class Dashboard extends Component {
 			}
 			localStorage.setItem('SpotifyAuth', redirect_auth);
 			window.location = window.location.href.includes('localhost')
-			? 'http://localhost:3000/' 
-			: 'http://pare-down.mtymon.me/'
+			? 'http://localhost:3000/dashboard/' 
+			: 'http://pare-down.mtymon.me/dashboard/'
 		}
 
 		this.setState({
@@ -130,21 +216,21 @@ export default class Dashboard extends Component {
 
 
 		return (
-			<div id='dashboard-pd'>
-				<nav className='pd-nav'>
-					<header className='pd-header'>
+			<StyledDashboard>
+				<GlobalStyle />
+				<Nav>
+					<NavHeader>
 						<BrandSmall/>
-					</header>
+					</NavHeader>
 					<ul>
 						<li onClick={this.platformSync}>
 							<PlatformIcon
 								bgColor='#1ed760'
-								size={64}
-								sizeRadius={10}
-								name={spotify}
+								size={'64px'}
+								bRadius={'10px'}
+								icon={spotify}
 							/>
-							<div 
-								className='platform-status'
+							<PlatformIconStatus
 								style={{
 									backgroundColor: SpotifyAuth !== 'undefined'
 									? '#37ed8f'
@@ -156,12 +242,11 @@ export default class Dashboard extends Component {
 						<li>
 							<PlatformIcon
 								bgColor='#fff'
-								size={64}
-								sizeRadius={10}
-								name={apple_music}
+								size={'64px'}
+								bRadius={'10px'}
+								icon={apple_music}
 							/>
-							<div 
-								className='platform-status'
+							<PlatformIconStatus
 								style={{
 									backgroundColor: AppleAuth
 									? '#37ed8f'
@@ -170,10 +255,10 @@ export default class Dashboard extends Component {
 							/>
 						</li>
 					</ul>
-				</nav>
+				</Nav>
 
-				<div className='playlists-wrapper'>
-					<header>
+				<DashboardWrapper>
+					<DashboardHeader>
 						<h1>
 							Select Playlist
 						</h1>
@@ -184,15 +269,15 @@ export default class Dashboard extends Component {
 							display = 'flex'
 							bSize = '2px'
 							bColor = 'var(--brand)'
-							className = 'pd-switcher'
+							id='dashboard-btn'
 						/>
-					</header>
+					</DashboardHeader>
 
-					<div className='cards-wrapper'>
+					<PlaylistsCoverWrapper>
 						{
 							this.state.userPlaylists ?
 								userPlaylistsToRender.map((p, i) => 
-									<PlaylistCard
+									<PlaylistCover
 										playlist={p} 
 										key={i} 
 										userID={this.state.userID} 
@@ -200,9 +285,9 @@ export default class Dashboard extends Component {
 								)
 							: null
 						}
-					</div>
-				</div>
-			</div>
+					</PlaylistsCoverWrapper>
+				</DashboardWrapper>
+			</StyledDashboard>
 		)
 	}
 }

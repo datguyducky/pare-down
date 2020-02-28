@@ -39,7 +39,7 @@ app.get('/callback', function(req, res) {
 	console.log('login send')
 	let refresh_token = body.refresh_token
     let access_token = body.access_token
-    let uri = process.env.FRONTEND_URI || 'http://localhost:3000'
+    let uri = process.env.FRONTEND_URI || 'http://localhost:3000/dashboard/'
     res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token)
   })
 })
@@ -64,7 +64,7 @@ app.get('/refresh', function(req, res) {
 		console.log('refresh token send')
 		let refresh_token = body.refresh_token
 		let access_token = body.access_token
-		let uri = process.env.FRONTEND_URI || 'http://localhost:3000'
+		let uri = process.env.FRONTEND_URI || 'http://localhost:3000/dashboard/'
 		res.redirect(uri + '?access_token=' + access_token + '&refresh_token=' + refresh_token)
 	})
 })

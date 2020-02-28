@@ -406,7 +406,7 @@ export default class Home extends Component {
 	
 
 	generateRandomNumber() {
-		setInterval(() => {
+		this.intervalNum = setInterval(() => {
 			//random number of songs (min 69, max 1420) in playlist. 
 			//new number every 3sec
 			const SONGS_NUM = this.newRandomNumber(69, 1420);
@@ -437,7 +437,7 @@ export default class Home extends Component {
 
 
 	generateStep() {
-		setInterval(() => {
+		this.intervalStep = setInterval(() => {
 			//every ~1.5 sec we're displaying new values for last,current and next step
 			//by using array for list of available steps, and then generating 1 random number
 			//for next step
@@ -455,6 +455,11 @@ export default class Home extends Component {
 				STEP3: this.newRandomNumber(1, 18) - 1,
 			});
 		}, 1490)
+	}
+
+	componentWillUnmount() {
+		clearInterval(this.intervalNum);
+		clearInterval(this.intervalStep);
 	}
 	
 
@@ -511,7 +516,7 @@ export default class Home extends Component {
 						text = 'Pare Down'
 						color = 'var(--text1)'
 						bgColor = 'var(--brand)'
-						href = '#'
+						href = '/dashboard'
 						fSize = '19px'
 						width = '160px'
 						height = '54px'

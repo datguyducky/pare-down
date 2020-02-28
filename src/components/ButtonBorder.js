@@ -16,7 +16,7 @@ const StyledLink = styled(Link)`
 
 
 const ButtonBorder = props => {
-	const  { href, text, bSize, display, bColor } = props;
+	const  { href, text, bSize, display, bColor, id } = props;
 
 
 	return (
@@ -24,6 +24,7 @@ const ButtonBorder = props => {
 			display={display}
 			bsize={bSize}
 			bcolor={bColor}
+			id={id}
 		>
 			{text}
 		</StyledLink>
