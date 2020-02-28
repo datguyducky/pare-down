@@ -62,6 +62,7 @@ export default function PlaylistCover(props) {
 					tracks_total: playlist.tracks_total,
 					public: playlist.public,
 					owner: playlist.owner,
+					userID: props.userID
 				}
 			})
 		}>

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
-import { useLocation } from "react-router-dom";
-import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown  } from 'react-feather';
+import { useLocation, Link } from "react-router-dom";
+import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
 import PlaylistTrack from "./PlaylistTrack";
 
@@ -24,9 +24,10 @@ const CardWrapper = styled.div`
 const DetailsWrapper = styled.div`
 	
 `
-const DetailsHeader = styled.header`
+const DetailsHeader = styled(Link)`
 	background-color: red;
 	display: inline;
+	color: inherit;
 	& > h1 {
 		box-shadow: 0px -3px 8px 0 rgba(0, 0, 0, 0.32);
 		display: inline-flex;
@@ -56,8 +57,8 @@ const Details = styled.div`
 `
 const DetailsCover = styled.div`
 	background-image: url(${props => props.bgimg || 'none'});
-	width: 180px;
-	height: 180px;
+	min-width: 180px;
+	min-height: 180px;
 	border-radius: 4px;
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
@@ -130,7 +131,7 @@ const BtnList = styled.ul`
 		cursor: pointer;
 
 		:hover {
-			opacity: 0.88;
+			color: var(--brand);
 		}
 
 		& > span {
@@ -172,11 +173,18 @@ const Tracks = styled.div`
 const PlaylistCard = (props) => {
 	const l = useLocation();
 	let offset = 0;
+	let check = 1;
 	const [userTracks, setUserTracks] = useState([]);
+	const [sortTracks, setSortTracks] = useState(true);
+	const [userFollow, setUserFollow] = useState({
+		total: 0,
+		follow: false
+	})
 
 
 	async function fetchTracks() {
 		const accessToken = localStorage.getItem('SpotifyAuth');
+		const tracks_total = l.state.tracks_total;
 		
 		fetch(`https://api.spotify.com/v1/playlists/${l.state.id}/tracks?fields=items(track)&offset=${offset}`, {
 			headers: {
@@ -185,17 +193,18 @@ const PlaylistCard = (props) => {
 		})
 		.then(response => response.json())
 		.then((data) => {
-			if(offset !== 0) {
+			if(offset !== 0 || check === 0 ) {
 				data.items.reverse();
 			}
-
+			
 			setUserTracks(
-				data.items.map(item => {
+				data.items.map((item, i) => {
 					return {
 						name: item.track.name,
 						artists: item.track.artists[0].name,
 						album: item.track.album.name,
-						duration_ms: item.track.duration_ms	
+						duration_ms: item.track.duration_ms,
+						pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1
 					}
 				})
 			)
@@ -204,13 +213,57 @@ const PlaylistCard = (props) => {
 
 
 	useEffect(() => {
+		async function followCount() {
+			const accessToken = localStorage.getItem('SpotifyAuth');
+		
+			fetch(`https://api.spotify.com/v1/playlists/${l.state.id}?fields=followers`, {
+				headers: {
+					'Authorization': 'Bearer ' + accessToken
+				}
+			})
+			.then(response => response.json())
+			.then((data) => {
+				setUserFollow({
+					...userFollow,
+					total: data.followers.total
+				})
+			})
+		}
+		followCount();
+
+		async function followCheck() {
+			const accessToken = localStorage.getItem('SpotifyAuth');
+		
+			fetch(`https://api.spotify.com/v1/playlists/${l.state.id}/followers/contains?ids=${l.state.userID}`, {
+				headers: {
+					'Authorization': 'Bearer ' + accessToken
+				}
+			})
+			.then(response => response.json())
+			.then((data) => {
+				setUserFollow({
+					...userFollow,
+					follow: data[0]
+				})
+			})
+		}
+		followCheck();
+		
+
 		fetchTracks();
 	}, [])
 
 
 	const sortHandle = () => {
+		const tracks_total = l.state.tracks_total;
 		//TODO: option to sort again
-		offset = l.state.tracks_total - 100;
+		if(sortTracks) {
+			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
+			check = tracks_total >= 100 ? 1 - 100 : 0;
+		} else {
+			offset = 0;
+		}
+		
 		fetchTracks();
 	}
 
@@ -222,7 +275,7 @@ const PlaylistCard = (props) => {
 				
 			<CardWrapper>
 				<DetailsWrapper>
-					<DetailsHeader>
+					<DetailsHeader to='/dashboard'>
 						<h1> <ArrowLeft size={28}/> Playlist details </h1>
 					</DetailsHeader>
 					
@@ -233,7 +286,22 @@ const PlaylistCard = (props) => {
 							<h2>{l.state.name}</h2>
 							<DetailsList>
 								<li> By {l.state.owner} </li>
+								<li style={{color: 'var(--brand)'}}>{l.state.service}</li>
 								<li> {l.state.tracks_total} tracks </li>
+								<li> {userFollow.total} followers </li>
+								<li style={{display: userFollow.follow ? 'inline' : 'none'}}> 
+									<span style={{
+										color: 'red',
+										marginRight: 4
+									}}> 
+										❤️ 
+									</span>
+									{
+										userFollow.follow
+										? 'Following '
+										: null
+									} 
+								</li>
 								<li> 
 									<Globe size={14}/>
 									<span>
@@ -269,14 +337,19 @@ const PlaylistCard = (props) => {
 
 				<TracksWrapper>
 					<TracksDetails>
-						<li>#</li>
-						<li style={{cursor: 'pointer'}} onClick={sortHandle}>
-							TITLE
-							{	
-								offset !== 0
+						<li style={{cursor: 'pointer'}} onClick={() => {
+							setSortTracks(!sortTracks);
+							sortHandle();
+						}}>
+							#
+							{
+								sortTracks
 								? <ArrowDown size={18}/>
-								: <ArrowDown size={18}/>
+								: <ArrowUp size={18}/>
 							}
+						</li>
+						<li>
+							TITLE
 						</li>
 						<li>ARTIST</li>
 						<li>ALBUM</li>
@@ -291,7 +364,7 @@ const PlaylistCard = (props) => {
 									<PlaylistTrack
 										playlist={p} 
 										key={i}
-										id={i}
+										id={p.pos}
 										service={l.state.service}
 									/>
 								)

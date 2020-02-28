@@ -44,7 +44,7 @@ const PlaylistTrack = (props) => {
 
 	return (
 		<StyledPlaylistCard>
-			<li>{props.id + 1}</li>
+			<li>{props.id}</li>
 			<li>{p.name}</li>
 			<li>{p.artists}</li>
 			<li>{p.album}</li>
