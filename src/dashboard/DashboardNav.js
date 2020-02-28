@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { BrandSmall, PlatformIcon } from '../components';
 import styled from 'styled-components';
+import { Link } from "react-router-dom";
 
 const spotify = require('../assets/spotify.png');
 const apple_music = require('../assets/apple_music.png');
@@ -33,6 +34,11 @@ const NavHeader = styled.header`
 	border-bottom: 1px solid var(--gray3);
 	position:fixed;
 	top: 0;
+`
+const StyledLink = styled(Link)`
+	:hover {
+		opacity: 0.8;
+	}
 `
 const PlatformIconStatus = styled.div`
 	position: absolute;
@@ -75,7 +81,9 @@ export default class DashboardNav extends Component {
 		return (
 			<Nav>
 				<NavHeader>
-					<BrandSmall/>
+					<StyledLink to='/'>
+						<BrandSmall/>
+					</StyledLink>
 				</NavHeader>
 				
 				<ul>

@@ -46,6 +46,10 @@ const DetailsHeader = styled(Link)`
 			margin-right: 6px;
 		}
 	}
+
+	:hover {
+		opacity: 0.7;
+	}
 `
 const Details = styled.div`
 	display: flex;
@@ -85,7 +89,7 @@ const Playlist = styled.div`
 		color: var(--text2);
 		line-height: 1.2em;
 	}
-`
+` //TODO: overflowing for long string in description of playlist
 const DetailsList = styled.ul`
 	display: flex;
 	align-items: center;
@@ -178,8 +182,8 @@ const PlaylistCard = (props) => {
 	const [sortTracks, setSortTracks] = useState(true);
 	const [userFollow, setUserFollow] = useState({
 		total: 0,
-		follow: false
-	})
+		follow: true
+	}) //TODO: fix follow saving
 
 
 	async function fetchTracks() {
@@ -256,7 +260,6 @@ const PlaylistCard = (props) => {
 
 	const sortHandle = () => {
 		const tracks_total = l.state.tracks_total;
-		//TODO: option to sort again
 		if(sortTracks) {
 			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
 			check = tracks_total >= 100 ? 1 - 100 : 0;
@@ -267,7 +270,11 @@ const PlaylistCard = (props) => {
 		fetchTracks();
 	}
 
+	const followFormat = (num) => {
+		return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+	}
 
+	console.log(userFollow)
 	return (
 		<StyledPlaylistCard>
 			<GlobalStyle />
@@ -288,7 +295,7 @@ const PlaylistCard = (props) => {
 								<li> By {l.state.owner} </li>
 								<li style={{color: 'var(--brand)'}}>{l.state.service}</li>
 								<li> {l.state.tracks_total} tracks </li>
-								<li> {userFollow.total} followers </li>
+								<li> {followFormat(userFollow.total)} followers </li>
 								<li style={{display: userFollow.follow ? 'inline' : 'none'}}> 
 									<span style={{
 										color: 'red',

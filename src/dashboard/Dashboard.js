@@ -203,7 +203,7 @@ export default class Dashboard extends Component {
 									<PlaylistCover
 										playlist={p} 
 										key={i} 
-										userID={this.state.userID} //delete userID from app?
+										userID={this.state.userID}
 										history={this.props.history}
 									/>
 								)
