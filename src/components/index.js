@@ -3,6 +3,7 @@ import BrandBig from './BrandBig';
 import BrandSmall from './BrandSmall';
 import PlatformIcon from './PlatformIcon';
 import ButtonBorder from './ButtonBorder';
+import Spinner from './Spinner';
 
 export {
 	Button,
@@ -10,4 +11,5 @@ export {
 	BrandSmall,
 	PlatformIcon,
 	ButtonBorder,
+	Spinner
 }

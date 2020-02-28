@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
+import { Spinner } from '../components/';
 import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
@@ -184,6 +185,7 @@ const PlaylistCard = (props) => {
 		total: 0,
 		follow: true
 	}) //TODO: fix follow saving
+	const [loading, setLoading] = useState(true);
 
 
 	async function fetchTracks() {
@@ -195,8 +197,14 @@ const PlaylistCard = (props) => {
 				'Authorization': 'Bearer ' + accessToken
 			}
 		})
-		.then(response => response.json())
+		.then((response) => {
+			if(response.ok) {
+				console.log('ok')
+			}
+			return response.json()
+		})
 		.then((data) => {
+			console.log(data);
 			if(offset !== 0 || check === 0 ) {
 				data.items.reverse();
 			}
@@ -211,7 +219,8 @@ const PlaylistCard = (props) => {
 						pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1
 					}
 				})
-			)
+			);
+			setLoading(false);
 		})
 	}
 
@@ -366,16 +375,18 @@ const PlaylistCard = (props) => {
 					
 					<Tracks>
 						{
-							userTracks ?
-								userTracks.map((p, i) => 
-									<PlaylistTrack
-										playlist={p} 
-										key={i}
-										id={p.pos}
-										service={l.state.service}
-									/>
-								)
-							: null
+							!loading ?
+								userTracks ?
+									userTracks.map((p, i) => 
+										<PlaylistTrack
+											playlist={p} 
+											key={i}
+											id={p.pos}
+											service={l.state.service}
+										/>
+									)
+								: null
+							: <Spinner/>
 						}
 					</Tracks>
 				</TracksWrapper>
