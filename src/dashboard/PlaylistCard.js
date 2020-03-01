@@ -5,6 +5,7 @@ import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
 import PlaylistTrack from "./PlaylistTrack";
+import StepCard from './StepCard';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -17,6 +18,7 @@ const GlobalStyle = createGlobalStyle`
 const StyledPlaylistCard = styled.div`
 	display: grid;
 	grid-template-columns: 92px 1fr;
+	position: relative;
 `
 const CardWrapper = styled.div`
 	width: 1240px;
@@ -26,7 +28,6 @@ const DetailsWrapper = styled.div`
 	
 `
 const DetailsHeader = styled(Link)`
-	background-color: red;
 	display: inline;
 	color: inherit;
 	& > h1 {
@@ -144,9 +145,7 @@ const BtnList = styled.ul`
 		}
 	}
 `
-const TracksWrapper = styled.div`
-
-`
+const TracksWrapper = styled.div``
 const TracksDetails = styled.ul`
 	display: grid;
 	grid-template-columns: auto 1fr 160px 160px 120px 120px;
@@ -204,7 +203,6 @@ const PlaylistCard = (props) => {
 			return response.json()
 		})
 		.then((data) => {
-			console.log(data);
 			if(offset !== 0 || check === 0 ) {
 				data.items.reverse();
 			}
@@ -271,7 +269,7 @@ const PlaylistCard = (props) => {
 		const tracks_total = l.state.tracks_total;
 		if(sortTracks) {
 			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
-			check = tracks_total >= 100 ? 1 - 100 : 0;
+			check = tracks_total >= 100 ? 1 - 100 : 0;//TODO: what?
 		} else {
 			offset = 0;
 		}
@@ -283,7 +281,7 @@ const PlaylistCard = (props) => {
 		return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
 	}
 
-	console.log(userFollow)
+	
 	return (
 		<StyledPlaylistCard>
 			<GlobalStyle />
@@ -391,6 +389,8 @@ const PlaylistCard = (props) => {
 					</Tracks>
 				</TracksWrapper>
 			</CardWrapper>
+
+			<StepCard userTracksData={userTracks}/>
 		</StyledPlaylistCard>
 	)
 }
