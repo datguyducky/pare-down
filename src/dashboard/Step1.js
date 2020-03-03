@@ -81,9 +81,9 @@ const Step1 = (props) => {
 				required 
 				placeholder={
 					newPlaylist.new_title.length === 0
-					? 'Playlist Name'
-					: newPlaylist.title
-				}//TODO: need to fix it
+					? props.title
+					: newPlaylist.new_title
+				}
 				onChange={e => inputHandle(e)}
 			/>
 

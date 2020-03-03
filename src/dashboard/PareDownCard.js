@@ -201,7 +201,7 @@ const ButtonStep = styled.button`
 `
 
 const PareDownCard = (props) => {
-	const [currentStep, setStep] = useState(2);
+	const [currentStep, setStep] = useState(1);
 	const [warningDisplay, setWarningDisplay] = useState(false);
 	const [newPlaylist, setNewPlaylist] = useState({
 		new_title: '',
