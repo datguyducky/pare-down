@@ -201,7 +201,7 @@ const ButtonStep = styled.button`
 `
 
 const PareDownCard = (props) => {
-	const [currentStep, setStep] = useState(2);
+	const [currentStep, setStep] = useState(3);
 	const [warningDisplay, setWarningDisplay] = useState(false);
 	const [newPlaylist, setNewPlaylist] = useState({
 		new_title: '',
@@ -211,6 +211,7 @@ const PareDownCard = (props) => {
 		new_order: false
 	});
 	const [coverTile, setCoverTile] = useState([]);
+	const [pdTracks, setPdTracks] = useState([]);
 
 
 	const StepBtnHandler = () => {
@@ -243,9 +244,47 @@ const PareDownCard = (props) => {
 			nextStepIcon.classList.add('active-step'); 
 			
 		} else {
-			console.log('end')
+			PareDownHandler();
 		}
 	}
+	
+	const PareDownHandler = async () => {
+		//TODO: kinda working, but not really.
+		//send another fetch if 'next' from response !== null
+		//save all fetched tracks uris to state
+		const accessToken = localStorage.getItem('SpotifyAuth');
+		let offset = 0;
+		let NextPage = '';
+
+		if(NextPage !== null) {
+			if(NextPage !== '') {
+				offset = newPlaylist.new_order 
+				? props.tracks_total - newPlaylist.new_num_tracks + 100
+				: 0
+			}
+		
+			fetch(`https://api.spotify.com/v1/playlists/${props.playlistID}/tracks?offset=${offset}&fields=next,items(track(uri))`, {
+				headers: {
+					'Authorization': 'Bearer ' + accessToken
+				}
+			})
+			.then((response) => {
+				return response.json()
+			})
+			.then((data) => {
+				setPdTracks(
+					data.items.map((item, i) => {
+						return {
+							uri: item.track.uri
+						}
+					})
+				);
+
+				NextPage = data.next;
+			})
+		}
+	}
+
 
 	const HeaderHandler = () => {
 		if(currentStep > 1 && currentStep <= 3) {
@@ -279,7 +318,7 @@ const PareDownCard = (props) => {
 		'pare down'
 	]
 
-
+	console.log(pdTracks)
 	return (
 		<StyledStepCard display={props.displaySteps}>
 			<GlobalStyle/>
