@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
-import { Spinner } from '../components/';
+import { Spinner, PopUp } from '../components/';
 import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
@@ -340,7 +340,9 @@ const PlaylistCard = (props) => {
 							</p>
 							
 							<BtnList>
-								<li onClick={() => setDisplaySteps('flex')}>
+								<li onClick={() => {
+									setDisplaySteps('flex');
+								}}>
 									<Copy size={14}/>
 									<span>Pare Down</span>
 								</li>
@@ -408,6 +410,8 @@ const PlaylistCard = (props) => {
 					title={l.state.name}
 					privacy={l.state.public}
 					cover={l.state.cover}
+					userID={l.state.userID}
+					setDisplaySteps={setDisplaySteps}
 				/>
 			: null
 			}

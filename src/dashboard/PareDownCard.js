@@ -4,7 +4,7 @@ import { ArrowLeft, X, Check } from 'react-feather';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
-import { Warning } from "../components";
+import { Warning, PopUp } from "../components";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -38,7 +38,6 @@ const StepCardWrapper = styled.div`
 	border-radius: 4px;
 	border: 1px solid var(--gray3);
 	position: relative;
-	display: flex;
 	flex-direction: column;
 `
 const HeaderWrapper = styled.div`
@@ -212,6 +211,7 @@ const PareDownCard = (props) => {
 	});
 	const [coverTile, setCoverTile] = useState([]);
 	const [pdTracks, setPdTracks] = useState([]);
+	const [displayPopUp, showPopUp] = useState(false);
 
 
 	const StepBtnHandler = () => {
@@ -252,7 +252,6 @@ const PareDownCard = (props) => {
 		const accessToken = localStorage.getItem('SpotifyAuth');
 		const ID = props.playlistID;
 		
-		
 		if (newPlaylist.new_order === true) {
 			for (let i = 0; i < newPlaylist.new_num_tracks; i += 100) {
 				let limit = 100;
@@ -262,7 +261,7 @@ const PareDownCard = (props) => {
 					offset =props.tracks_total - i - limit;
 				}
 
-				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name))&limit=${limit}&offset=${offset}`, {
+				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri))&limit=${limit}&offset=${offset}`, {
 					headers: {
 						'Authorization': 'Bearer ' + accessToken
 					}
@@ -270,7 +269,7 @@ const PareDownCard = (props) => {
 				.then(response => response.json())
 				.then((data) => {
 					setPdTracks(prevState => {
-						return [...prevState, data.items.map((e) => e.track.name)]
+						return [...prevState, data.items.map((e) => e.track.uri)]
 					})
 				})
 			}
@@ -283,7 +282,7 @@ const PareDownCard = (props) => {
 					limit = newPlaylist.new_num_tracks - i;
 				}
 
-				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name))&limit=${limit}&offset=${i}`, {
+				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(uri))&limit=${limit}&offset=${i}`, {
 					headers: {
 						'Authorization': 'Bearer ' + accessToken
 					}
@@ -291,11 +290,63 @@ const PareDownCard = (props) => {
 				.then(response => response.json())
 				.then((data) => {
 					setPdTracks(prevState => {
-						return [...prevState, data.items.map((e) => e.track.name)]
+						return [...prevState, data.items.map((e) => e.track.uri)]
 					})
 				})
 			}
-		}    
+		}
+
+		const AWAIT_TIME = 1000 + parseInt(newPlaylist.new_num_tracks);
+		
+		setTimeout(function() {
+			PopUpHandler();
+		}, AWAIT_TIME);
+	}
+
+	const POST_PD = async () => {
+		const accessToken = localStorage.getItem('SpotifyAuth');
+		
+		fetch(`https://api.spotify.com/v1/users/${props.userID}/playlists`, {
+			method: 'POST',
+			body: JSON.stringify({
+				'name': newPlaylist.new_title,
+				'description': 'Created with pare-down.mtymon.me || ' + newPlaylist.new_desc,
+				'public': newPlaylist.new_privacy
+			}),
+			headers: {
+				'Authorization': 'Bearer ' + accessToken
+			}
+		})
+		.then(response => response.json())
+		.then((data) => {
+			for (let i = 0; i < pdTracks.length; i++) {
+				fetch(`https://api.spotify.com/v1/playlists/${data.id}/tracks`, {
+					method: 'POST',
+					body: JSON.stringify({
+						"uris": pdTracks[i]
+					}),
+					headers: {
+						'Authorization': 'Bearer ' + accessToken,
+						'Content-Type': 'application/json'
+					}
+				})
+				.then((response) => {
+					console.log(response.status)
+				})
+			}
+		})
+	}
+
+
+	const PopUpHandler = () => {
+		let e = document.getElementById('step-card-wrapper');
+		if(e.style.display === 'flex') {
+			e.style.display = 'none';
+		} else {
+			props.setDisplaySteps(false);
+		}
+
+		showPopUp(!displayPopUp);
 	}
 
 
@@ -337,7 +388,7 @@ const PareDownCard = (props) => {
 			<GlobalStyle/>
 			<Overlay/>
 
-			<StepCardWrapper>
+			<StepCardWrapper id='step-card-wrapper' style={{display: 'flex'}}>
 				<HeaderWrapper>
 					<Header onClick={HeaderHandler}>
 						<h1> <ArrowLeft size={24}/> Pare Down </h1>
@@ -443,6 +494,16 @@ const PareDownCard = (props) => {
 					no_action={WarningHandler}
 					yes_action={props.yes_action}
 				/>
+				: null
+			}
+
+			{
+				displayPopUp ?
+					<PopUp 
+						text='Pared down playlist was created!'
+						hide={PopUpHandler}
+						load_action={POST_PD}
+					/>
 				: null
 			}
 		</StyledStepCard>

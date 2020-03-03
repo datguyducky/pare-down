@@ -61,13 +61,32 @@ const StyledStep1 = styled.div`
 const Step1 = (props) => {
 	const newPlaylist = props.newPlaylist;
 
+
 	const inputHandle = (e) => {
 		const target = e.target;
 		const value = target.type === 'checkbox' ? target.checked : target.value;
 		const name = target.name;
 
 
-		return props.setNewPlaylist({...newPlaylist, [name]: value})
+		if(target.id === 'p-title') {
+			if(value.length <= 100) {
+				return props.setNewPlaylist({...newPlaylist, [name]: value});
+			} else {
+				return props.setNewPlaylist({...newPlaylist, [name]: value.substring(0, 100)});
+			}
+		}
+		
+
+		if(target.id === 'p-desc') {
+			if(value.length <= 300) {
+				return props.setNewPlaylist({...newPlaylist, [name]: value});
+			} else {
+				return props.setNewPlaylist({...newPlaylist, [name]: value.substring(0, 300)});
+			}
+		}
+
+
+		return props.setNewPlaylist({...newPlaylist, [name]: value});
 	}
 
 
@@ -79,7 +98,7 @@ const Step1 = (props) => {
 				type='text' 
 				id='p-title' 
 				required 
-				placeholder={
+				value={
 					newPlaylist.new_title.length === 0
 					? props.title
 					: newPlaylist.new_title
