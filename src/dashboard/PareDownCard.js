@@ -218,7 +218,7 @@ const PareDownCard = (props) => {
 			return false;
 		}
 
-		
+
 		if(
 			currentStep === 2 
 			&& typeof newPlaylist.new_num_tracks === 'number'
@@ -346,6 +346,7 @@ const PareDownCard = (props) => {
 							<Step1 
 								newPlaylist={newPlaylist}
 								setNewPlaylist={setNewPlaylist}
+								title={props.title}
 							/>
 						: currentStep === 2 ? 
 							<Step2 

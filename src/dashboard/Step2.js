@@ -1,6 +1,6 @@
 import React, { useState, useEffect  } from "react";
 import styled from 'styled-components';
-import { ArrowDown, ArrowUp } from 'react-feather';
+import { ArrowDown, ArrowUp, Percent } from 'react-feather';
 import PlaylistTrackSmall from './PlaylistTrackSmall';
 import { Spinner } from "../components";
 
@@ -10,7 +10,7 @@ const StyledStep2 = styled.div`
 	flex-direction: column;
 	width: 100%;
 
-	& > label {
+	label {
 		color: var(--text2);
 		margin-bottom: 4px;
 		text-transform: uppercase;
@@ -22,7 +22,7 @@ const StyledStep2 = styled.div`
 		}
 	}
 
-	& > #p-number {
+	#p-number {
 		max-width: 100%;
 		margin-bottom: 21px;
 		border-radius: 4px;
@@ -30,6 +30,25 @@ const StyledStep2 = styled.div`
 		background-color: var(--gray2);
 		padding: 6px 12px;
 		color: var(--text1);
+		border-top-right-radius: 0;
+		border-bottom-right-radius: 0;
+		border-right: 0;
+	}
+`
+const InputWrapper = styled.div`
+	button {
+		height: 34px;
+		width: 34px;
+		background-color: var(--gray2);
+		border: 1px solid var(--gray3);
+		color: var(--text1);
+		border-top-right-radius: 4px;
+		border-bottom-right-radius: 4px;
+		cursor: pointer;
+
+		&.percent {
+			background-color: var(--gray3);
+		}
 	}
 `
 const OrderBtn = styled.button`
@@ -82,6 +101,7 @@ const Step2 = (props) => {
 	const [userTracks, setUserTracks] = useState([]);
 	const [sortTracks, setSortTracks] = useState(true);
 	const [loading, setLoading] = useState(true);
+	const [percentState, setPercent] = useState(false);
 
 
 	async function fetchTracks() {
@@ -115,7 +135,7 @@ const Step2 = (props) => {
 			);
 
 			for(let i=0; i<4; i++) {
-				const loc = data.items[i].track.album.images[1].url
+				const loc = data.items[i].track.album.images[2].url
 				const url = loc ? loc : '';
 				props.setCoverTile(coverTile => [...coverTile, url]);
 			}
@@ -147,25 +167,53 @@ const Step2 = (props) => {
 	const inputHandle = (e) => {
 		const target = e.target;
 		const name = target.name;
-		return props.setNewPlaylist({...newPlaylist, [name]: target.value});
+
+		if(e.target.checkValidity()) {
+			return props.setNewPlaylist({...newPlaylist, [name]: target.value});
+		} else {
+			return props.setNewPlaylist({...newPlaylist, [name]: 0});
+		}
+	}
+
+	const PercentHandle = () => {
+		const percent_btn = document.getElementById('percent-btn');
+		
+		if(!percentState) {
+			percent_btn.classList.add('percent');
+		} else {
+			percent_btn.classList.remove('percent');
+		}
 	}
 
 
 	return (
 		<StyledStep2>
 			<label htmlFor='p-title'>number of songs <span id='input-req'>(required)</span></label>
-			<input
-				name='new_num_tracks'
-				type='text' 
-				id='p-number' 
-				required 
-				placeholder={
-					newPlaylist.new_num_tracks.length === 0
-					? 'Playlist Name'
-					: newPlaylist.new_num_tracks
-				} 
-				onChange={e => inputHandle(e)}
-			/>
+			<InputWrapper>
+				<input
+					name='new_num_tracks'
+					type='number' 
+					id='p-number' 
+					required 
+					min='1'
+					max={
+						!percentState
+						? props.tracks_total
+						: '100'
+					}
+					placeholder={newPlaylist.new_num_tracks} 
+					onChange={e => inputHandle(e)}
+				/>
+				<button 
+					onClick={() => {
+						setPercent(!percentState);
+						PercentHandle();
+					}} 
+					id='percent-btn'
+				>
+					<Percent size={16}/>
+				</button>
+			</InputWrapper>
 
 			<OrderWrapper>
 				<OrderBtn 

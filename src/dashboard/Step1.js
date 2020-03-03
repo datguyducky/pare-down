@@ -83,7 +83,7 @@ const Step1 = (props) => {
 					newPlaylist.new_title.length === 0
 					? 'Playlist Name'
 					: newPlaylist.title
-				} 
+				}//TODO: need to fix it
 				onChange={e => inputHandle(e)}
 			/>
 
