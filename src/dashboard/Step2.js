@@ -95,11 +95,10 @@ const TracksWrapper = styled.div`
 
 
 const Step2 = (props) => {
-	//TODO: use props.new_order for sorting playlist
 	let offset = 0;
 	let check = 1;
 	const [userTracks, setUserTracks] = useState([]);
-	const [sortTracks, setSortTracks] = useState(false);
+	const newPlaylist = props.newPlaylist;
 	const [loading, setLoading] = useState(true);
 	const [percentState, setPercent] = useState(false);
 
@@ -151,9 +150,9 @@ const Step2 = (props) => {
 
 	const sortHandle = () => {
 		const tracks_total = props.tracks_total;
-		if(!sortTracks) {
+		if(!newPlaylist.new_order) {
 			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
-			check = tracks_total >= 100 ? 1 : 0;//TODO: what?
+			check = tracks_total >= 100 ? 1 : 0;
 		} else {
 			offset = 0;
 		}
@@ -163,7 +162,6 @@ const Step2 = (props) => {
 	}
 
 
-	const newPlaylist = props.newPlaylist;
 	const inputHandle = (e) => {
 		const target = e.target;
 		const name = target.name;
@@ -218,9 +216,7 @@ const Step2 = (props) => {
 			<OrderWrapper>
 				<OrderBtn 
 					onClick={() => {
-						setSortTracks(!sortTracks);
-						
-						if(sortTracks) {
+						if(!newPlaylist.new_order) {
 							props.setNewPlaylist({...newPlaylist, 'new_order': true});
 						} else {
 							props.setNewPlaylist({...newPlaylist, 'new_order': false});
@@ -230,7 +226,7 @@ const Step2 = (props) => {
 					}}
 				>
 					{
-					!sortTracks
+					!newPlaylist.new_order
 						? <ArrowDown size={16}/>
 						: <ArrowUp size={16}/>
 					}
