@@ -99,7 +99,7 @@ const Step2 = (props) => {
 	let offset = 0;
 	let check = 1;
 	const [userTracks, setUserTracks] = useState([]);
-	const [sortTracks, setSortTracks] = useState(true);
+	const [sortTracks, setSortTracks] = useState(false);
 	const [loading, setLoading] = useState(true);
 	const [percentState, setPercent] = useState(false);
 
@@ -151,9 +151,9 @@ const Step2 = (props) => {
 
 	const sortHandle = () => {
 		const tracks_total = props.tracks_total;
-		if(sortTracks) {
+		if(!sortTracks) {
 			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
-			check = tracks_total >= 100 ? 1 - 100 : 0;//TODO: what?
+			check = tracks_total >= 100 ? 1 : 0;//TODO: what?
 		} else {
 			offset = 0;
 		}
@@ -230,7 +230,7 @@ const Step2 = (props) => {
 					}}
 				>
 					{
-					sortTracks
+					!sortTracks
 						? <ArrowDown size={16}/>
 						: <ArrowUp size={16}/>
 					}
