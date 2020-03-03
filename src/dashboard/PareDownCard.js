@@ -201,7 +201,7 @@ const ButtonStep = styled.button`
 `
 
 const PareDownCard = (props) => {
-	const [currentStep, setStep] = useState(3);
+	const [currentStep, setStep] = useState(1);
 	const [warningDisplay, setWarningDisplay] = useState(false);
 	const [newPlaylist, setNewPlaylist] = useState({
 		new_title: '',
@@ -249,40 +249,53 @@ const PareDownCard = (props) => {
 	}
 	
 	const PareDownHandler = async () => {
-		//TODO: kinda working, but not really.
-		//send another fetch if 'next' from response !== null
-		//save all fetched tracks uris to state
 		const accessToken = localStorage.getItem('SpotifyAuth');
-		let offset = 0;
-		let NextPage = '';
-
-		if(NextPage !== null) {
-			if(NextPage !== '') {
-				offset = newPlaylist.new_order 
-				? props.tracks_total - newPlaylist.new_num_tracks + 100
-				: 0
-			}
+		const ID = props.playlistID;
 		
-			fetch(`https://api.spotify.com/v1/playlists/${props.playlistID}/tracks?offset=${offset}&fields=next,items(track(uri))`, {
-				headers: {
-					'Authorization': 'Bearer ' + accessToken
+		
+		if (newPlaylist.new_order === true) {
+			for (let i = 0; i < newPlaylist.new_num_tracks; i += 100) {
+				let limit = 100;
+				let offset = props.tracks_total - (i + 100);
+				if (newPlaylist.new_num_tracks - i < 100) {
+					limit = newPlaylist.new_num_tracks - i;
+					offset =props.tracks_total - i - limit;
 				}
-			})
-			.then((response) => {
-				return response.json()
-			})
-			.then((data) => {
-				setPdTracks(
-					data.items.map((item, i) => {
-						return {
-							uri: item.track.uri
-						}
-					})
-				);
 
-				NextPage = data.next;
-			})
-		}
+				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name))&limit=${limit}&offset=${offset}`, {
+					headers: {
+						'Authorization': 'Bearer ' + accessToken
+					}
+				})
+				.then(response => response.json())
+				.then((data) => {
+					setPdTracks(prevState => {
+						return [...prevState, data.items.map((e) => e.track.name)]
+					})
+				})
+			}
+		} 
+		
+		else if (newPlaylist.new_order === false) {
+			for (let i = 0; i < newPlaylist.new_num_tracks; i += 100) {
+				let limit = 100;
+				if (newPlaylist.new_num_tracks - i < 100) {
+					limit = newPlaylist.new_num_tracks - i;
+				}
+
+				fetch(`https://api.spotify.com/v1/playlists/${ID}/tracks?fields=items(track(name))&limit=${limit}&offset=${i}`, {
+					headers: {
+						'Authorization': 'Bearer ' + accessToken
+					}
+				})
+				.then(response => response.json())
+				.then((data) => {
+					setPdTracks(prevState => {
+						return [...prevState, data.items.map((e) => e.track.name)]
+					})
+				})
+			}
+		}    
 	}
 
 
@@ -318,7 +331,7 @@ const PareDownCard = (props) => {
 		'pare down'
 	]
 
-	console.log(pdTracks)
+
 	return (
 		<StyledStepCard display={props.displaySteps}>
 			<GlobalStyle/>
