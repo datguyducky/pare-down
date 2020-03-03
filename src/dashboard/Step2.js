@@ -165,12 +165,37 @@ const Step2 = (props) => {
 	const inputHandle = (e) => {
 		const target = e.target;
 		const name = target.name;
-
-		if(e.target.checkValidity()) {
-			return props.setNewPlaylist({...newPlaylist, [name]: target.value});
-		} else {
-			return props.setNewPlaylist({...newPlaylist, [name]: 0});
-		}
+		const percent_btn = document.getElementById('percent-btn');
+		
+		
+		if (!percent_btn.classList.contains('percent')) {
+            if (e.target.checkValidity()) {
+                return props.setNewPlaylist({
+					...newPlaylist, 
+					[name]: 
+					target.value
+				});
+            } else {
+				return props.setNewPlaylist({
+					...newPlaylist, 
+					[name]: 0
+				});
+            }
+		} 
+		
+		else {
+			if (e.target.checkValidity()) {
+				return props.setNewPlaylist({
+					...newPlaylist, [name]: 
+					((props.tracks_total * target.value) / 100).toFixed(0)
+				});
+            } else {
+				return props.setNewPlaylist({
+					...newPlaylist, 
+					[name]: 0
+				});
+            }
+        }
 	}
 
 	const PercentHandle = () => {
