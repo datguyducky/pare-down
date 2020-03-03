@@ -58,19 +58,56 @@ const StyledStep1 = styled.div`
 	}
 `
 
-
 const Step1 = (props) => {
+	const newPlaylist = props.newPlaylist;
+
+	const inputHandle = (e) => {
+		const target = e.target;
+		const value = target.type === 'checkbox' ? target.checked : target.value;
+		const name = target.name;
+
+
+		return props.setNewPlaylist({...newPlaylist, [name]: value})
+	}
+
+
 	return (
 		<StyledStep1>
 			<label htmlFor='p-title'>title <span id='input-req'>(required)</span></label>
-			<input type='text' id='p-title' required/>
+			<input
+				name='new_title'
+				type='text' 
+				id='p-title' 
+				required 
+				placeholder={
+					newPlaylist.new_title.length === 0
+					? 'Playlist Name'
+					: newPlaylist.title
+				} 
+				onChange={e => inputHandle(e)}
+			/>
 
 			<label htmlFor='p-desc'>Description</label>
-			<textarea id='p-desc' defaultValue='Here is the playlist description (optional)'/>
+			<textarea
+				name='new_desc'
+				id='p-desc'
+				placeholder={
+					newPlaylist.new_desc.length === 0
+					? 'Here is the playlist description (optional)'
+					: newPlaylist.new_desc
+				}
+				onChange={e => inputHandle(e)}
+			/>
 
 			<label>other options</label>
 			<label htmlFor='p-privacy' id='cb-label'>
-				<input type="checkbox" id="p-privacy"/> 
+				<input 
+					name='new_privacy'
+					type="checkbox" 
+					id="p-privacy"
+					checked={newPlaylist.new_privacy}
+					onChange={e => inputHandle(e)}
+				/> 
 				<span>Set Privacy as Public</span>
 			</label>
 		</StyledStep1>

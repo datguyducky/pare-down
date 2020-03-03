@@ -4,6 +4,7 @@ import { ArrowLeft, X, Check } from 'react-feather';
 import Step1 from './Step1';
 import Step2 from './Step2';
 import Step3 from './Step3';
+import { Warning } from "../components";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -18,6 +19,7 @@ const StyledStepCard = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	display: ${props => props.display};
 `
 const Overlay = styled.div`
 	position: absolute;
@@ -73,11 +75,15 @@ const HeaderDesc = styled.p`
 	margin-left: 4px;
 	color: var(--text2);
 `
-const HeaderClose = styled.div`
+const HeaderClose = styled.button`
+	background-color: transparent;
+	border: none;
+	color: inherit;
 	position: absolute;
 	right: 0;
 	top: 0;
 	padding: 9px 21px;
+	cursor: pointer;
 `
 const StepsWrapper = styled.div`
 	display: flex;
@@ -96,6 +102,14 @@ const rotateSpinner = keyframes`
 	}
 	to {
 		transform: rotate(360deg);
+	}
+`
+const doneScale = keyframes`
+	from {
+		transform: scale(1.5);
+	}
+	to {
+		transform: scaleY(1);
 	}
 `
 const IconSpinner = styled.li`
@@ -121,6 +135,8 @@ const IconSpinner = styled.li`
 
 	&.done {
 		background-color: #1ed760;
+		animation-name: ${doneScale};
+		animation-duration: 0.6s;
 	}
 
 	&.active-step > div {
@@ -134,7 +150,7 @@ const IconSpinner = styled.li`
 		border-radius: 100%;
 		animation-name: ${rotateSpinner};
 		animation-iteration-count: infinite;
-		animation-duration: 1s;
+		animation-duration: 2s;
 		animation-timing-function: linear;
 		position: absolute;
 	}
@@ -184,11 +200,34 @@ const ButtonStep = styled.button`
 	}
 `
 
-const StepCard = (props) => {
+const PareDownCard = (props) => {
 	const [currentStep, setStep] = useState(2);
-	//TODO: icon spinner for active step
+	const [warningDisplay, setWarningDisplay] = useState(false);
+	const [newPlaylist, setNewPlaylist] = useState({
+		new_title: '',
+		new_desc: '',
+		new_privacy: true,
+		new_num_tracks: 0,
+		new_order: false
+	});
+	const [coverTile, setCoverTile] = useState([]);
+
 
 	const StepBtnHandler = () => {
+		if(currentStep === 1 && newPlaylist.new_title.length === 0) {
+			return false;
+		}
+
+		
+		if(
+			currentStep === 2 
+			&& typeof newPlaylist.new_num_tracks === 'number'
+			&& newPlaylist.new_num_tracks <= 0
+		) {
+			return false;
+		}
+
+
 		if(currentStep < 3) {
 			setStep(currentStep + 1)
 
@@ -221,8 +260,12 @@ const StepCard = (props) => {
 			redoStepIcon.classList.add('redo');
 
 		} else {
-			console.log('close here');
+			setWarningDisplay(true);
 		}
+	}
+
+	const WarningHandler = () => {
+		setWarningDisplay(false);
 	}
 	
 	const StepList = [
@@ -236,8 +279,9 @@ const StepCard = (props) => {
 		'pare down'
 	]
 
+
 	return (
-		<StyledStepCard>
+		<StyledStepCard display={props.displaySteps}>
 			<GlobalStyle/>
 			<Overlay/>
 
@@ -251,7 +295,7 @@ const StepCard = (props) => {
 						Duplicate your playlist with pared number of songs
 					</HeaderDesc>
 					
-					<HeaderClose>
+					<HeaderClose onClick={() => setWarningDisplay(true)}>
 						<X size={21}/>
 					</HeaderClose>
 				</HeaderWrapper>
@@ -264,7 +308,7 @@ const StepCard = (props) => {
 								? document.querySelector('#step-icons').childNodes[0].classList.contains('done')
 									? <Check size={16}/>
 									: '1'
-								: null
+								: '1'
 							}
 							<div/>
 						</IconSpinner>
@@ -274,7 +318,7 @@ const StepCard = (props) => {
 								? document.querySelector('#step-icons').childNodes[1].classList.contains('done')
 									? <Check size={16}/>
 									: '2'
-								: null
+								: '2'
 							}
 							<div/>
 						</IconSpinner>
@@ -284,7 +328,7 @@ const StepCard = (props) => {
 								? document.querySelector('#step-icons').childNodes[2].classList.contains('done')
 									? <Check size={16}/>
 									: '3'
-								: null
+								: '3'
 							}
 							<div/>
 						</IconSpinner>
@@ -298,15 +342,30 @@ const StepCard = (props) => {
 
 				<ActiveStep>
 					{
-						currentStep === 1
-						? <Step1/>
-						: currentStep === 2
-						? <Step2 
-							 userTracks={props.userTracksData}
-						/>
-						: currentStep === 3
-						? <Step3/>
-						
+						currentStep === 1 ? 
+							<Step1 
+								newPlaylist={newPlaylist}
+								setNewPlaylist={setNewPlaylist}
+							/>
+						: currentStep === 2 ? 
+							<Step2 
+								playlistID={props.playlistID}
+								tracks_total={props.tracks_total}
+								newPlaylist={newPlaylist}
+								setNewPlaylist={setNewPlaylist}
+								coverTile={coverTile}
+								setCoverTile={setCoverTile}
+							/>
+						: currentStep === 3 ? 
+							<Step3
+								newPlaylist={newPlaylist}
+								desc={props.desc}
+								title={props.title}
+								tracks_total={props.tracks_total}
+								privacy={props.privacy}
+								cover={props.cover}
+								coverTile={coverTile}
+							/>
 						: null
 					}
 				</ActiveStep>
@@ -315,7 +374,25 @@ const StepCard = (props) => {
 					{StepBtnList[currentStep-1]}
 				</ButtonStep>
 			</StepCardWrapper>
+
+			{
+				warningDisplay ? 
+				<Warning
+					bgColor='var(--text1)'
+					color='var(--gray2)'
+					fSize='14px'
+					width='350px'
+					height='208px'
+					bColor='var(--gray3)'
+					display='flex'
+					text='Any data entered will be lost'
+					setWarningDisplay={setWarningDisplay}
+					no_action={WarningHandler}
+					yes_action={props.yes_action}
+				/>
+				: null
+			}
 		</StyledStepCard>
 	)
 }
-export default StepCard;
+export default PareDownCard;

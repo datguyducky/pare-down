@@ -4,6 +4,7 @@ import BrandSmall from './BrandSmall';
 import PlatformIcon from './PlatformIcon';
 import ButtonBorder from './ButtonBorder';
 import Spinner from './Spinner';
+import Warning from './Warning'
 
 export {
 	Button,
@@ -11,5 +12,6 @@ export {
 	BrandSmall,
 	PlatformIcon,
 	ButtonBorder,
-	Spinner
+	Spinner,
+	Warning
 }

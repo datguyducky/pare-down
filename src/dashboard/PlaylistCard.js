@@ -5,7 +5,7 @@ import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
 import PlaylistTrack from "./PlaylistTrack";
-import StepCard from './StepCard';
+import PareDownCard from './PareDownCard';
 
 
 const GlobalStyle = createGlobalStyle`
@@ -185,6 +185,7 @@ const PlaylistCard = (props) => {
 		follow: true
 	}) //TODO: fix follow saving
 	const [loading, setLoading] = useState(true);
+	const [displaySteps, setDisplaySteps] = useState(true);
 
 
 	async function fetchTracks() {
@@ -277,8 +278,14 @@ const PlaylistCard = (props) => {
 		fetchTracks();
 	}
 
+
 	const followFormat = (num) => {
 		return Math.abs(num) > 999 ? Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+	}
+
+
+	const StepShow = () => {
+		setDisplaySteps(false);
 	}
 
 	
@@ -333,7 +340,7 @@ const PlaylistCard = (props) => {
 							</p>
 							
 							<BtnList>
-								<li>
+								<li onClick={() => setDisplaySteps('flex')}>
 									<Copy size={14}/>
 									<span>Pare Down</span>
 								</li>
@@ -390,7 +397,20 @@ const PlaylistCard = (props) => {
 				</TracksWrapper>
 			</CardWrapper>
 
-			<StepCard userTracksData={userTracks}/>
+			{
+			displaySteps ?
+				<PareDownCard 
+					playlistID={l.state.id}
+					tracks_total={l.state.tracks_total}
+					display='flex'
+					yes_action={StepShow}
+					desc={l.state.description}
+					title={l.state.name}
+					privacy={l.state.public}
+					cover={l.state.cover}
+				/>
+			: null
+			}
 		</StyledPlaylistCard>
 	)
 }

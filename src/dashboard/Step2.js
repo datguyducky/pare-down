@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect  } from "react";
 import styled from 'styled-components';
 import { ArrowDown, ArrowUp } from 'react-feather';
 import PlaylistTrackSmall from './PlaylistTrackSmall';
-
+import { Spinner } from "../components";
 
 
 const StyledStep2 = styled.div`
@@ -76,20 +76,116 @@ const TracksWrapper = styled.div`
 
 
 const Step2 = (props) => {
-	const userTracks = props.userTracks;
+	//TODO: use props.new_order for sorting playlist
+	let offset = 0;
+	let check = 1;
+	const [userTracks, setUserTracks] = useState([]);
+	const [sortTracks, setSortTracks] = useState(true);
+	const [loading, setLoading] = useState(true);
 
-	const orderBtnHandler = () => {
-		userTracks.reverse();
+
+	async function fetchTracks() {
+		const accessToken = localStorage.getItem('SpotifyAuth');
+		const tracks_total = props.tracks_total;
+		
+		fetch(`https://api.spotify.com/v1/playlists/${props.playlistID}/tracks?fields=items(track)&offset=${offset}`, {
+			headers: {
+				'Authorization': 'Bearer ' + accessToken
+			}
+		})
+		.then((response) => {
+			return response.json()
+		})
+		.then((data) => {
+			if(offset !== 0 || check === 0 ) {
+				data.items.reverse();
+			}
+			
+			setUserTracks(
+				data.items.map((item, i) => {
+					return {
+						name: item.track.name,
+						artists: item.track.artists[0].name,
+						album: item.track.album.name,
+						duration_ms: item.track.duration_ms,
+						pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1,
+						cover: item.track.album.images[1].url ? item.track.album.images[1].url : ''
+					}
+				})
+			);
+
+			for(let i=0; i<4; i++) {
+				const loc = data.items[i].track.album.images[1].url
+				const url = loc ? loc : '';
+				props.setCoverTile(coverTile => [...coverTile, url]);
+			}
+
+			setLoading(false);
+		})
 	}
+
+	useEffect(() => {
+		fetchTracks();
+	}, [])
+
+
+	const sortHandle = () => {
+		const tracks_total = props.tracks_total;
+		if(sortTracks) {
+			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
+			check = tracks_total >= 100 ? 1 - 100 : 0;//TODO: what?
+		} else {
+			offset = 0;
+		}
+		
+		props.setCoverTile([]);
+		fetchTracks();
+	}
+
+
+	const newPlaylist = props.newPlaylist;
+	const inputHandle = (e) => {
+		const target = e.target;
+		const name = target.name;
+		return props.setNewPlaylist({...newPlaylist, [name]: target.value});
+	}
+
 
 	return (
 		<StyledStep2>
 			<label htmlFor='p-title'>number of songs <span id='input-req'>(required)</span></label>
-			<input type='text' id='p-number' required/>
+			<input
+				name='new_num_tracks'
+				type='text' 
+				id='p-number' 
+				required 
+				placeholder={
+					newPlaylist.new_num_tracks.length === 0
+					? 'Playlist Name'
+					: newPlaylist.new_num_tracks
+				} 
+				onChange={e => inputHandle(e)}
+			/>
 
 			<OrderWrapper>
-				<OrderBtn onClick={orderBtnHandler}>
-					<ArrowDown size={16}/>
+				<OrderBtn 
+					onClick={() => {
+						setSortTracks(!sortTracks);
+						
+						if(sortTracks) {
+							props.setNewPlaylist({...newPlaylist, 'new_order': true});
+						} else {
+							props.setNewPlaylist({...newPlaylist, 'new_order': false});
+						}
+
+						sortHandle();
+					}}
+				>
+					{
+					sortTracks
+						? <ArrowDown size={16}/>
+						: <ArrowUp size={16}/>
+					}
 					<span>Order by</span>
 				</OrderBtn>
 				
@@ -100,14 +196,16 @@ const Step2 = (props) => {
 
 			<TracksWrapper>
 				{
-					userTracks
-					? userTracks.map((p, i) => 
-						<PlaylistTrackSmall
-							playlist={p} 
-							key={i}
-						/>
-					)
-					: null
+					!loading ?
+						userTracks ? 
+							userTracks.map((p, i) => 
+								<PlaylistTrackSmall
+									playlist={p} 
+									key={i}
+								/>
+							)
+						: null
+					: <Spinner/>
 				}
 			</TracksWrapper>
 		</StyledStep2>
