@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { ButtonBorder } from '../components';
+import { ButtonBorder, Spinner } from '../components';
 import PlaylistCover from './PlaylistCover';
 import queryString from 'query-string';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -207,7 +207,7 @@ export default class Dashboard extends Component {
 										history={this.props.history}
 									/>
 								)
-							: null
+							: <Spinner/>
 						}
 					</PlaylistsCoverWrapper>
 				</DashboardWrapper>

@@ -1,11 +1,25 @@
 import React, { useEffect } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { X } from 'react-feather';
 
 
 const GlobalStyle = createGlobalStyle`
  	body {
 		overflow: hidden;
+	}
+`
+const PopUpEntrance = keyframes`
+	0% {
+		transform: scale(.7);
+		opacity: 0;
+	}
+	80% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
 	}
 `
 const StyledPopUp = styled.div`
@@ -20,6 +34,7 @@ const StyledPopUp = styled.div`
 	text-align: center;
 	cursor: default;
 	z-index: 1000;
+	animation: ${PopUpEntrance} .15s linear;
 
 	span {
 		display: flex;

@@ -25,9 +25,6 @@ const CardWrapper = styled.div`
 	width: 1240px;
 	margin: 12px auto;
 `
-const DetailsWrapper = styled.div`
-	
-`
 const DetailsHeader = styled(Link)`
 	display: inline;
 	color: inherit;
@@ -103,7 +100,7 @@ const Playlist = styled.div`
 		width: 620px;
 		overflow: hidden;
 	}
-` //TODO: overflowing for long string in description of playlist
+`
 const DetailsList = styled.ul`
 	display: flex;
 	align-items: center;
@@ -326,7 +323,7 @@ const PlaylistCard = (props) => {
 			<DashboardNav />
 				
 			<CardWrapper>
-				<DetailsWrapper>
+				<div>
 					<DetailsHeader to='/dashboard'>
 						<h1> <ArrowLeft size={28}/> Playlist details </h1>
 					</DetailsHeader>
@@ -386,7 +383,7 @@ const PlaylistCard = (props) => {
 							</BtnList>
 						</Playlist>
 					</Details>
-				</DetailsWrapper>
+				</div>
 
 				<TracksWrapper>
 					<TracksDetails>

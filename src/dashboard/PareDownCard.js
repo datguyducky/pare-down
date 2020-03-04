@@ -29,6 +29,20 @@ const Overlay = styled.div`
 	height: 100%;
 	z-index: 10;
 `
+const StepEntrance = keyframes`
+	0% {
+		transform: scale(.7);
+		opacity: 0;
+	}
+	80% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+`
 const StepCardWrapper = styled.div`
 	z-index: 100;
 	background-color: var(--gray2);
@@ -39,6 +53,7 @@ const StepCardWrapper = styled.div`
 	border: 1px solid var(--gray3);
 	position: relative;
 	flex-direction: column;
+	animation: ${StepEntrance} .15s linear;
 `
 const HeaderWrapper = styled.div`
 	color: inherit;

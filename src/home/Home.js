@@ -13,7 +13,6 @@ import '../utils/reset.css';
 import '../utils/colors.css';
 
 const spotify = require('../assets/spotify.png');
-const apple_music = require('../assets/apple_music.png');
 
 
 /* styling */
@@ -567,14 +566,8 @@ export default class Home extends Component {
 								bgColor='#1ed760'
 								size={'26px'}
 								bRadius={'8px'}
-								mRight={'8px'}
+								mRight={'0'}
 								icon={spotify}
-							/>
-							<PlatformIcon
-								bgColor='#fff'
-								size={'26px'}
-								bRadius={'8px'}
-								icon={apple_music}
 							/>
 					</div>
 				</PlatformsWrapper>

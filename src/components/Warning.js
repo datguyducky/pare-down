@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const WarningWrapper = styled.div`
 	position: absolute;
@@ -14,7 +14,20 @@ const WarningWrapper = styled.div`
 	background-color: rgba(0, 0, 0, 0.6);
 	display: ${props => props.display || 'flex'};
 `
-
+const WarningEntrance = keyframes`
+	0% {
+		transform: scale(.7);
+		opacity: 0;
+	}
+	80% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+`
 const StyledWarning = styled.div`
 	height: ${props => props.h || '0'};
 	width: ${props => props.w || '0'};
@@ -26,6 +39,7 @@ const StyledWarning = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	animation: ${WarningEntrance} .15s linear;
 
 	& > h1 {
 		font-size: 24px;

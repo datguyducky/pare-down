@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { ArrowLeft, X } from 'react-feather';
 import Step1 from './Step1';
 import { withRouter } from 'react-router-dom';
@@ -28,6 +28,20 @@ const Overlay = styled.div`
 	height: 100%;
 	z-index: 10;
 `
+const EditEntrance = keyframes`
+	0% {
+		transform: scale(.7);
+		opacity: 0;
+	}
+	80% {
+		transform: scale(1.05);
+		opacity: 1;
+	}
+	100% {
+		transform: scale(1);
+		opacity: 1;
+	}
+`
 const EditCardWrapper = styled.div`
 	z-index: 100;
 	background-color: var(--gray2);
@@ -38,6 +52,7 @@ const EditCardWrapper = styled.div`
 	border: 1px solid var(--gray3);
 	position: relative;
 	flex-direction: column;
+	animation: ${EditEntrance} .15s linear;
 `
 const HeaderWrapper = styled.div`
 	color: inherit;

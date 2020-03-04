@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 const spotify = require('../assets/spotify.png');
 const apple_music = require('../assets/apple_music.png');
+const deezer = require('../assets/deezer.jpg');
 
 
 const Nav = styled.nav`
@@ -79,6 +80,7 @@ export default class DashboardNav extends Component {
 		this.state = {
 			SpotifyAuth: '',
 			AppleAuth: '',
+			DeezerAuth: '',
 			filterString: '',
 		}
 
@@ -96,6 +98,7 @@ export default class DashboardNav extends Component {
 	render() {
 		const SpotifyAuth = this.state.SpotifyAuth;
 		const AppleAuth = this.state.AppleAuth;
+		const DeezerAuth = this.state.DeezerAuth;
 
 
 		return (
@@ -133,6 +136,23 @@ export default class DashboardNav extends Component {
 						<PlatformIconStatus
 							style={{
 								backgroundColor: AppleAuth
+								? '#37ed8f'
+								: '#ed373a'
+							}}
+						/>
+						<span>COMING SOON</span>
+					</li>
+
+					<li id='p-disabled'>
+						<PlatformIcon
+							bgColor='#fff'
+							size={'64px'}
+							bRadius={'10px'}
+							icon={deezer}
+						/>
+						<PlatformIconStatus
+							style={{
+								backgroundColor: DeezerAuth
 								? '#37ed8f'
 								: '#ed373a'
 							}}
