@@ -110,10 +110,10 @@ export default class Dashboard extends Component {
                 }
             })
             .then((r) => {
-				if(r.status === 401) {
-					this.platformSyncRefresh();
-				} else {
+				if(r.ok) {
 					return r.json();
+				} else {
+					this.platformSyncRefresh();
 				}
 			})
 			//

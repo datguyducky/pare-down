@@ -153,7 +153,7 @@ const EditCard = (props) => {
 		.then((response) => {
 			response.ok
 			? PopUpHandler()
-			: console.log('something went wrong')
+			: console.log(response.status)
 		})
 
 	}

@@ -308,7 +308,7 @@ const PlaylistCard = (props) => {
 		.then((response) => {
 			response.ok
 			? showDeletePopUp(true)
-			: console.log(response)
+			: console.log(response.status)
 		})
 		
 		document.getElementById('warning-card').style.display = 'none';
