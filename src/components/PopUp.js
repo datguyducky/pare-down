@@ -51,13 +51,13 @@ const StyledPopUp = styled.div`
 
 
 const PopUp = props => {
-	const  { text, bgColor, color, fSize, hide } = props;
+	const  { text, hide } = props;
 
 	useEffect(() => {
 		if(props.load_action) {
 			props.load_action();
 		}
-	}, [])
+	})
 
 
 	return (

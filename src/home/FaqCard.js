@@ -11,7 +11,7 @@ const qShow = keyframes`
 		opacity: 1;
 	}
 `
-const FaqCard = styled.div`
+const StyledFaqCard = styled.div`
 	cursor: pointer;
 	margin-top: 36px;
 	color: var(--text1);
@@ -57,7 +57,7 @@ const Answer = styled.p`
 `
 
 
-export default class FAQ extends Component {
+export default class FaqCard extends Component {
 	constructor() {
 		super()
 		this.state = {
@@ -85,7 +85,7 @@ export default class FAQ extends Component {
 
 
 		return (
-			<FaqCard onClick={this.handleClick} id={'faq-'+ID}>
+			<StyledFaqCard onClick={this.handleClick} id={'faq-'+ID}>
 				<Question>
 					{
 						document.getElementsByClassName('faq-card-a')[ID] ?
@@ -101,7 +101,7 @@ export default class FAQ extends Component {
 				</Question>
 
 				<Answer className='faq-card-a'> {A} </Answer>
-			</FaqCard>
+			</StyledFaqCard>
 		)
 	}
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
-import { Spinner, Warning, PopUp } from '../components/';
+import { Spinner, Warning, PopUp, Emoji } from '../components/';
 import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
@@ -219,22 +219,24 @@ const PlaylistCard = (props) => {
 			}
 		})
 		.then((data) => {
-			if(offset !== 0 || check === 0 ) {
-				data.items.reverse();
+			if(data) {
+				if(offset !== 0 || check === 0 ) {
+					data.items.reverse();
+				}
+				
+				setUserTracks(
+					data.items.map((item, i) => {
+						return {
+							name: item.track.name,
+							artists: item.track.artists[0].name,
+							album: item.track.album.name,
+							duration_ms: item.track.duration_ms,
+							pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1
+						}
+					})
+				);
+				setLoading(false);
 			}
-			
-			setUserTracks(
-				data.items.map((item, i) => {
-					return {
-						name: item.track.name,
-						artists: item.track.artists[0].name,
-						album: item.track.album.name,
-						duration_ms: item.track.duration_ms,
-						pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1
-					}
-				})
-			);
-			setLoading(false);
 		})
 	}
 
@@ -250,16 +252,16 @@ const PlaylistCard = (props) => {
 			})
 			.then(response => response.json())
 			.then((data) => {
-				if(data) {
+				if(data.followers) {
 					setFollowersTotal(data.followers.total)
 				}
 			})
 		}
-		followCount();
-		
 
+
+		followCount();
 		fetchTracks();
-	}, [])
+	})
 
 
 	const sortHandle = () => {
@@ -338,13 +340,14 @@ const PlaylistCard = (props) => {
 								<li style={{color: 'var(--brand)'}}>{l.state.service}</li>
 								<li> {l.state.tracks_total} tracks </li>
 								<li>
-									<span style={{
-										color: 'red',
-										marginRight: 4
-									}}> 
-										❤️ 
+									<Emoji 
+										symbol='❤️' 
+										label='heart' 
+										color='red'
+									/> 
+									<span style={{marginLeft: 4}}>
+										{followFormat(followersTotal)} followers 
 									</span>
-									{followFormat(followersTotal)} followers 
 								</li>
 								<li> 
 									<Globe size={14}/>

@@ -149,7 +149,7 @@ const Step2 = (props) => {
 
 	useEffect(() => {
 		fetchTracks();
-	}, [])
+	})
 
 
 	const sortHandle = () => {

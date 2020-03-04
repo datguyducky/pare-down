@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Emoji } from '../components';
 
 const StyledFooter = styled.footer`
 	background-color: var(--gray2);
@@ -27,8 +28,8 @@ export default function Footer() {
 	return (
 		<StyledFooter>
 			<span>
-				Made with <span style={{color: 'red'}}> ❤️ </span> by
-				<a href='https://github.com/datguysheepy/pare-down' target='_blank'> @datguysheepy</a>
+				Made with <Emoji symbol='❤️' label='heart' color='red'/> by 
+				<a href='https://github.com/datguysheepy/pare-down'> @datguysheepy</a>
 			</span>
 		</StyledFooter>
 	)

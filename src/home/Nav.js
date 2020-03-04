@@ -112,7 +112,7 @@ export default function Nav() {
 						bColor = 'var(--brand)'
 					/>
 				</NavLink>
-				<NavLink><a href='#'>English</a></NavLink>
+				<NavLink><a href='/'>English</a></NavLink>
 			</NavContent>
 
 			<NavMobile>
@@ -122,7 +122,7 @@ export default function Nav() {
 					<li><a href='#pricing' onClick={closeMobile}>Pricing</a></li>
 					<li><a href='#features' onClick={closeMobile}>Features</a></li>
 					<li><a href='#faq' onClick={closeMobile}>FAQ</a></li>
-					<li><a href='#' onClick={closeMobile}>English</a></li>
+					<li><a href='/' onClick={closeMobile}>English</a></li>
 				</NavMobileContent>
 			</NavMobile>
 		</NavWrapper>

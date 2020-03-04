@@ -5,7 +5,8 @@ import PlatformIcon from './PlatformIcon';
 import ButtonBorder from './ButtonBorder';
 import Spinner from './Spinner';
 import Warning from './Warning';
-import PopUp from './PopUp'
+import PopUp from './PopUp';
+import Emoji from './Emoji';
 
 export {
 	Button,
@@ -15,5 +16,6 @@ export {
 	ButtonBorder,
 	Spinner,
 	Warning,
-	PopUp
+	PopUp,
+	Emoji
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from 'styled-components';
 import { Globe } from 'react-feather';
 
@@ -120,7 +120,7 @@ const Step3 = (props) => {
 				<h1>SELECTED PLAYLIST:</h1>
 				
 				<div style={{display: 'flex'}}>
-					<img src={props.cover}/>
+					<img src={props.cover} alt=''/>
 					<ul>
 						<li>{props.title}</li>
 						<li>{props.desc}</li>
@@ -146,10 +146,10 @@ const Step3 = (props) => {
 
 				<ListWrapper style={{display: 'flex'}}>
 					<CoverDiv>
-						<img src={props.coverTile[0]}/>
-						<img src={props.coverTile[1]}/>
-						<img src={props.coverTile[2]}/>
-						<img src={props.coverTile[3]}/>
+						<img src={props.coverTile[0]} alt=''/>
+						<img src={props.coverTile[1]} alt=''/>
+						<img src={props.coverTile[2]} alt=''/>
+						<img src={props.coverTile[3]} alt=''/>
 					</CoverDiv>
 					<ul>
 						<li>{pd.new_title}</li>

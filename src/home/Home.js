@@ -348,7 +348,7 @@ const FCard = styled.div`
 		text-align: center;
 	}
 ` 
-const FAQ = styled.section`
+const FaqWrapper = styled.section`
 	background-color: var(--gray1);
 	width: 100%;
 	display: flex;
@@ -368,7 +368,7 @@ const FAQ = styled.section`
 	}
 `
 
-const FAQ_SVG = styled.div`
+const FaqSvg = styled.div`
 	background-image: url('${faq_svg}');
 	opacity: 0.12;
 	width: 100%;
@@ -645,8 +645,8 @@ export default class Home extends Component {
 					</FCardsWrapper>
 				</Features>
 
-				<FAQ id='faq'>
-					<div><FAQ_SVG/></div>
+				<FaqWrapper id='faq'>
+					<div><FaqSvg/></div>
 						
 						
 							<SectionTitle>FAQ</SectionTitle>
@@ -695,7 +695,7 @@ export default class Home extends Component {
 									A="For PareDown to work fully, you need to grant it access to one of the supported platforms. By doing that the application now have access to the following data: manage your public playlis, manage and view your private playlists, view your profile. This is the only data that is accesed by PareDown and is NOT saved or collected for later use."
 									id={8}
 								/>
-				</FAQ>
+				</FaqWrapper>
 			</SectionsWrapper>
 
 			<Footer/>
