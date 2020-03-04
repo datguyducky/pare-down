@@ -148,9 +148,7 @@ export default class Dashboard extends Component {
 		let refresh_token = parsed.refresh_token;
 		let redirect_auth = parsed.access_token;
 		if (redirect_auth) {
-			if(refresh_token !== undefined) {
-				localStorage.setItem('SpotifyRef', refresh_token);
-			}
+			localStorage.setItem('SpotifyRef', refresh_token);
 			localStorage.setItem('SpotifyAuth', redirect_auth);
 			window.location = window.location.href.includes('localhost')
 			? 'http://localhost:3000/dashboard/' 

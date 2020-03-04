@@ -1,11 +1,17 @@
 import React from 'react';
-import { Copy } from 'react-feather';
+const brand = require('../assets/pare-down.png');
 
 
 export default function BrandSmall() {
 	return (
 		<div className="BrandSmall">
-			<Copy size={42} style={{color: 'var(--text1)'}}/>
+			<img 
+				src={brand}
+				style={{
+					height: 42,
+					width: 42
+				}}
+			/>
 		</div>
 	)
 }

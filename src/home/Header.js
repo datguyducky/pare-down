@@ -13,6 +13,10 @@ const HeaderWrapper = styled.header`
 	@media (max-width: 920px) {
 		width: 100%;
 	}
+
+	a {
+		text-decoration: none;
+	}
 `
 
 

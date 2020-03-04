@@ -1,6 +1,7 @@
 import React from 'react';
-import { Copy } from 'react-feather';
 import styled from 'styled-components';
+const brand = require('../assets/pare-down.png');
+
 
 const BrandBigWrapper = styled.div`
 	color: var(--text1);
@@ -13,7 +14,8 @@ const BrandBigWrapper = styled.div`
 export default function BrandBig() {
 	return (
 		<BrandBigWrapper>
-			<Copy size={28}/><span style={{marginLeft: 4}}> PareDown </span>
+			<img src={brand} style={{width: 28, height: 28}}/>
+			<span style={{marginLeft: 4}}> PareDown </span>
 		</BrandBigWrapper>
 	)
 }
