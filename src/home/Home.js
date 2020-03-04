@@ -623,7 +623,7 @@ export default class Home extends Component {
 							<h2>
 								<Calendar className='f-card-i' size={34}/>
 								<span>
-									<span className='f-card-t'>NEW</span>
+									<span className='f-card-t'>SOON</span>
 									Calendar
 								</span>
 							</h2>

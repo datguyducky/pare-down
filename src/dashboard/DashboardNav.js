@@ -24,6 +24,26 @@ const Nav = styled.nav`
 		margin-top: 18px;
 		position: relative;
 		cursor: pointer;
+
+			&#p-disabled {
+				opacity: 0.4;
+				cursor: not-allowed;
+
+				span {
+					position: absolute;
+					width: 100%;
+					height: 100%;
+					top: 0;
+					left: 0;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					font-weight: 700;
+					color: var(--gray3);
+					text-align: center;
+					font-size: 16px;
+				}
+			}
 		}
 	}
 `
@@ -103,7 +123,7 @@ export default class DashboardNav extends Component {
 						/>
 					</li>
 						
-					<li>
+					<li id='p-disabled'>
 						<PlatformIcon
 							bgColor='#fff'
 							size={'64px'}
@@ -116,7 +136,8 @@ export default class DashboardNav extends Component {
 								? '#37ed8f'
 								: '#ed373a'
 							}}
-							/>
+						/>
+						<span>COMING SOON</span>
 					</li>
 				</ul>
 			</Nav>
