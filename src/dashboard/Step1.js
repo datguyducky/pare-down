@@ -99,9 +99,7 @@ const Step1 = (props) => {
 				id='p-title' 
 				required 
 				value={
-					newPlaylist.new_title.length === 0
-					? props.title
-					: newPlaylist.new_title
+					newPlaylist.new_title
 				}
 				onChange={e => inputHandle(e)}
 			/>

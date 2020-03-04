@@ -203,7 +203,7 @@ const PareDownCard = (props) => {
 	const [currentStep, setStep] = useState(1);
 	const [warningDisplay, setWarningDisplay] = useState(false);
 	const [newPlaylist, setNewPlaylist] = useState({
-		new_title: '',
+		new_title: props.title,
 		new_desc: '',
 		new_privacy: true,
 		new_num_tracks: 0,
