@@ -11,6 +11,7 @@ export default function BrandSmall() {
 					height: 42,
 					width: 42
 				}}
+				alt='brand icon'
 			/>
 		</div>
 	)

@@ -14,7 +14,11 @@ const BrandBigWrapper = styled.div`
 export default function BrandBig() {
 	return (
 		<BrandBigWrapper>
-			<img src={brand} style={{width: 28, height: 28}}/>
+			<img 
+				src={brand} 
+				style={{width: 28, height: 28}} 
+				alt='brand icon'
+			/>
 			<span style={{marginLeft: 4}}> PareDown </span>
 		</BrandBigWrapper>
 	)
