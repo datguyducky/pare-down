@@ -310,7 +310,7 @@ const PareDownCard = (props) => {
 			method: 'POST',
 			body: JSON.stringify({
 				'name': newPlaylist.new_title,
-				'description': 'Created with pare-down.mtymon.me || ' + newPlaylist.new_desc,
+				'description': 'Created with pare-down.mtymon.me' + newPlaylist.new_desc,
 				'public': newPlaylist.new_privacy
 			}),
 			headers: {
@@ -489,6 +489,7 @@ const PareDownCard = (props) => {
 					height='208px'
 					bColor='var(--gray3)'
 					display='flex'
+					header='Are you sure you want to exit?'
 					text='Any data entered will be lost'
 					setWarningDisplay={setWarningDisplay}
 					no_action={WarningHandler}

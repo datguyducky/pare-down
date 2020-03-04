@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styled, { createGlobalStyle } from 'styled-components';
-import { Spinner, PopUp } from '../components/';
+import { Spinner, Warning, PopUp } from '../components/';
 import { useLocation, Link } from "react-router-dom";
 import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-feather';
 import DashboardNav from './DashboardNav';
@@ -173,6 +173,13 @@ const Tracks = styled.div`
 	background-color: var(--gray2);
 	box-shadow: 0px 8px 8px 0 rgba(0, 0, 0, 0.18);
 `
+const WarningCardWrapper = styled.div`
+	height: 100vh;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+`
 
 
 const PlaylistCard = (props) => {
@@ -188,6 +195,8 @@ const PlaylistCard = (props) => {
 	const [loading, setLoading] = useState(true);
 	const [displaySteps, setDisplaySteps] = useState(false);
 	const [editState, showEdit] = useState(false);
+	const [deleteState, showDelete] = useState(false);
+	const [deletePopUpState, showDeletePopUp] = useState(false);
 
 
 	async function fetchTracks() {
@@ -291,10 +300,37 @@ const PlaylistCard = (props) => {
 	}
 
 
-	const yesHandler = () => {
+	const editHandler = () => {
 		showEdit(false);
 	}
 
+
+	const deleteNoHandler = () => {
+		showDelete(false);
+	}
+
+
+	const deleteYesHandler = async () => {
+		const accessToken = localStorage.getItem('SpotifyAuth');
+		fetch(`https://api.spotify.com/v1/playlists/${l.state.id}/followers`, {
+			method: 'DELETE',
+			headers: {
+				'Authorization': 'Bearer ' + accessToken
+			}
+		})
+		.then((response) => {
+			response.ok
+			? showDeletePopUp(true)
+			: console.log(response)
+		})
+		
+		document.getElementById('warning-card').style.display = 'none';
+	}
+
+	
+	const deletePopUpHandler = () => {
+		props.history.push('/dashboard');
+	}
 	
 	return (
 		<StyledPlaylistCard>
@@ -359,7 +395,9 @@ const PlaylistCard = (props) => {
 									<Edit size={14}/>
 									<span>Edit</span>
 								</li>
-								<li>
+								<li onClick={() => {
+									showDelete(true)
+								}}>
 									<Trash size={14}/>
 								</li>
 							</BtnList>
@@ -429,11 +467,41 @@ const PlaylistCard = (props) => {
 			editState ?
 				<EditCard
 					playlistID={l.state.id}
-					yes_action={yesHandler}
+					yes_action={editHandler}
 					desc={l.state.description}
 					title={l.state.name}
 					privacy={l.state.public}
 					showEdit={showEdit}
+				/>
+			: null
+			}
+
+			{
+			deleteState ?
+				<WarningCardWrapper>
+					<Warning
+						bgColor='var(--text1)'
+						color='var(--gray2)'
+						fSize='14px'
+						width='460px'
+						height='208px'
+						bColor='var(--gray3)'
+						display='flex'
+						header={`CONFIRM DELETE`}
+						text={`Warning! By clicking "YES" ${l.state.name} playlist will be deleted from your library!`}
+						setWarningDisplay={showDelete}
+						no_action={deleteNoHandler}
+						yes_action={deleteYesHandler}
+					/>
+				</WarningCardWrapper>
+			: null
+			}
+
+			{
+			deletePopUpState ?
+				<PopUp
+					text={`${l.state.name} playlist was deleted from your library!`}
+					hide={deletePopUpHandler}
 				/>
 			: null
 			}

@@ -209,6 +209,7 @@ const EditCard = (props) => {
 					height='208px'
 					bColor='var(--gray3)'
 					display='flex'
+					header='Are you sure you want to exit?'
 					text='Any data entered will be lost'
 					setWarningDisplay={setWarningDisplay}
 					no_action={WarningHandler}

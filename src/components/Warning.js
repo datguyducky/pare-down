@@ -26,7 +26,6 @@ const StyledWarning = styled.div`
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	display: flex;
 
 	& > h1 {
 		font-size: 24px;
@@ -71,7 +70,7 @@ const WarningBtn = styled.button`
 
 
 const Warning = props => {
-	const  { text, bgColor, color, fSize, width, height, bColor, display } = props;
+	const  { text, bgColor, color, fSize, width, height, bColor, display, header } = props;
 
 
 	return (
@@ -83,8 +82,12 @@ const Warning = props => {
 				w={width}
 				h={height}
 				bcolor={bColor}
+				id='warning-card'
+				style={{
+					display: 'flex'
+				}}
 			>
-				<h1>Are you sure you want to exit?</h1>
+				<h1>{header}</h1>
 				
 				<p>
 					{text}
