@@ -6,6 +6,7 @@ import { ArrowLeft, Globe, Copy, Trash, Edit, ArrowDown, ArrowUp  } from 'react-
 import DashboardNav from './DashboardNav';
 import PlaylistTrack from "./PlaylistTrack";
 import PareDownCard from './PareDownCard';
+import EditCard from "./EditCard";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -185,7 +186,8 @@ const PlaylistCard = (props) => {
 		follow: true
 	}) //TODO: fix follow saving
 	const [loading, setLoading] = useState(true);
-	const [displaySteps, setDisplaySteps] = useState(true);
+	const [displaySteps, setDisplaySteps] = useState(false);
+	const [editState, showEdit] = useState(false);
 
 
 	async function fetchTracks() {
@@ -288,6 +290,11 @@ const PlaylistCard = (props) => {
 		setDisplaySteps(false);
 	}
 
+
+	const yesHandler = () => {
+		showEdit(false);
+	}
+
 	
 	return (
 		<StyledPlaylistCard>
@@ -346,7 +353,9 @@ const PlaylistCard = (props) => {
 									<Copy size={14}/>
 									<span>Pare Down</span>
 								</li>
-								<li>
+								<li onClick={() => {
+									showEdit(true)
+								}}>
 									<Edit size={14}/>
 									<span>Edit</span>
 								</li>
@@ -412,6 +421,19 @@ const PlaylistCard = (props) => {
 					cover={l.state.cover}
 					userID={l.state.userID}
 					setDisplaySteps={setDisplaySteps}
+				/>
+			: null
+			}
+
+			{
+			editState ?
+				<EditCard
+					playlistID={l.state.id}
+					yes_action={yesHandler}
+					desc={l.state.description}
+					title={l.state.name}
+					privacy={l.state.public}
+					showEdit={showEdit}
 				/>
 			: null
 			}

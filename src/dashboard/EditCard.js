@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import styled, { createGlobalStyle, keyframes } from 'styled-components';
-import { ArrowLeft, X, Check } from 'react-feather';
+import styled, { createGlobalStyle } from 'styled-components';
+import { ArrowLeft, X } from 'react-feather';
 import Step1 from './Step1';
-import Step2 from './Step2';
-import Step3 from './Step3';
-import { Warning } from "../components";
+import { withRouter } from 'react-router-dom';
+import { Warning, PopUp } from "../components";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -12,14 +11,14 @@ const GlobalStyle = createGlobalStyle`
 		overflow: hidden;
 	}
 `
-const StyledStepCard = styled.div`
+const StyledEditCard = styled.div`
 	width: 100vw;
 	height: 100vh;
 	position: absolute;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	display: ${props => props.display};
+	display: 'flex';
 `
 const Overlay = styled.div`
 	position: absolute;
@@ -29,7 +28,7 @@ const Overlay = styled.div`
 	height: 100%;
 	z-index: 10;
 `
-const StepCardWrapper = styled.div`
+const EditCardWrapper = styled.div`
 	z-index: 100;
 	background-color: var(--gray2);
 	height: 760px;
@@ -38,7 +37,6 @@ const StepCardWrapper = styled.div`
 	border-radius: 4px;
 	border: 1px solid var(--gray3);
 	position: relative;
-	display: flex;
 	flex-direction: column;
 `
 const HeaderWrapper = styled.div`
@@ -53,7 +51,7 @@ const HeaderWrapper = styled.div`
 	position: relative;
 	padding: 9px 21px;
 	z-index: -1;
-	padding-bottom: 42px;
+	padding-bottom: 14px;
 `
 const Header = styled.button`
 	background-color: transparent;
@@ -85,94 +83,7 @@ const HeaderClose = styled.button`
 	padding: 9px 21px;
 	cursor: pointer;
 `
-const StepsWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	margin-top: -12px;
-	margin-bottom: 16px;
-`
-const StepIcon = styled.ul`
-	display: flex;
-	margin-bottom: 24px;
-`
-const rotateSpinner = keyframes`
-	from {
-		transform: rotate(0);
-	}
-	to {
-		transform: rotate(360deg);
-	}
-`
-const doneScale = keyframes`
-	from {
-		transform: scale(1.5);
-	}
-	to {
-		transform: scaleY(1);
-	}
-`
-const IconSpinner = styled.li`
-	margin-right: 8px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	height: 23px;
-	width: 23px;
-	border-radius: 24px;
-	border: 1px solid var(--gray3);
-	background-color: var(--gray2);
-	position: relative;
-	cursor: default;
-
-	:last-of-type {
-		margin-right: 0;
-	}
-
-	&.active-step {
-		background-color: var(--brand);
-	}
-
-	&.done {
-		background-color: #1ed760;
-		animation-name: ${doneScale};
-		animation-duration: 0.6s;
-	}
-
-	&.active-step > div {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		width: 25px;
-		height: 25px;
-		border: 2px solid transparent;
-		border-left-color: var(--text1);
-		border-radius: 100%;
-		animation-name: ${rotateSpinner};
-		animation-iteration-count: infinite;
-		animation-duration: 2s;
-		animation-timing-function: linear;
-		position: absolute;
-	}
-
-	&.done > div {
-		display: none;
-	}
-
-	&.redo > div {
-		display: flex;
-	}
-`
-const Step = styled.h2`
-	font-size: 21px;
-	font-weight: 600;
-	color: var(--text1);
-
-	& > span {
-		color: var(--brand);
-	}
-`
-const ActiveStep = styled.div`
+const Edit = styled.div`
 	padding: 32px 64px;
 	background-color: var(--gray1);
 	flex: 1;
@@ -200,76 +111,72 @@ const ButtonStep = styled.button`
 	}
 `
 
-const PareDownCard = (props) => {
-	const [currentStep, setStep] = useState(1);
+const EditCard = (props) => {
 	const [warningDisplay, setWarningDisplay] = useState(false);
+	const [displayPopUp, showPopUp] = useState(false);
+	const [newPlaylist, setNewPlaylist] = useState({
+		new_title: props.title,
+		new_desc: props.desc,
+		new_privacy: props.privacy,
+	});
 
-
-	const StepBtnHandler = () => {
-		if(currentStep < 3) {
-			setStep(currentStep + 1)
-
-
-			const oldStepIcon = document.querySelector('#step-icons').childNodes[currentStep - 1];
-			oldStepIcon.classList.add('done'); 
-			if(oldStepIcon.classList.contains('redo')) {
-				oldStepIcon.classList.remove('redo');
-			}
-
-
-			const nextStepIcon = document.querySelector('#step-icons').childNodes[currentStep];
-			nextStepIcon.classList.add('active-step'); 
-			
-		} else {
-			console.log('end')
-		}
-	}
-
-	const HeaderHandler = () => {
-		if(currentStep > 1 && currentStep <= 3) {
-			setStep(currentStep - 1) 
+	
+	const editHandler = async () => {
+		const accessToken = localStorage.getItem('SpotifyAuth');
 		
+		fetch(`https://api.spotify.com/v1/playlists/${props.playlistID}`, {
+			method: 'PUT',
+			body: JSON.stringify({
+				'name': newPlaylist.new_title,
+				'description': 'Created with pare-down.mtymon.me ' + newPlaylist.new_desc,
+				'public': newPlaylist.new_privacy
+			}),
+			headers: {
+				'Authorization': 'Bearer ' + accessToken
+			}
+		})
+		.then((response) => {
+			response.ok
+			? PopUpHandler()
+			: console.log('something went wrong')
+		})
 
-			const oldStepIcon = document.querySelector('#step-icons').childNodes[currentStep - 1];
-			oldStepIcon.classList.remove('active-step');
-			
-
-			const redoStepIcon = document.querySelector('#step-icons').childNodes[currentStep - 2];
-			redoStepIcon.classList.add('redo');
-
-		} else {
-			setWarningDisplay(true);
-		}
 	}
+
+
+	const PopUpHandler = () => {
+		let e = document.getElementById('edit-card-wrapper');
+		if(e.style.display === 'flex') {
+			e.style.display = 'none';
+		} else {
+			props.showEdit(false);
+			props.history.push('/dashboard');
+		}
+
+		showPopUp(!displayPopUp);
+	}
+
 
 	const WarningHandler = () => {
 		setWarningDisplay(false);
 	}
 	
-	const StepList = [
-		'Configure your playlist',
-		'Tracklist configuration',
-		'Confirm pare down'
-	]
-	const StepBtnList = [
-		'save configuration',
-		'confirm tracklist',
-		'pare down'
-	]
 
 	return (
-		<StyledEditCard display={props.displaySteps}>
+		<StyledEditCard>
 			<GlobalStyle/>
 			<Overlay/>
 
-			<StepCardWrapper>
+			<EditCardWrapper id='edit-card-wrapper' style={{display: 'flex'}}>
 				<HeaderWrapper>
-					<Header onClick={HeaderHandler}>
-						<h1> <ArrowLeft size={24}/> Pare Down </h1>
+					<Header onClick={() => {
+						setWarningDisplay(true);
+					}}>
+						<h1> <ArrowLeft size={24}/> Edit</h1>
 					</Header>
 					
 					<HeaderDesc>
-						Duplicate your playlist with pared number of songs
+						Update playlist details
 					</HeaderDesc>
 					
 					<HeaderClose onClick={() => setWarningDisplay(true)}>
@@ -277,54 +184,20 @@ const PareDownCard = (props) => {
 					</HeaderClose>
 				</HeaderWrapper>
 
-				<StepsWrapper>
-					<StepIcon id='step-icons'>
-						<IconSpinner className='active-step'>
-							{	
-								document.querySelector('#step-icons')
-								? document.querySelector('#step-icons').childNodes[0].classList.contains('done')
-									? <Check size={16}/>
-									: '1'
-								: '1'
-							}
-							<div/>
-						</IconSpinner>
-						<IconSpinner>
-							{
-								document.querySelector('#step-icons')
-								? document.querySelector('#step-icons').childNodes[1].classList.contains('done')
-									? <Check size={16}/>
-									: '2'
-								: '2'
-							}
-							<div/>
-						</IconSpinner>
-						<IconSpinner>
-							{
-								document.querySelector('#step-icons')
-								? document.querySelector('#step-icons').childNodes[2].classList.contains('done')
-									? <Check size={16}/>
-									: '3'
-								: '3'
-							}
-							<div/>
-						</IconSpinner>
-					</StepIcon>
+				<Edit>
+					<Step1
+						newPlaylist={newPlaylist}
+						setNewPlaylist={setNewPlaylist}
+						title={props.title}
+					/>
+				</Edit>
 
-					<Step>
-						<span>STEP {currentStep}: </span> 
-						{StepList[currentStep-1]}
-					</Step>
-				</StepsWrapper>
-
-				<ActiveStep>
-					<Step1/>
-				</ActiveStep>
-
-				<ButtonStep onClick={StepBtnHandler}>
-					{StepBtnList[currentStep-1]}
+				<ButtonStep onClick={() => {
+					editHandler()
+				}}>
+					Edit Playlist
 				</ButtonStep>
-			</StepCardWrapper>
+			</EditCardWrapper>
 
 			{
 				warningDisplay ? 
@@ -343,7 +216,16 @@ const PareDownCard = (props) => {
 				/>
 				: null
 			}
+
+			{
+				displayPopUp ?
+					<PopUp 
+						text='Done!'
+						hide={PopUpHandler}
+					/>
+				: null
+			}
 		</StyledEditCard>
 	)
 }
-export default EditCard;
+export default withRouter(EditCard);

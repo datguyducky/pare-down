@@ -39,7 +39,9 @@ const PopUp = props => {
 	const  { text, bgColor, color, fSize, hide } = props;
 
 	useEffect(() => {
-		props.load_action();
+		if(props.load_action) {
+			props.load_action();
+		}
 	}, [])
 
 
