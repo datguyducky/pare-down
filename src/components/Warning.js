@@ -39,6 +39,10 @@ const StyledWarning = styled.div`
 		text-align: center;
 		width: 90%;
 		margin: 16px 0;
+		text-overflow: ellipsis;
+		white-space: break-world;
+		height: 2.1em;
+		overflow: hidden;
 	}
 `
 const BtnWrapper = styled.div`

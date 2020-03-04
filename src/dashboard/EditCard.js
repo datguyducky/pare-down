@@ -221,7 +221,7 @@ const EditCard = (props) => {
 			{
 				displayPopUp ?
 					<PopUp 
-						text='Done!'
+						text='Playlist has been edited 🙂'
 						hide={PopUpHandler}
 					/>
 				: null

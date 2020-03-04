@@ -501,7 +501,7 @@ const PareDownCard = (props) => {
 			{
 				displayPopUp ?
 					<PopUp 
-						text='Pared down playlist was created!'
+						text='Pared down playlist has been created! 🙂'
 						hide={PopUpHandler}
 						load_action={POST_PD}
 					/>

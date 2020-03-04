@@ -113,33 +113,37 @@ const Step2 = (props) => {
 			}
 		})
 		.then((response) => {
-			return response.json()
+			if(response.ok){
+				return response.json()
+			}
 		})
 		.then((data) => {
-			if(offset !== 0 || check === 0 ) {
-				data.items.reverse();
-			}
-			
-			setUserTracks(
-				data.items.map((item, i) => {
-					return {
-						name: item.track.name,
-						artists: item.track.artists[0].name,
-						album: item.track.album.name,
-						duration_ms: item.track.duration_ms,
-						pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1,
-						cover: item.track.album.images[1].url ? item.track.album.images[1].url : ''
-					}
-				})
-			);
+			if(data) {
+				if(offset !== 0 || check === 0 ) {
+					data.items.reverse();
+				}
+				
+				setUserTracks(
+					data.items.map((item, i) => {
+						return {
+							name: item.track.name,
+							artists: item.track.artists[0].name,
+							album: item.track.album.name,
+							duration_ms: item.track.duration_ms,
+							pos: offset !== 0 || check === 0 ? tracks_total - i : i + 1,
+							cover: item.track.album.images[1].url ? item.track.album.images[1].url : ''
+						}
+					})
+				);
 
-			for(let i=0; i<4; i++) {
-				const loc = data.items[i].track.album.images[2].url
-				const url = loc ? loc : '';
-				props.setCoverTile(coverTile => [...coverTile, url]);
-			}
+				for(let i=0; i<4; i++) {
+					const loc = data.items[i].track.album.images[2].url
+					const url = loc ? loc : '';
+					props.setCoverTile(coverTile => [...coverTile, url]);
+				}
 
-			setLoading(false);
+				setLoading(false);
+			}
 		})
 	}
 

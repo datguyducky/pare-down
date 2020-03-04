@@ -35,6 +35,9 @@ const PlaylistName = styled.span`
 	letter-spacing: 0.2px;
 	max-height: 80px;
 	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 144px;
 	color: var(--text1);
 `
 const PlaylistService = styled.span`

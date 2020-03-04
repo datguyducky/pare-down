@@ -82,6 +82,10 @@ const Playlist = styled.div`
 		font-size: 28px;
 		font-weight: 600;
 		margin-bottom: 4px;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+		width: 460px;
+		overflow: hidden;
 	}
 
 	& > p {
@@ -91,6 +95,13 @@ const Playlist = styled.div`
 		font-weight: normal;
 		color: var(--text2);
 		line-height: 1.2em;
+		text-overflow: ellipsis;
+		white-space: break-world;
+		word-wrap: break-word;
+		word-break: break-all;
+		height: 58px;
+		width: 620px;
+		overflow: hidden;
 	}
 ` //TODO: overflowing for long string in description of playlist
 const DetailsList = styled.ul`
@@ -188,10 +199,7 @@ const PlaylistCard = (props) => {
 	let check = 1;
 	const [userTracks, setUserTracks] = useState([]);
 	const [sortTracks, setSortTracks] = useState(true);
-	const [userFollow, setUserFollow] = useState({
-		total: 0,
-		follow: true
-	}) //TODO: fix follow saving
+	const [followersTotal, setFollowersTotal] = useState(0)
 	const [loading, setLoading] = useState(true);
 	const [displaySteps, setDisplaySteps] = useState(false);
 	const [editState, showEdit] = useState(false);
@@ -210,9 +218,8 @@ const PlaylistCard = (props) => {
 		})
 		.then((response) => {
 			if(response.ok) {
-				console.log('ok')
+				return response.json()
 			}
-			return response.json()
 		})
 		.then((data) => {
 			if(offset !== 0 || check === 0 ) {
@@ -246,31 +253,12 @@ const PlaylistCard = (props) => {
 			})
 			.then(response => response.json())
 			.then((data) => {
-				setUserFollow({
-					...userFollow,
-					total: data.followers.total
-				})
+				if(data) {
+					setFollowersTotal(data.followers.total)
+				}
 			})
 		}
 		followCount();
-
-		async function followCheck() {
-			const accessToken = localStorage.getItem('SpotifyAuth');
-		
-			fetch(`https://api.spotify.com/v1/playlists/${l.state.id}/followers/contains?ids=${l.state.userID}`, {
-				headers: {
-					'Authorization': 'Bearer ' + accessToken
-				}
-			})
-			.then(response => response.json())
-			.then((data) => {
-				setUserFollow({
-					...userFollow,
-					follow: data[0]
-				})
-			})
-		}
-		followCheck();
 		
 
 		fetchTracks();
@@ -281,7 +269,7 @@ const PlaylistCard = (props) => {
 		const tracks_total = l.state.tracks_total;
 		if(sortTracks) {
 			offset = tracks_total >= 100 ? tracks_total - 100 : 0;
-			check = tracks_total >= 100 ? 1 - 100 : 0;//TODO: what?
+			check = tracks_total >= 100 ? 1 : 0;
 		} else {
 			offset = 0;
 		}
@@ -352,19 +340,14 @@ const PlaylistCard = (props) => {
 								<li> By {l.state.owner} </li>
 								<li style={{color: 'var(--brand)'}}>{l.state.service}</li>
 								<li> {l.state.tracks_total} tracks </li>
-								<li> {followFormat(userFollow.total)} followers </li>
-								<li style={{display: userFollow.follow ? 'inline' : 'none'}}> 
+								<li>
 									<span style={{
 										color: 'red',
 										marginRight: 4
 									}}> 
 										❤️ 
 									</span>
-									{
-										userFollow.follow
-										? 'Following '
-										: null
-									} 
+									{followFormat(followersTotal)} followers 
 								</li>
 								<li> 
 									<Globe size={14}/>
@@ -488,7 +471,7 @@ const PlaylistCard = (props) => {
 						bColor='var(--gray3)'
 						display='flex'
 						header={`CONFIRM DELETE`}
-						text={`Warning! By clicking "YES" ${l.state.name} playlist will be deleted from your library!`}
+						text={`Warning! By clicking "YES" ${l.state.name.substring(0, 32)} playlist will be deleted from your library!`}
 						setWarningDisplay={showDelete}
 						no_action={deleteNoHandler}
 						yes_action={deleteYesHandler}
@@ -500,7 +483,7 @@ const PlaylistCard = (props) => {
 			{
 			deletePopUpState ?
 				<PopUp
-					text={`${l.state.name} playlist was deleted from your library!`}
+					text={`${l.state.name.substring(0, 32)} playlist has been removed from your library! 👍`}
 					hide={deletePopUpHandler}
 				/>
 			: null
