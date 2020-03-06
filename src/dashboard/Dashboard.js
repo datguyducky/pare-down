@@ -78,22 +78,15 @@ export default class Dashboard extends Component {
 	}
 
 	platformSyncRefresh() {
-		const refresh_token = localStorage.getItem('SpotifyRef');
-
-		if(refresh_token) {
-			if(refresh_token !== 'undefined') {
-				window.location = window.location.href.includes('localhost') 
-				? `http://localhost:8888/refresh?refresh_token=${refresh_token}` 
-				: `http://pare-down-backend.mtymon.me/refresh?refresh_token=${refresh_token}`
-			}
-		}
+		window.location = window.location.href.includes('localhost') 
+		? 'http://localhost:8888/login' 
+		: 'http://pare-down-backend.mtymon.me/login'
 	}
 
 
 	spotifyFetch() {
-		if(localStorage.getItem('SpotifyAuth')) {
-			const accessToken = localStorage.getItem('SpotifyAuth');
-
+		const accessToken = localStorage.getItem('SpotifyAuth');
+		if(accessToken) {
 			fetch('https://api.spotify.com/v1/me', {
                 headers: {
                     'Authorization': 'Bearer ' + accessToken
@@ -145,19 +138,14 @@ export default class Dashboard extends Component {
 
 	async componentDidMount() {
 		let parsed = queryString.parse(window.location.search);
-		let refresh_token = parsed.refresh_token;
-		let redirect_auth = parsed.access_token;
-		if (redirect_auth) {
-			localStorage.setItem('SpotifyRef', refresh_token);
-			localStorage.setItem('SpotifyAuth', redirect_auth);
+		let access_token = parsed.access_token;
+		if (access_token) {
+			localStorage.setItem('SpotifyAuth', access_token);
 			window.location = window.location.href.includes('localhost')
 			? 'http://localhost:3000/dashboard/' 
 			: 'http://pare-down.mtymon.me/dashboard/'
 		}
 
-		this.setState({
-			SpotifyAuth: localStorage.getItem('SpotifyAuth')
-		})
 
 		this.spotifyFetch();
 	}
