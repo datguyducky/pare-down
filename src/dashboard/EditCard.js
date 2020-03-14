@@ -53,6 +53,11 @@ const EditCardWrapper = styled.div`
 	position: relative;
 	flex-direction: column;
 	animation: ${EditEntrance} .15s linear;
+
+	@media (max-width: 760px) {
+		width: 100%;
+		height: 100%;
+	}
 `
 const HeaderWrapper = styled.div`
 	color: inherit;
@@ -102,6 +107,10 @@ const Edit = styled.div`
 	padding: 32px 64px;
 	background-color: var(--gray1);
 	flex: 1;
+
+	@media (max-width: 520px) {
+		padding: 24px 32px;
+	}
 `
 const ButtonStep = styled.button`
 	display: flex;

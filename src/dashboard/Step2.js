@@ -91,6 +91,10 @@ const TracksWrapper = styled.div`
 	background-color: var(--gray2);
 	overflow-y: scroll;
 	height: 348px;
+
+	@media (max-height: 760px) {
+		height: 240px;
+	}
 `
 
 
@@ -137,9 +141,11 @@ const Step2 = (props) => {
 				);
 
 				for(let i=0; i<4; i++) {
-					const loc = data.items[i].track.album.images[2].url
-					const url = loc ? loc : '';
-					props.setCoverTile(coverTile => [...coverTile, url]);
+					if(data.length >= 4) {
+						const loc = data.items[i].track.album.images[2].url
+						const url = loc ? loc : '';
+						props.setCoverTile(coverTile => [...coverTile, url]);
+					}
 				}
 
 				setLoading(false);
@@ -149,7 +155,7 @@ const Step2 = (props) => {
 
 	useEffect(() => {
 		fetchTracks();
-	})
+	}, [])
 
 
 	const sortHandle = () => {
