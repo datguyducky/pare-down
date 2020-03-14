@@ -9,6 +9,7 @@ let redirect_uri =
   process.env.REDIRECT_URI || 
   `http://localhost:${port}/callback`
 
+  
 app.get('/login', function(req, res) {
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
@@ -18,6 +19,7 @@ app.get('/login', function(req, res) {
       redirect_uri
     }))
 })
+
 
 app.get('/callback', function(req, res) {
   let code = req.query.code || null
@@ -36,11 +38,13 @@ app.get('/callback', function(req, res) {
     json: true
   }
   request.post(authOptions, function(error, response, body) {
-    var access_token = body.access_token
-    let uri = process.env.FRONTEND_URI || 'http://localhost:3000'
+	console.log('login send')
+    let access_token = body.access_token
+    let uri = process.env.FRONTEND_URI || 'http://localhost:3000/dashboard/'
     res.redirect(uri + '?access_token=' + access_token)
   })
 })
+
 
 console.log(`Listening on port ${port}. Go /login to initiate authentication flow.`)
 app.listen(port)
