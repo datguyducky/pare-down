@@ -10,10 +10,10 @@ import * as serviceWorker from './serviceWorker';
 
 
 const routing = (
-	<Router basename={process.env.PUBLIC_URL}>
-		<Route exact path={process.env.PUBLIC_URL + '/'} component={Home} />
-		<Route exact path={process.env.PUBLIC_URL + '/dashboard'} component={Dashboard} />
-		<Route path={process.env.PUBLIC_URL + '/dashboard/playlist-:uuid'} component={PlaylistCard}/>
+	<Router>
+		<Route exact path="/" component={Home} />
+		<Route exact path='/dashboard' component={Dashboard} />
+		<Route path='/dashboard/playlist-:uuid' component={PlaylistCard}/>
 	</Router>
 )
 
