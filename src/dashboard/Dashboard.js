@@ -111,6 +111,12 @@ const PlaylistsCoverWrapper = styled.div`
 		grid-template-columns: repeat(auto-fit, 120px);
 	}
 `
+const PreLogin = styled.p`
+	text-align: center;
+	color: var(--text1);
+	font-size: 21px;
+	text-transform: uppercase;
+`
 
 
 export default class Dashboard extends Component {
@@ -208,7 +214,7 @@ export default class Dashboard extends Component {
 				),
 			) 
 			: [];
-
+		const SpotifyAuth  = localStorage.getItem('SpotifyAuth');
 
 		return (
 			<StyledDashboard>
@@ -242,7 +248,9 @@ export default class Dashboard extends Component {
 										history={this.props.history}
 									/>
 								)
-							: <Spinner/>
+							: SpotifyAuth 
+								? <Spinner/>
+								: <PreLogin>Log in to Spotify to continue.</PreLogin>
 						}
 					</PlaylistsCoverWrapper>
 				</DashboardWrapper>

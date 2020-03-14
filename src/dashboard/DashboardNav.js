@@ -161,7 +161,7 @@ export default class DashboardNav extends Component {
 						/>
 						<PlatformIconStatus
 							style={{
-								backgroundColor: SpotifyAuth !== 'undefined'
+								backgroundColor: SpotifyAuth
 								? '#37ed8f'
 								: '#ed373a'
 							}}
