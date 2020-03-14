@@ -38,7 +38,7 @@ const PlaylistTrackSmall = (props) => {
 
 	
 	return (
-		<StyledPlaylistCard>
+		<StyledPlaylistCard className={props.classProp}>
 			<p>{p.name}</p>
 			
 			<div>

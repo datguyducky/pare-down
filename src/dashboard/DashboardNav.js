@@ -17,6 +17,17 @@ const Nav = styled.nav`
 	border-right: 2px solid var(--gray3);
 	box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.32);
 
+	@media (max-width: 760px) {
+		min-height: 46px;
+		flex-direction: row;
+		width: 100%;
+		position: fixed;
+		top: 0;
+		z-index: 10;
+		border-right: none;
+		padding: 8px 0;
+	}
+
 	& > ul {
 		margin-top: 92px;
 		position: fixed;
@@ -43,8 +54,25 @@ const Nav = styled.nav`
 					color: var(--gray3);
 					text-align: center;
 					font-size: 16px;
+
+					@media (max-width: 760px) {
+						font-size: 11px;
+						width: 42px;
+						height: 42px;
+					}
 				}
 			}
+
+			@media (max-width: 760px) {
+				margin-top: 0;
+			}
+		}
+
+
+		@media (max-width: 760px) {
+			display: flex;
+			position: unset;
+			margin-top: 0;
 		}
 	}
 `
@@ -55,6 +83,16 @@ const NavHeader = styled.header`
 	border-bottom: 1px solid var(--gray3);
 	position:fixed;
 	top: 0;
+
+	@media (max-width: 1060px) {
+		width: 62px;
+	}
+
+	@media (max-width: 760px) {
+		padding: 0;
+		border-bottom: none;
+		position: unset;
+	}
 `
 const StyledLink = styled(Link)`
 	:hover {
@@ -71,6 +109,10 @@ const PlatformIconStatus = styled.div`
 	border: 1px solid var(--gray3);
 	background-color: #ed373a;
 	z-index: 100%;
+
+	@media (max-width: 760px) {
+		right: 4px;
+	}
 `
 
 

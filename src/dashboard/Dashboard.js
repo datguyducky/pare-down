@@ -18,12 +18,26 @@ const GlobalStyle = createGlobalStyle`
 const StyledDashboard = styled.div`
 	display: grid;
 	grid-template-columns: 92px 1fr;
+
+	@media (max-width: 1060px) {
+		grid-template-columns: 62px 1fr;
+	}
+
+
+	@media (max-width: 760px) {
+		grid-template-columns: 1fr;
+		grid-template-rows: 46px 1fr;
+	}
 `
 const DashboardWrapper = styled.div`
 	padding: 24px 0;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+
+	@media (max-width: 760px) {
+		margin-top: 52px;
+	}
 `
 const DashboardHeader = styled.header`
 	color: var(--text1);
@@ -38,6 +52,28 @@ const DashboardHeader = styled.header`
 		text-align: center;
 		color: var(--text1);
 		margin-right: 18px;
+
+		@media (max-width: 760px) {
+			font-size: 24px;
+		}
+
+		@media (max-width: 580px) {
+			font-size: 18px;
+		}
+
+		@media (max-width: 420px) {
+			margin-bottom: 8px;
+		}
+	}
+
+	@media (max-width: 760px) {
+		justify-content: center;
+		padding-left: 0;
+	}
+
+
+	@media (max-width: 420px) {
+		flex-direction: column;
 	}
 
 
@@ -53,14 +89,27 @@ const DashboardHeader = styled.header`
 			border-color: var(--brand) !important;
 			color: var(--text1) !important;
 		}
+
+		@media (max-width: 760px) {
+			padding: 4px 8px;
+		}
 	}
 `
 const PlaylistsCoverWrapper = styled.div`
-	margin-top: 24px;
+	padding-top: 24px;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 180px);
 	grid-gap: 18px;
 	justify-content: center;
+
+	@media (max-width: 760px) {
+		padding-bottom: 24px;
+	}
+
+	@media (max-width: 580px) {
+		grid-gap: 10px;
+		grid-template-columns: repeat(auto-fit, 120px);
+	}
 `
 
 

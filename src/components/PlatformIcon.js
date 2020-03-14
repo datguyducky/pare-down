@@ -15,6 +15,17 @@ const StyledPlatformIcon = styled.div`
 	background-size: 70%;
 	background-repeat: no-repeat;
 	background-position: center;
+
+	@media (max-width: 1060px) {
+		height: 42px;
+		width: 42px;
+	}
+
+	@media (max-width: 760px) {
+		height: 42px;
+		width: 42px;
+		margin-right: 12px;
+	}
 `
 
 

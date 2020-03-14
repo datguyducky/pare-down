@@ -1,18 +1,28 @@
 import React from 'react';
+import styled from 'styled-components';
 const brand = require('../assets/pare-down.png');
 
 
-export default function BrandSmall() {
+const StyledBrandSmall = styled.div`
+	img {
+		height: 42px;
+		width: 42px;
+
+		@media (max-width: 1060px) {
+			height: 34px;
+			width: 34px;
+		}
+	}
+`
+
+
+export default function BrandSmall(props) {
 	return (
-		<div className="BrandSmall">
+		<StyledBrandSmall>
 			<img 
 				src={brand}
-				style={{
-					height: 42,
-					width: 42
-				}}
 				alt='brand icon'
 			/>
-		</div>
+		</StyledBrandSmall>
 	)
 }

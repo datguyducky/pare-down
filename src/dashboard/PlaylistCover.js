@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 
 const StyledPlaylistCover = styled.div`
-	width: 180px;
+	width: 100%;
 	height: 180px;
 	position: relative;
 	cursor: pointer;
@@ -16,6 +16,10 @@ const StyledPlaylistCover = styled.div`
 
 	:hover {
 		opacity: 0.7;
+	}
+
+	@media (max-width: 580px) {
+		height: 120px;
 	}
 `
 const PlaylistCoverDetails = styled.div`
@@ -39,12 +43,21 @@ const PlaylistName = styled.span`
 	white-space: nowrap;
 	width: 144px;
 	color: var(--text1);
+
+	@media (max-width: 580px) {
+		font-size: 18px;
+		width: 110px;
+	}
 `
 const PlaylistService = styled.span`
 	text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
 	font-size: 16px;
 	font-weight: 600;
 	color: #4392f1;
+
+	@media (max-width: 580px) {
+		font-size: 14px;
+	}
 `
 
 

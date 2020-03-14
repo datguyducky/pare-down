@@ -43,7 +43,7 @@ const PlaylistTrack = (props) => {
 	ms = h + ':' + m + ':' + s;
 
 	return (
-		<StyledPlaylistCard>
+		<StyledPlaylistCard className={props.classProp}>
 			<li>{props.id}</li>
 			<li>{p.name}</li>
 			<li>{p.artists}</li>

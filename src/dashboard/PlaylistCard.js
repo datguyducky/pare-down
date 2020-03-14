@@ -7,6 +7,7 @@ import DashboardNav from './DashboardNav';
 import PlaylistTrack from "./PlaylistTrack";
 import PareDownCard from './PareDownCard';
 import EditCard from "./EditCard";
+import PlaylistTrackSmall from "./PlaylistTrackSmall";
 
 
 const GlobalStyle = createGlobalStyle`
@@ -20,14 +21,38 @@ const StyledPlaylistCard = styled.div`
 	display: grid;
 	grid-template-columns: 92px 1fr;
 	position: relative;
+
+	@media (max-width: 1360px) {
+		grid-gap: 12px;
+	}
+
+	@media (max-width: 1060px) {
+		grid-template-columns: 62px 1fr;
+	}
+
+
+	@media (max-width: 760px) {
+		grid-template-columns: 1fr;
+		grid-template-rows: 46px 1fr;
+	}
 `
 const CardWrapper = styled.div`
 	width: 1240px;
 	margin: 12px auto;
+
+	@media (max-width: 1360px) {
+		width: 100%;
+	}
+
+	@media (max-width: 760px) {
+		margin-top: 72px;
+	}
 `
 const DetailsHeader = styled(Link)`
 	display: inline;
 	color: inherit;
+	text-decoration: none;
+	
 	& > h1 {
 		box-shadow: 0px -3px 8px 0 rgba(0, 0, 0, 0.32);
 		display: inline-flex;
@@ -42,6 +67,11 @@ const DetailsHeader = styled(Link)`
 		border-top-left-radius: 6px;
 		font-weight: 600;
 
+		@media (max-width: 760px) {
+			border-radius: 0;
+			font-size: 22px;
+		}
+
 		& > svg {
 			margin-right: 6px;
 		}
@@ -49,6 +79,10 @@ const DetailsHeader = styled(Link)`
 
 	:hover {
 		opacity: 0.7;
+	}
+
+	@media (max-width: 760px) {
+		display: grid;
 	}
 `
 const Details = styled.div`
@@ -58,6 +92,13 @@ const Details = styled.div`
 	border: 1px solid var(--gray3);
 	border-top-right-radius: 6px;
 	box-shadow: 0px -8px 8px 0 rgba(0, 0, 0, 0.18);
+
+	@media (max-width: 760px) {
+		padding: 21px 14px;
+		align-items: center;
+		flex-direction: column;
+		text-align: center;
+	}
 `
 const DetailsCover = styled.div`
 	background-image: url(${props => props.bgimg || 'none'});
@@ -68,6 +109,11 @@ const DetailsCover = styled.div`
 	background-size: 100% 100%;
 	background-position: center;
 	box-shadow: 2px 2px 6px 0 rgba(0, 0, 0, 0.32);
+
+	@media (max-width: 1090px) {
+		min-width: 120px;
+		min-height: 120px;
+	}
 `
 const Playlist = styled.div`
 	display: flex;
@@ -83,6 +129,11 @@ const Playlist = styled.div`
 		white-space: nowrap;
 		width: 460px;
 		overflow: hidden;
+
+		@media (max-width: 690px) {
+			width: 240px;
+			font-size: 24px;
+		}
 	}
 
 	& > p {
@@ -97,8 +148,12 @@ const Playlist = styled.div`
 		word-wrap: break-word;
 		word-break: break-all;
 		height: 58px;
-		width: 620px;
 		overflow: hidden;
+	}
+
+	@media (max-width: 760px) {
+		align-items: center;
+		margin-left: 0;
 	}
 `
 const DetailsList = styled.ul`
@@ -107,12 +162,14 @@ const DetailsList = styled.ul`
 	color: var(--text2);
 	font-size: 16px;
 	font-weight: normal;
+	flex-flow: wrap;
 		
 	& > li {
 		display: flex;
 		align-items: center;
 		padding: 0 6px;
 		border-right: 1px solid var(--text2);
+		margin-top: 4px;
 
 		:first-of-type {
 			padding-left: 0px;
@@ -126,6 +183,10 @@ const DetailsList = styled.ul`
 			margin-right: 4px;
 			color: var(--brand);
 		}
+	}
+
+	@media (max-width: 760px) {
+		justify-content: center;
 	}
 ` 
 const BtnList = styled.ul`
@@ -175,11 +236,41 @@ const TracksDetails = styled.ul`
 			margin-left: 4px;
 			color: var(--brand);
 		}
+
+		@media (max-width: 1090px) { 
+			display: none;
+		}
+
+		:nth-of-type(1) {
+			display: flex;
+		}
+
+		:nth-of-type(2) {
+			display: flex;
+		}
+	}
+
+	@media (max-width: 1090px) {
+		grid-template-columns: auto 1fr;
 	}
 `
 const Tracks = styled.div`
 	background-color: var(--gray2);
 	box-shadow: 0px 8px 8px 0 rgba(0, 0, 0, 0.18);
+
+	.sm-tracks {
+		display: none;
+	}
+
+	@media (max-width: 1090px) {
+		.md-tracks {
+			display: none;
+		}
+
+		.sm-tracks {
+			display: flex;
+		}
+	}
 `
 const WarningCardWrapper = styled.div`
 	height: 100vh;
@@ -261,7 +352,7 @@ const PlaylistCard = (props) => {
 
 		followCount();
 		fetchTracks();
-	})
+	}, [])
 
 
 	const sortHandle = () => {
@@ -414,14 +505,22 @@ const PlaylistCard = (props) => {
 						{
 							!loading ?
 								userTracks ?
-									userTracks.map((p, i) => 
-										<PlaylistTrack
-											playlist={p} 
-											key={i}
-											id={p.pos}
-											service={l.state.service}
-										/>
-									)
+									userTracks.map((p, i) =>
+										<div key={'wrap' + i}>
+											<PlaylistTrack
+												playlist={p} 
+												key={i}
+												id={p.pos}
+												service={l.state.service}
+												classProp='md-tracks'
+											/>
+											<PlaylistTrackSmall
+												classProp='sm-tracks'
+												playlist={p} 
+												key={'m'+i}
+											/>
+										</div>
+									)	
 								: null
 							: <Spinner/>
 						}
