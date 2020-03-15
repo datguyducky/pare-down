@@ -120,9 +120,6 @@ export default class DashboardNav extends Component {
 	constructor() {
 		super()
 		this.state = {
-			SpotifyAuth: '',
-			AppleAuth: '',
-			DeezerAuth: '',
 			filterString: '',
 		}
 
@@ -138,12 +135,11 @@ export default class DashboardNav extends Component {
 
 
 	render() {
-		const SpotifyAuth = this.state.SpotifyAuth;
-		const AppleAuth = this.state.AppleAuth;
-		const DeezerAuth = this.state.DeezerAuth;
+		const SpotifyAuth = localStorage.getItem('SpotifyAuth');
+		const AppleAuth = localStorage.getItem('AppleAuth');
+		const DeezerAuth = localStorage.getItem('DeezerAuth');
 
-
-		return (
+			return (
 			<Nav>
 				<NavHeader>
 					<StyledLink to='/'>

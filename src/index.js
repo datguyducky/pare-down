@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, BrowserRouter as Router } from 'react-router-dom';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import Home from './home/Home';
 import Dashboard from './dashboard/Dashboard';
@@ -11,9 +11,12 @@ import * as serviceWorker from './serviceWorker';
 
 const routing = (
 	<Router>
-		<Route exact path="/" component={Home} />
-		<Route exact path='/dashboard' component={Dashboard} />
-		<Route path='/dashboard/playlist-:uuid' component={PlaylistCard}/>
+		<Switch>
+			<Route exact path="/" component={Home} />
+			<Route exact path='/dashboard' component={Dashboard} />
+			<Route path='/dashboard/playlist' component={PlaylistCard}/>
+			<Route component={Home} />
+		</Switch>
 	</Router>
 )
 

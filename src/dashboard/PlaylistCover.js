@@ -68,7 +68,8 @@ export default function PlaylistCover(props) {
 	return (
 		<StyledPlaylistCover bgimg={playlist.cover} onClick={() => 
 			props.history.push({
-				pathname: `/dashboard/playlist-${playlist.id}`,
+				pathname: `/dashboard/playlist`,
+				search: `?id=${playlist.id}`,
 				state: {
 					name: playlist.name,
 					id: playlist.id,
