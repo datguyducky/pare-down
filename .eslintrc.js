@@ -22,4 +22,12 @@ module.exports = {
 			version: 'detect',
 		},
 	},
+	'overrides': [
+		{
+			'files': ['**/*.tsx'],
+			'rules': {
+				'react/prop-types': 'off',
+			},
+		},
+	],
 };

@@ -35,7 +35,8 @@
 	},
 	"babelMacros": {
 		"twin": {
-			"preset": "styled-components"
+			"preset": "styled-components",
+			"config": "tailwind.config.js"
 		}
 	}
 }

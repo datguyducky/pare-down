@@ -1,13 +1,18 @@
 import { FC } from 'react';
 import 'twin.macro';
 import { StyledHeroSVG } from '../styles/index';
+import Link from 'next/link';
 
 const IndexPage: FC = () => {
 	return (
 		<>
-			<div tw='py-6 lg:px-96 flex w-full items-center bg-brand-gray text-white'>
+			<div tw='py-6 lg:px-96 flex w-full items-center bg-brand-gray-500 text-white'>
 				<header>
-					<h2 tw='text-3xl font-semibold'>Pare Down</h2>
+					<h2 tw='text-3xl font-semibold'>
+						<Link href='/'>
+							<a>Pare Down</a>
+						</Link>
+					</h2>
 				</header>
 				<nav tw='ml-12 flex items-center flex-1'>
 					<ul tw='flex font-medium'>
@@ -21,19 +26,27 @@ const IndexPage: FC = () => {
 							<a href='https://github.com/datguysheepy/pare-down'>Github</a>
 						</li>
 					</ul>
-					<button tw='ml-auto self-end justify-self-end border-brand-blue border-solid border rounded px-4 font-semibold hover:bg-brand-blue'>
-						Go to the app
-					</button>
+					<Link href='/dashboard'>
+						<a tw='ml-auto'>
+							<button tw='self-end justify-self-end border-brand-blue border-solid border rounded px-4 font-semibold hover:bg-brand-blue'>
+								Go to the app
+							</button>
+						</a>
+					</Link>
 				</nav>
 			</div>
 			<div>
-				<div tw='w-full lg:px-96 pt-32 pb-64 text-center flex flex-col relative bg-brand-gray text-white'>
+				<div tw='w-full lg:px-96 pt-32 pb-64 text-center flex flex-col relative bg-brand-gray-500 text-white'>
 					<h1 tw='text-7xl font-bold tracking-wide leading-relaxed'>Pare Down for Spotify</h1>
 					<p tw='text-2xl'>Easy and fast way to duplicate your playlists with a reduced number of songs.</p>
 
-					<button tw='mt-8 bg-brand-blue flex-grow-0 self-start mx-auto py-3 px-8 text-lg font-bold shadow-md hover:bg-brand-blue-600 rounded'>
-						Log in with Spotify
-					</button>
+					<Link href='/dashboard'>
+						<a>
+							<button tw='mt-8 bg-brand-blue flex-grow-0 self-start mx-auto py-3 px-8 text-lg font-bold shadow-md hover:bg-brand-blue-600 rounded'>
+								Log in with Spotify
+							</button>
+						</a>
+					</Link>
 
 					<StyledHeroSVG>
 						<svg
