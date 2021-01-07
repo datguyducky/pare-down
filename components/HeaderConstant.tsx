@@ -20,7 +20,7 @@ export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, chil
 				</a>
 			</span>
 			<div tw='flex flex-col'>
-				<Link href={href}>
+				<Link href={href} passHref>
 					<a tw='flex items-center text-sm font-bold mb-3 underline cursor-pointer opacity-90 hover:opacity-80'>
 						<svg tw='w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
 							<path

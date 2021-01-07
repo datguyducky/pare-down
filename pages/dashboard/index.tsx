@@ -2,6 +2,7 @@ import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
 import { HeaderConstant } from '@/components';
+import { UseUser } from '../../data';
 
 export const DashboardPage: FC = () => {
 	const router = useRouter();
@@ -10,11 +11,12 @@ export const DashboardPage: FC = () => {
 	const dateObject = new Date();
 	const currentTime = dateObject.getHours();
 
-	/*useEffect(() => {
-		if(_playlistUuid && !authToken) {
-			console.log('Auth token was not found redirecting back to the dashboard');
+	const { user: user, isError: userIsError } = UseUser();
+	useEffect(() => {
+		if (userIsError) {
+			router.replace('/api/login');
 		}
-	});*/
+	});
 
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
@@ -27,8 +29,12 @@ export const DashboardPage: FC = () => {
 							{currentTime >= 5 && currentTime < 12 && 'Good Morning '}
 							{currentTime >= 12 && currentTime < 17 && 'Good Afternoon '}
 							{currentTime >= 17 || currentTime < 5 ? 'Good Evening ' : null}
-							<em tw='underline not-italic'>UserName</em> 👋
+							<em tw='underline not-italic h-full inline-block'>
+								{user?.display_name || <span tw='bg-bgray-light w-32 mx-1 inline-block h-5 rounded-sm animate-pulse' />}
+							</em>{' '}
+							👋
 						</h3>
+
 						<h1 tw='text-3xl font-bold'>
 							To start the Pare Down process, you must select one of your playlists below:
 						</h1>
