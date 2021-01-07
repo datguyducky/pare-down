@@ -1,26 +1,40 @@
 import type { NextApiHandler } from 'next';
-import { getCurrentUser } from 'lib/spotify';
+import axios from 'axios';
 import { parse } from 'cookie';
 
 const currentUserHandler: NextApiHandler = async (req, res) => {
+	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
-	const response = await getCurrentUser(_ACCESS_TOKEN);
-	const responseJSON = await response.json();
+	// make call to retrieve user data
+	await axios
+		.get('https://api.spotify.com/v1/me', {
+			headers: {
+				'Authorization': 'Bearer ' + _ACCESS_TOKEN,
+			},
+		})
+		.then((response) => {
+			if (response.statusText === 'OK') {
+				const data = response.data;
+				// return from the API call only the data is needed on the frontend
+				const newData = {
+					display_name: data.display_name,
+					id: data.id,
+				};
 
-	//await new Promise((res) => setTimeout(res, 2000)); for testing purposes
-	if (responseJSON.error) {
-		res.statusCode = responseJSON.error?.status;
-		res.send(responseJSON.error?.message);
-		res.end();
-		return;
-	} else {
-		const data = {
-			display_name: responseJSON.display_name,
-			id: responseJSON.id,
-		};
-		res.status(200).json(data);
-		res.end();
-		return;
-	}
+				// send response status
+				res.status(200).json(newData);
+				res.end();
+				return;
+			}
+		})
+		.catch((error) => {
+			// catch error and send error message back to frontend, where useSWR can do its magic
+			if (error.response) {
+				res.statusCode = error.response.status;
+				res.send(error.response.data);
+				res.end();
+				return;
+			}
+		});
 };
 export default currentUserHandler;
