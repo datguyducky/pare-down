@@ -2,7 +2,8 @@ import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
 import { HeaderConstant } from '@/components';
-import { UseUser } from '../../data';
+import { UseUser, UseUserPlaylists } from '../../data';
+import { PlaylistCard } from 'components/PlaylistCard';
 
 export const DashboardPage: FC = () => {
 	const router = useRouter();
@@ -16,6 +17,8 @@ export const DashboardPage: FC = () => {
 			router.replace('/api/login');
 		}
 	});
+
+	const { playlists: playlists, isError: playlistsIsError } = UseUserPlaylists();
 
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
@@ -32,7 +35,9 @@ export const DashboardPage: FC = () => {
 
 				<h1 tw='text-3xl font-bold'>To start the Pare Down process, you must select one of your playlists below:</h1>
 			</HeaderConstant>
-			<div tw='lg:px-96 lg:mx-2'>a</div>
+			<div tw='lg:px-72 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
+				{playlists && playlists.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} />)}
+			</div>
 		</div>
 	);
 };

@@ -13,12 +13,15 @@ const StyledHeaderConstant = styled.div`
 export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, children }) => {
 	return (
 		<StyledHeaderConstant>
-			<span tw='absolute top-0 pt-3 px-8 right-0 opacity-90 text-sm font-bold'>
-				Created with ❤️ by{' '}
-				<a href='https://github.com/datguysheepy' tw='hover:underline'>
-					@datguysheepy
-				</a>
-			</span>
+			<ul tw='absolute top-0 pt-3 px-8 right-0 opacity-90 text-sm font-bold flex items-center'>
+				<li>
+					<a href='https://github.com/datguysheepy/pare-down' tw='hover:underline'>
+						Github
+					</a>
+				</li>
+				<li tw='mx-2'>|</li>
+				<li tw='text-gray-400 text-xs'>Created with ❤️ by @datguysheepy</li>
+			</ul>
 			<div tw='flex flex-col'>
 				<Link href={href} passHref>
 					<a tw='flex items-center text-sm font-bold mb-3 underline cursor-pointer opacity-90 hover:opacity-80'>
