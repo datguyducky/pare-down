@@ -31,7 +31,7 @@ const IndexPage: FC = () => {
 					</ul>
 					<Link href='/dashboard'>
 						<a tw='ml-auto'>
-							<button tw='self-end justify-self-end border-brand-blue border-solid border rounded px-4 font-semibold hover:bg-brand-blue'>
+							<button tw='self-end justify-self-end border-bblue border-solid border rounded px-4 font-semibold hover:bg-bblue'>
 								Go to the app
 							</button>
 						</a>
@@ -44,7 +44,7 @@ const IndexPage: FC = () => {
 					<p tw='text-2xl'>Easy and fast way to duplicate your playlists with a reduced number of songs.</p>
 
 					<button
-						tw='mt-8 bg-brand-blue flex-grow-0 self-start mx-auto py-3 px-8 text-lg font-bold shadow-md hover:bg-brand-blue-600 rounded'
+						tw='mt-8 bg-bblue flex-grow-0 self-start mx-auto py-3 px-8 text-lg font-bold shadow-md hover:bg-bblue-dark rounded'
 						onClick={() => router.push('/api/login')}
 					>
 						Log in with Spotify
@@ -170,7 +170,7 @@ const IndexPage: FC = () => {
 						</div>
 
 						<div tw='px-7 pt-9 rounded border border-solid border-gray-300 flex items-center flex-col relative'>
-							<div tw='absolute -right-8 -top-4 bg-brand-blue flex text-white font-bold px-4 py-1 rounded-sm text-sm rotate-12 transform shadow'>
+							<div tw='absolute -right-8 -top-4 bg-bblue flex text-white font-bold px-4 py-1 rounded-sm text-sm rotate-12 transform shadow'>
 								BEST DEAL!
 							</div>
 

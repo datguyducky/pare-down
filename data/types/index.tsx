@@ -26,3 +26,28 @@ export interface UseUserPlaylistsType extends UseDataType {
 		total: number;
 	};
 }
+
+export interface OwnerType {
+	external_urls: { [key: string]: string };
+	href: string;
+	id: string;
+	type: string;
+	uri: string;
+	display_name: string;
+}
+
+export interface UsePlaylistDetailsType extends UseDataType {
+	playlistDetails: {
+		collaborative: boolean;
+		description: string;
+		followersNum: number;
+		href: string;
+		id: string;
+		name: string;
+		owner: OwnerType;
+		public: boolean;
+		tracksTotal: number;
+		type: string;
+		image: string;
+	};
+}

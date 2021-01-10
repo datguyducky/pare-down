@@ -10,8 +10,11 @@ module.exports = {
 					dark: '#222330',
 					darkest: '#171821',
 				},
-				'brand-blue': '#4392f1',
-				'brand-blue-600': '#388bf0',
+				bblue: {
+					light: '#71acf4',
+					DEFAULT: '#4392f1',
+					dark: '#388bf0',
+				},
 			},
 		},
 	},

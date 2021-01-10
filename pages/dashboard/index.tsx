@@ -1,11 +1,10 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant } from '@/components';
+import { HeaderConstant, PlaylistCard } from '@/components';
 import { UseUser, UseUserPlaylists } from '../../data';
-import { PlaylistCard } from 'components/PlaylistCard';
 
-export const DashboardPage: FC = () => {
+const DashboardView: FC = () => {
 	const router = useRouter();
 
 	const dateObject = new Date();
@@ -23,7 +22,7 @@ export const DashboardPage: FC = () => {
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
 			<HeaderConstant href='/' text='Go Back'>
-				<h3 tw='text-xl font-bold leading-8  text-brand-blue '>
+				<h3 tw='text-xl font-bold leading-8  text-bblue '>
 					{currentTime >= 5 && currentTime < 12 && 'Good Morning '}
 					{currentTime >= 12 && currentTime < 17 && 'Good Afternoon '}
 					{currentTime >= 17 || currentTime < 5 ? 'Good Evening ' : null}
@@ -36,9 +35,9 @@ export const DashboardPage: FC = () => {
 				<h1 tw='text-3xl font-bold'>To start the Pare Down process, you must select one of your playlists below:</h1>
 			</HeaderConstant>
 			<div tw='lg:px-72 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
-				{playlists && playlists.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} />)}
+				{playlists && playlists.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} id={p.id} />)}
 			</div>
 		</div>
 	);
 };
-export default DashboardPage;
+export default DashboardView;
