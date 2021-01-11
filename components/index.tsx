@@ -1,5 +1,5 @@
 import { HeaderConstant } from './HeaderConstant';
 import { PlaylistCard } from './PlaylistCard';
-import { Table } from './Table';
+import { TracksTable } from './TracksTable';
 
-export { HeaderConstant, PlaylistCard, Table };
+export { HeaderConstant, PlaylistCard, TracksTable };

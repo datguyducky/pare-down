@@ -4,7 +4,7 @@ interface UseDataType {
 }
 
 export interface UseUserType extends UseDataType {
-	user?: {
+	data: {
 		display_name: string;
 		id: string;
 	};
@@ -18,7 +18,7 @@ export interface _SpotifyPlaylist {
 }
 
 export interface UseUserPlaylistsType extends UseDataType {
-	playlists?: {
+	data?: {
 		items: Array<_SpotifyPlaylist>;
 		limit: number;
 		next: string | null;
@@ -27,7 +27,7 @@ export interface UseUserPlaylistsType extends UseDataType {
 	};
 }
 
-export interface OwnerType {
+export interface _SpotifyOwnerType {
 	external_urls: { [key: string]: string };
 	href: string;
 	id: string;
@@ -37,17 +37,37 @@ export interface OwnerType {
 }
 
 export interface UsePlaylistDetailsType extends UseDataType {
-	playlistDetails: {
+	data: {
 		collaborative: boolean;
 		description: string;
 		followersNum: number;
 		href: string;
 		id: string;
 		name: string;
-		owner: OwnerType;
+		owner: _SpotifyOwnerType;
 		public: boolean;
 		tracksTotal: number;
 		type: string;
 		image: string;
+	};
+}
+
+export interface _SpotifyTrack {
+	added_at: string;
+	albumName: string;
+	artists: Array<string>;
+	id: string;
+	name: string;
+	type: string;
+	duration_ms: number;
+}
+
+export interface UsePlaylistTracksType extends UseDataType {
+	data: {
+		items: Array<_SpotifyTrack>;
+		offset: number;
+		total: number;
+		limit: number;
+		next: string;
 	};
 }

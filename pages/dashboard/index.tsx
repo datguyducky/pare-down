@@ -10,14 +10,14 @@ const DashboardView: FC = () => {
 	const dateObject = new Date();
 	const currentTime = dateObject.getHours();
 
-	const { user: user, isError: userIsError } = UseUser();
+	const { data: user, isError: userIsError } = UseUser();
 	useEffect(() => {
 		if (userIsError) {
 			router.replace('/api/login');
 		}
 	});
 
-	const { playlists: playlists, isError: playlistsIsError } = UseUserPlaylists();
+	const { data: playlists, isError: playlistsIsError } = UseUserPlaylists();
 
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>

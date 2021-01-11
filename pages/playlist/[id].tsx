@@ -1,7 +1,7 @@
 import { FC, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, Table } from '@/components';
+import { HeaderConstant, TracksTable } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 
 const PlaylistDetailsView: FC = () => {
@@ -9,7 +9,7 @@ const PlaylistDetailsView: FC = () => {
 	const { id } = router.query;
 
 	// check if the user is logged in
-	const { user: user, isError: userIsError } = UseUser();
+	const { data: user, isError: userIsError } = UseUser();
 	useEffect(() => {
 		if (userIsError) {
 			router.replace('/api/login');
@@ -18,7 +18,7 @@ const PlaylistDetailsView: FC = () => {
 
 	// TODO: right now it's a little bit buggy with passing the ID router query prop, test how it would work with the Nextjs
 	// getInitialProps or something like that
-	const { playlistDetails: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
+	const { data: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
 	const isPlaylistOwner = user?.id === playlist?.owner?.id ? true : false;
 
 	return (
@@ -125,8 +125,8 @@ const PlaylistDetailsView: FC = () => {
 					</button>
 				</div>
 			</HeaderConstant>
-			<div tw='lg:px-96 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
-				<Table />
+			<div tw='lg:px-80 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
+				<TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />
 			</div>
 		</div>
 	);
