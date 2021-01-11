@@ -1,7 +1,18 @@
 import { useState } from 'react';
-import 'twin.macro';
+import tw, { styled } from 'twin.macro';
 import { TableRow } from './TableRow';
 import { UsePlaylistTracks } from 'data';
+
+const StyledTable = styled.table(() => [
+	`
+	tbody tr, thead tr {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 140px 45px;
+	}
+		
+	`,
+	tw`w-full text-left block`,
+]);
 
 export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal: number }> = ({
 	playlistId,
@@ -16,8 +27,8 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 			<span tw='ml-auto px-6 text-sm tracking-wide italic text-white text-opacity-70'>
 				Displaying the {recentlyAdded ? 'last' : 'first'} 25 songs added to a playlist.
 			</span>
-			<table tw='w-full text-left'>
-				<thead tw='leading-loose tracking-wider uppercase text-xs border-b border-bgray-lightest border-opacity-50'>
+			<StyledTable>
+				<thead tw='w-full block leading-loose tracking-wider uppercase text-xs border-b border-bgray-lightest border-opacity-50'>
 					<tr>
 						<th tw='pb-3 px-6 text-white text-opacity-70'>Title</th>
 						<th tw='pb-3 text-white text-opacity-70'>Artist</th>
@@ -85,10 +96,10 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 						</th>
 					</tr>
 				</thead>
-				<tbody>
+				<tbody tw='w-full block'>
 					{playlistTracks && playlistTracks?.items.map((track) => <TableRow track={track} key={track.id} />)}
 				</tbody>
-			</table>
+			</StyledTable>
 		</>
 	);
 };
