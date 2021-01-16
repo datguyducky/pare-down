@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
+import ReactDOM from 'react-dom';
 
 const SimpleModalContent = styled.div(() => [
 	`
@@ -13,11 +14,32 @@ const SimpleModalContent = styled.div(() => [
 interface SimpleModalType {
 	title: string;
 	onClose: Dispatch<SetStateAction<boolean>>;
+	isOpened: boolean;
 	acceptText?: string;
 	acceptAction?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export const SimpleModal: React.FC<SimpleModalType> = ({ title, onClose, children, acceptText, acceptAction }) => {
+export const SimpleModal: React.FC<SimpleModalType> = ({
+	title,
+	onClose,
+	children,
+	acceptText,
+	acceptAction,
+	isOpened,
+}) => {
+	const closeOnEscapeKeyDown = (e: KeyboardEvent) => {
+		if (e.code === 'Escape') {
+			onClose(false);
+		}
+	};
+
+	useEffect(() => {
+		document.body.addEventListener('keydown', closeOnEscapeKeyDown);
+
+		return () => document.body.removeEventListener('keydown', closeOnEscapeKeyDown);
+		//eslint-disable-next-line
+	}, []);
+
 	useEffect(() => {
 		// disabe scroll for the whole page when Modal is opened (but still display the scrollbar)
 		const withScroll = document.body.scrollHeight > document.documentElement.clientHeight;
@@ -35,9 +57,16 @@ export const SimpleModal: React.FC<SimpleModalType> = ({ title, onClose, childre
 		};
 	}, []);
 
-	return (
-		<div tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-			<SimpleModalContent>
+	if (!isOpened) {
+		return null;
+	}
+
+	return ReactDOM.createPortal(
+		<div
+			tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
+			onClick={() => onClose(false)}
+		>
+			<SimpleModalContent onClick={(e) => e.stopPropagation()}>
 				<div tw='px-5 py-3 relative flex items-center justify-center'>
 					<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
 
@@ -59,6 +88,7 @@ export const SimpleModal: React.FC<SimpleModalType> = ({ title, onClose, childre
 					) : null}
 				</div>
 			</SimpleModalContent>
-		</div>
+		</div>,
+		document.getElementById('__next'),
 	);
 };

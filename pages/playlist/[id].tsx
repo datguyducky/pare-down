@@ -145,6 +145,7 @@ const PlaylistDetailsView: FC = () => {
 					onClose={() => setDisplayPDModal(false)}
 					title='Pare Down'
 					description='Duplicate your playlist with a pared down number of songs.'
+					isOpened={displayPDModal}
 				>
 					<PareDownModal />
 				</Modal>
@@ -156,6 +157,7 @@ const PlaylistDetailsView: FC = () => {
 					title='Edit Playlist Details'
 					acceptText='Save'
 					acceptAction={() => console.log('save here')}
+					isOpened={displayEditModal}
 				>
 					<EditModal name={playlist?.name} image={playlist?.image} description={playlist?.description} />
 				</SimpleModal>
@@ -172,7 +174,7 @@ const PareDownModal: FC = () => {
 
 const EditModal: FC<{ name: string; image: string; description?: string }> = ({ name, image, description }) => {
 	const [playlistName, setPlaylistName] = useState<string>(name || null);
-	const [playlistDesc, setPlaylistDesc] = useState<string>(description || null);
+	const [playlistDesc, setPlaylistDesc] = useState<string>(description || undefined);
 
 	return (
 		<div tw='grid grid-cols-3 col-gap-5'>
@@ -197,6 +199,7 @@ const EditModal: FC<{ name: string; image: string; description?: string }> = ({ 
 					tw='h-full text-black py-0.5 px-2 resize-none'
 					value={playlistDesc}
 					placeholder='Give your playlist a catchy description'
+					maxLength={300}
 				/>
 			</div>
 		</div>

@@ -1,5 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
+import ReactDOM from 'react-dom';
 
 const ModalContent = styled.div(() => [
 	`
@@ -14,6 +15,7 @@ const ModalContent = styled.div(() => [
 interface ModalType {
 	title: string;
 	onClose: Dispatch<SetStateAction<boolean>>;
+	isOpened: boolean;
 	description?: string;
 	fullWidthText?: string;
 	fullWidthAction?: (event: React.MouseEvent<HTMLElement>) => void;
@@ -27,6 +29,7 @@ export const Modal: React.FC<ModalType> = ({
 	title,
 	description,
 	onClose,
+	isOpened,
 	children,
 	fullWidthText,
 	fullWidthAction,
@@ -35,6 +38,19 @@ export const Modal: React.FC<ModalType> = ({
 	cancelText,
 	cancelAction,
 }) => {
+	const closeOnEscapeKeyDown = (e: KeyboardEvent) => {
+		if (e.code === 'Escape') {
+			onClose(false);
+		}
+	};
+
+	useEffect(() => {
+		document.body.addEventListener('keydown', closeOnEscapeKeyDown);
+
+		return () => document.body.removeEventListener('keydown', closeOnEscapeKeyDown);
+		//eslint-disable-next-line
+	}, []);
+
 	useEffect(() => {
 		// disabe scroll for the whole page when Modal is opened (but still display the scrollbar)
 		const withScroll = document.body.scrollHeight > document.documentElement.clientHeight;
@@ -52,9 +68,16 @@ export const Modal: React.FC<ModalType> = ({
 		};
 	}, []);
 
-	return (
-		<div tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center'>
-			<ModalContent>
+	if (!isOpened) {
+		return null;
+	}
+
+	return ReactDOM.createPortal(
+		<div
+			tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
+			onClick={() => onClose(false)}
+		>
+			<ModalContent onClick={(e) => e.stopPropagation()}>
 				<div tw='bg-bgray p-5 relative shadow-md border-b border-bgray-dark border-opacity-50'>
 					<h2 tw='text-xl font-bold leading-relaxed tracking-wide'>{title}</h2>
 					<p tw='tracking-wide text-white text-opacity-70 text-sm'>{description}</p>
@@ -89,6 +112,7 @@ export const Modal: React.FC<ModalType> = ({
 					) : null}
 				</div>
 			</ModalContent>
-		</div>
+		</div>,
+		document.getElementById('__next'),
 	);
 };
