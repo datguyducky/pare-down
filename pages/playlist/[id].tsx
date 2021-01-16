@@ -1,12 +1,13 @@
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, TracksTable, Modal, SimpleModal } from '@/components';
+import { HeaderConstant, TracksTable, Modal, SimpleModal, Popup } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 
 const PlaylistDetailsView: FC = () => {
 	const [displayPDModal, setDisplayPDModal] = useState<boolean>(false);
 	const [displayEditModal, setDisplayEditModal] = useState<boolean>(false);
+	const [displayDeletePopup, setDisplayDeletePopup] = useState<boolean>(false);
 
 	const router = useRouter();
 	const { id } = router.query;
@@ -99,7 +100,10 @@ const PlaylistDetailsView: FC = () => {
 							<span>Edit</span>
 						</button>
 					)}
-					<button tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm shadow-md hover:bg-opacity-75 flex items-center justify-center'>
+					<button
+						tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm shadow-md hover:bg-opacity-75 flex items-center justify-center'
+						onClick={() => setDisplayDeletePopup(true)}
+					>
 						{isPlaylistOwner ? (
 							<>
 								<svg
@@ -145,7 +149,7 @@ const PlaylistDetailsView: FC = () => {
 					onClose={() => setDisplayPDModal(false)}
 					title='Pare Down'
 					description='Duplicate your playlist with a pared down number of songs.'
-					isOpened={displayPDModal}
+					isOpen={displayPDModal}
 				>
 					<PareDownModal />
 				</Modal>
@@ -157,10 +161,27 @@ const PlaylistDetailsView: FC = () => {
 					title='Edit Playlist Details'
 					acceptText='Save'
 					acceptAction={() => console.log('save here')}
-					isOpened={displayEditModal}
+					isOpen={displayEditModal}
 				>
 					<EditModal name={playlist?.name} image={playlist?.image} description={playlist?.description} />
 				</SimpleModal>
+			)}
+
+			{displayDeletePopup && (
+				<Popup
+					title='Remove playlist from your library?'
+					onClose={() => setDisplayDeletePopup(false)}
+					isOpen={displayDeletePopup}
+					cancelText='Cancel'
+					cancelAction={() => setDisplayDeletePopup(false)}
+					acceptText='Remove'
+					acceptAction={() => console.log('remove handler here')}
+				>
+					<p>
+						Are you sure you want to <em tw='not-italic font-semibold text-bblue-light'>permanently remove</em>{' '}
+						{playlist?.name} playlist from your library?
+					</p>
+				</Popup>
 			)}
 		</div>
 	);

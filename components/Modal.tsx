@@ -15,7 +15,7 @@ const ModalContent = styled.div(() => [
 interface ModalType {
 	title: string;
 	onClose: Dispatch<SetStateAction<boolean>>;
-	isOpened: boolean;
+	isOpen: boolean;
 	description?: string;
 	fullWidthText?: string;
 	fullWidthAction?: (event: React.MouseEvent<HTMLElement>) => void;
@@ -29,7 +29,7 @@ export const Modal: React.FC<ModalType> = ({
 	title,
 	description,
 	onClose,
-	isOpened,
+	isOpen,
 	children,
 	fullWidthText,
 	fullWidthAction,
@@ -68,7 +68,7 @@ export const Modal: React.FC<ModalType> = ({
 		};
 	}, []);
 
-	if (!isOpened) {
+	if (!isOpen) {
 		return null;
 	}
 

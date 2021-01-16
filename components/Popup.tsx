@@ -2,30 +2,33 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
 import ReactDOM from 'react-dom';
 
-const SimpleModalContent = styled.div(() => [
+const PopupContent = styled.div(() => [
 	`
-		width: 34vw;
-		height: 360px;
-		min-width: 652px;
+		width: 520px;
+		max-height: 420px;
 	`,
 	tw`bg-bgray-light rounded-md overflow-hidden relative flex flex-col`,
 ]);
 
-interface SimpleModalType {
+interface PopupType {
 	title: string;
 	onClose: Dispatch<SetStateAction<boolean>>;
 	isOpen: boolean;
+	cancelText?: string;
+	cancelAction?: (event: React.MouseEvent<HTMLElement>) => void;
 	acceptText?: string;
 	acceptAction?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-export const SimpleModal: React.FC<SimpleModalType> = ({
+export const Popup: React.FC<PopupType> = ({
 	title,
 	onClose,
-	children,
+	cancelText,
+	cancelAction,
 	acceptText,
 	acceptAction,
 	isOpen,
+	children,
 }) => {
 	const closeOnEscapeKeyDown = (e: KeyboardEvent) => {
 		if (e.code === 'Escape') {
@@ -41,14 +44,14 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 	}, []);
 
 	useEffect(() => {
-		// disabe scroll for the whole page when Modal is opened (but still display the scrollbar)
+		// disabe scroll for the whole page when Popup is opened (but still display the scrollbar)
 		const withScroll = document.body.scrollHeight > document.documentElement.clientHeight;
 		document.body.style.top = `-${window.scrollY}px`;
 		document.body.style.overflowY = withScroll ? 'scroll' : 'unset';
 		document.body.style.position = 'fixed';
 		document.body.style.width = '100%';
 
-		// re-enable scroll for the whole page when Modal is about to be unmounted
+		// re-enable scroll for the whole page when Popup is about to be unmounted
 		return () => {
 			const scrollY = document.body.style.top;
 			document.body.style.overflow = 'auto';
@@ -66,8 +69,8 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 			tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
 			onClick={() => onClose(false)}
 		>
-			<SimpleModalContent onClick={(e) => e.stopPropagation()}>
-				<div tw='px-5 py-3 relative flex items-center justify-center'>
+			<PopupContent onClick={(e) => e.stopPropagation()}>
+				<div tw='px-5 py-3 relative flex'>
 					<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
 
 					<button
@@ -79,15 +82,26 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 						</svg>
 					</button>
 				</div>
-				<div tw='px-5 overflow-hidden'>{children}</div>
-				<div tw='my-auto flex justify-center pb-2'>
+				<div tw='px-5'>{children}</div>
+				<div tw='my-auto ml-auto flex py-3 px-5'>
+					{cancelText && cancelAction ? (
+						<button
+							tw='tracking-wider rounded-sm px-5 py-0.5 font-bold text-white text-opacity-70'
+							onClick={cancelAction}
+						>
+							{cancelText}
+						</button>
+					) : null}
 					{acceptText && acceptAction ? (
-						<button tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'>
+						<button
+							tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark ml-2'
+							onClick={acceptAction}
+						>
 							{acceptText}
 						</button>
 					) : null}
 				</div>
-			</SimpleModalContent>
+			</PopupContent>
 		</div>,
 		document.getElementById('__next'),
 	);
