@@ -33,6 +33,7 @@ export const UsePlaylistDetails = (id: string | string[]): UsePlaylistDetailsTyp
 
 export const UsePlaylistTracks = (id: string | string[], offset: number, limit?: number): UsePlaylistTracksType => {
 	limit = limit ? limit : 100;
+	offset = offset < 0 ? 0 : offset;
 	const { data, error } = useSWR(`/api/playlists/${id}/tracks?offset=${offset}&limit=${limit}`);
 
 	return {

@@ -24,8 +24,9 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 
 	return (
 		<>
-			<span tw='ml-auto px-6 text-sm tracking-wide italic text-white text-opacity-70'>
-				Displaying the {recentlyAdded ? 'last' : 'first'} 25 songs added to a playlist.
+			<span tw='ml-auto text-sm tracking-wide italic text-white text-opacity-70'>
+				Displaying the {recentlyAdded ? 'last' : 'first'} {tracksTotal < 25 ? tracksTotal : '25'} songs added to a
+				playlist.
 			</span>
 			<StyledTable>
 				<thead tw='w-full block leading-loose tracking-wider uppercase text-xs border-b border-bgray-lightest border-opacity-50'>

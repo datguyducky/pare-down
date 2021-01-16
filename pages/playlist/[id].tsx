@@ -1,10 +1,12 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, TracksTable } from '@/components';
+import { HeaderConstant, TracksTable, Modal } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 
 const PlaylistDetailsView: FC = () => {
+	const [paredownModal, setParedownModal] = useState<boolean>(false);
+
 	const router = useRouter();
 	const { id } = router.query;
 
@@ -60,7 +62,10 @@ const PlaylistDetailsView: FC = () => {
 				</div>
 
 				<div tw='flex'>
-					<button tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'>
+					<button
+						tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'
+						onClick={() => setParedownModal(true)}
+					>
 						<svg
 							tw='w-5 h-5 inline-block mr-2'
 							fill='currentColor'
@@ -126,11 +131,24 @@ const PlaylistDetailsView: FC = () => {
 				</div>
 			</HeaderConstant>
 			<div tw='lg:px-80 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
-				<TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />
+				{playlist?.tracksTotal && <TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />}
 			</div>
+
+			{paredownModal && (
+				<Modal
+					onClose={() => setParedownModal(false)}
+					title='Pare Down'
+					description='Duplicate your playlist with a pared down number of songs.'
+				>
+					<PareDownModal />
+				</Modal>
+			)}
 		</div>
 	);
 };
 
 export default PlaylistDetailsView;
-//
+
+const PareDownModal: FC = () => {
+	return <div>pare down 1 step here...</div>;
+};
