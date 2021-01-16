@@ -82,7 +82,7 @@ export const Modal: React.FC<ModalType> = ({
 					{acceptText || cancelText ? (
 						<div tw='ml-auto flex max-w-max py-3 px-5'>
 							{cancelText && cancelAction && (
-								<button tw='text-lg font-bold text-white text-opacity-50 hover:text-opacity-100'>{cancelText}</button>
+								<button tw='text-lg font-bold text-white text-opacity-60 hover:text-opacity-100'>{cancelText}</button>
 							)}
 							{acceptText && acceptAction && <button tw='ml-6 text-lg font-bold'>{acceptText}</button>}
 						</div>

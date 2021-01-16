@@ -1,11 +1,12 @@
 import { FC, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, TracksTable, Modal } from '@/components';
+import { HeaderConstant, TracksTable, Modal, SimpleModal } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 
 const PlaylistDetailsView: FC = () => {
-	const [paredownModal, setParedownModal] = useState<boolean>(false);
+	const [displayPDModal, setDisplayPDModal] = useState<boolean>(false);
+	const [displayEditModal, setDisplayEditModal] = useState<boolean>(false);
 
 	const router = useRouter();
 	const { id } = router.query;
@@ -64,7 +65,7 @@ const PlaylistDetailsView: FC = () => {
 				<div tw='flex'>
 					<button
 						tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'
-						onClick={() => setParedownModal(true)}
+						onClick={() => setDisplayPDModal(true)}
 					>
 						<svg
 							tw='w-5 h-5 inline-block mr-2'
@@ -77,22 +78,27 @@ const PlaylistDetailsView: FC = () => {
 						</svg>
 						<span>Pare Down</span>
 					</button>
-					<button tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-opacity-75 flex items-center justify-center'>
-						<svg
-							tw='w-4 h-4 inline-block mr-2'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
+					{isPlaylistOwner && (
+						<button
+							tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-opacity-75 flex items-center justify-center'
+							onClick={() => setDisplayEditModal(true)}
 						>
-							<path d='M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z' />
-							<path
-								fillRule='evenodd'
-								d='M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z'
-								clipRule='evenodd'
-							/>
-						</svg>
-						<span>Edit</span>
-					</button>
+							<svg
+								tw='w-4 h-4 inline-block mr-2'
+								fill='currentColor'
+								viewBox='0 0 20 20'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path d='M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z' />
+								<path
+									fillRule='evenodd'
+									d='M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z'
+									clipRule='evenodd'
+								/>
+							</svg>
+							<span>Edit</span>
+						</button>
+					)}
 					<button tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm shadow-md hover:bg-opacity-75 flex items-center justify-center'>
 						{isPlaylistOwner ? (
 							<>
@@ -134,14 +140,25 @@ const PlaylistDetailsView: FC = () => {
 				{playlist?.tracksTotal && <TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />}
 			</div>
 
-			{paredownModal && (
+			{displayPDModal && (
 				<Modal
-					onClose={() => setParedownModal(false)}
+					onClose={() => setDisplayPDModal(false)}
 					title='Pare Down'
 					description='Duplicate your playlist with a pared down number of songs.'
 				>
 					<PareDownModal />
 				</Modal>
+			)}
+
+			{displayEditModal && (
+				<SimpleModal
+					onClose={() => setDisplayEditModal(false)}
+					title='Edit Playlist Details'
+					acceptText='Save'
+					acceptAction={() => console.log('save here')}
+				>
+					<EditModal name={playlist?.name} image={playlist?.image} description={playlist?.description} />
+				</SimpleModal>
 			)}
 		</div>
 	);
@@ -151,4 +168,37 @@ export default PlaylistDetailsView;
 
 const PareDownModal: FC = () => {
 	return <div>pare down 1 step here...</div>;
+};
+
+const EditModal: FC<{ name: string; image: string; description?: string }> = ({ name, image, description }) => {
+	const [playlistName, setPlaylistName] = useState<string>(name || null);
+	const [playlistDesc, setPlaylistDesc] = useState<string>(description || null);
+
+	return (
+		<div tw='grid grid-cols-3 col-gap-5'>
+			{image ? (
+				<img src={image} alt='Playlist cover image' />
+			) : (
+				<div tw='w-full rounded bg-bgray' style={{ minHeight: 190 }} />
+			)}
+			<div tw='col-span-2 flex flex-col'>
+				<label htmlFor='playlist-name' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
+					Name
+				</label>
+				<input
+					id='playlist-name'
+					type='text'
+					tw='text-black rounded-sm px-2 py-0.5 mb-4'
+					value={playlistName}
+					onChange={(e) => setPlaylistName(e.target.value)}
+				/>
+				<label htmlFor='playlist-description'>Description</label>
+				<textarea
+					tw='h-full text-black py-0.5 px-2 resize-none'
+					value={playlistDesc}
+					placeholder='Give your playlist a catchy description'
+				/>
+			</div>
+		</div>
+	);
 };
