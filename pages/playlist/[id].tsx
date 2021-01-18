@@ -109,7 +109,7 @@ const PlaylistDetailsView: FC = () => {
 					</div>
 				</div>
 
-				<div tw='mt-7 mb-3'>
+				<div tw='my-3'>
 					<h1 tw='text-sm text-white text-opacity-60 font-bold'>
 						Make sure you have selected the correct playlist, then click one of the buttons below to continue.
 					</h1>

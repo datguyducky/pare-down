@@ -71,7 +71,7 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 					<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
 
 					<button
-						tw='absolute top-0 right-0 bottom-0 mx-4 text-white text-opacity-80 hover:text-opacity-100'
+						tw='absolute right-0 mx-5 text-white text-opacity-80 hover:text-opacity-100'
 						onClick={() => onClose(false)}
 					>
 						<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
