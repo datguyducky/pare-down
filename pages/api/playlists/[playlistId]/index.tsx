@@ -9,48 +9,116 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 	const {
 		query: { playlistId },
 	} = req;
+
 	// make call to retrieve user data
-	await axios
-		.get(
-			`https://api.spotify.com/v1/playlists/${playlistId}?fields=collaborative,description,followers,href,id,name,owner,public,tracks(total),type,images`,
-			{
+	if (req.method === 'GET') {
+		await axios
+			.get(
+				`https://api.spotify.com/v1/playlists/${playlistId}?fields=collaborative,description,followers,href,id,name,owner,public,tracks(total),type,images`,
+				{
+					headers: {
+						'Authorization': 'Bearer ' + _ACCESS_TOKEN,
+					},
+				},
+			)
+			.then((response) => {
+				if (response.statusText === 'OK') {
+					const data = response.data;
+					// return from the API call only the data is needed on the frontend
+					const newData = {
+						collaborative: data.collaborative,
+						description: data.description,
+						followersNum: data.followers.total,
+						href: data.href,
+						id: data.id,
+						name: data.name,
+						owner: data.owner,
+						public: data.public,
+						tracksTotal: data.tracks.total,
+						type: data.type,
+						image: data.images[0]?.url || null,
+					};
+
+					// send response status
+					res.status(200).json(newData);
+					res.end();
+					return;
+				}
+			})
+			.catch((error) => {
+				// catch error and send error message back to frontend, where useSWR can do its magic
+				if (error.response) {
+					res.statusCode = error.response.status;
+					res.send(error.response.data);
+					res.end();
+					return;
+				}
+			});
+	} else if (req.method === 'DELETE') {
+		await axios
+			.delete(`https://api.spotify.com/v1/playlists/${playlistId}/followers`, {
 				headers: {
 					'Authorization': 'Bearer ' + _ACCESS_TOKEN,
 				},
-			},
-		)
-		.then((response) => {
-			if (response.statusText === 'OK') {
-				const data = response.data;
-				// return from the API call only the data is needed on the frontend
-				const newData = {
-					collaborative: data.collaborative,
-					description: data.description,
-					followersNum: data.followers.total,
-					href: data.href,
-					id: data.id,
-					name: data.name,
-					owner: data.owner,
-					public: data.public,
-					tracksTotal: data.tracks.total,
-					type: data.type,
-					image: data.images[0]?.url || null,
-				};
-
-				// send response status
-				res.status(200).json(newData);
-				res.end();
-				return;
-			}
-		})
-		.catch((error) => {
-			// catch error and send error message back to frontend, where useSWR can do its magic
-			if (error.response) {
-				res.statusCode = error.response.status;
-				res.send(error.response.data);
-				res.end();
-				return;
-			}
-		});
+			})
+			.then((response) => {
+				if (response.statusText === 'OK') {
+					// send response status
+					res.status(204);
+					res.end();
+					return;
+				}
+			})
+			.catch((error) => {
+				// catch error and send error message back to frontend, where useSWR can do its magic
+				if (error.response) {
+					res.statusCode = error.response.status;
+					res.send(error.response.data);
+					res.end();
+					return;
+				}
+			});
+	} else if (req.method === 'PUT') {
+		const {
+			data: { name, description, isPublic },
+		} = req.body;
+		await axios
+			.put(
+				`https://api.spotify.com/v1/playlists/${playlistId}
+		`,
+				{
+					name: name,
+					description: description,
+					public: isPublic,
+				},
+				{
+					headers: {
+						'Authorization': 'Bearer ' + _ACCESS_TOKEN,
+						'Content-Type': 'application/json',
+					},
+				},
+			)
+			.then((response) => {
+				if (response.statusText === 'OK') {
+					// send response status
+					res.status(200);
+					res.end();
+					return;
+				}
+			})
+			.catch((error) => {
+				// catch error and send error message back to frontend, where useSWR can do its magic
+				if (error.response) {
+					res.statusCode = error.response.status;
+					res.send(error.response.data);
+					res.end();
+					return;
+				}
+			});
+	} else {
+		res.status(405);
+		res.send('Method Mot Allowed');
+		res.end();
+	}
 };
 export default playlistDetailsHandler;

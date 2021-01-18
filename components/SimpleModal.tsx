@@ -82,7 +82,10 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 				<div tw='px-5 overflow-hidden'>{children}</div>
 				<div tw='my-auto flex justify-center pb-2'>
 					{acceptText && acceptAction ? (
-						<button tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'>
+						<button
+							tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'
+							onClick={acceptAction}
+						>
 							{acceptText}
 						</button>
 					) : null}

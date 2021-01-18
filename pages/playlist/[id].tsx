@@ -1,8 +1,10 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
 import { HeaderConstant, TracksTable, Modal, SimpleModal, Popup } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
+import axios from 'axios';
+import { mutate } from 'swr';
 
 const PlaylistDetailsView: FC = () => {
 	const [displayPDModal, setDisplayPDModal] = useState<boolean>(false);
@@ -24,6 +26,56 @@ const PlaylistDetailsView: FC = () => {
 	// getInitialProps or something like that
 	const { data: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
 	const isPlaylistOwner = user?.id === playlist?.owner?.id ? true : false;
+	const [playlistName, setPlaylistName] = useState<string>(null);
+	const [playlistDesc, setPlaylistDesc] = useState<string>(null);
+	const [playlistIsPublic, setPlaylistIsPublic] = useState<boolean>(null);
+
+	useEffect(() => {
+		if (playlist) {
+			// save playlist data to states (used by inputs)
+			// TODO: find if there's a better way to do this
+			setPlaylistName(playlist?.name);
+			setPlaylistDesc(playlist?.description);
+			setPlaylistIsPublic(playlist?.public);
+		}
+	}, [playlist]);
+
+	function handlePlaylistUnfollow() {
+		axios
+			.delete(`/api/playlists/${playlist?.id}`)
+			.then((response) => {
+				if (response.status === 204) {
+					// TODO: add timeout and toast here
+					router.push(`/dashboard`);
+				}
+			})
+			.catch((error) => {
+				//TODO: toast here
+				setDisplayDeletePopup(false); // hide popup just because why not
+				console.log(error);
+			});
+	}
+
+	function handlePlaylistEdit() {
+		axios
+			.put(`/api/playlists/${playlist?.id}`, {
+				data: {
+					name: playlistName,
+					isPublic: playlistIsPublic,
+					description: playlistDesc,
+				},
+			})
+			.then((response) => {
+				if (response.status === 200) {
+					setDisplayEditModal(false);
+					mutate(`/api/playlists/${playlist?.id}`);
+				}
+			})
+			.catch((error) => {
+				//TODO: toast here
+				console.log(error);
+			});
+	}
 
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
@@ -64,21 +116,23 @@ const PlaylistDetailsView: FC = () => {
 				</div>
 
 				<div tw='flex'>
-					<button
-						tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'
-						onClick={() => setDisplayPDModal(true)}
-					>
-						<svg
-							tw='w-5 h-5 inline-block mr-2'
-							fill='currentColor'
-							viewBox='0 0 20 20'
-							xmlns='http://www.w3.org/2000/svg'
+					{playlist?.tracksTotal > 0 && (
+						<button
+							tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'
+							onClick={() => setDisplayPDModal(true)}
 						>
-							<path d='M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z' />
-							<path d='M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z' />
-						</svg>
-						<span>Pare Down</span>
-					</button>
+							<svg
+								tw='w-5 h-5 inline-block mr-2'
+								fill='currentColor'
+								viewBox='0 0 20 20'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path d='M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z' />
+								<path d='M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z' />
+							</svg>
+							<span>Pare Down</span>
+						</button>
+					)}
 					{isPlaylistOwner && (
 						<button
 							tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-opacity-75 flex items-center justify-center'
@@ -141,7 +195,11 @@ const PlaylistDetailsView: FC = () => {
 				</div>
 			</HeaderConstant>
 			<div tw='lg:px-80 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
-				{playlist?.tracksTotal && <TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />}
+				{playlist?.tracksTotal > 0 ? (
+					<TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />
+				) : (
+					<h2 tw='font-bold text-xl text-gray-300'>Sorry, it looks like this playlist is empty. 🧐</h2>
+				)}
 			</div>
 
 			{displayPDModal && (
@@ -160,10 +218,18 @@ const PlaylistDetailsView: FC = () => {
 					onClose={() => setDisplayEditModal(false)}
 					title='Edit Playlist Details'
 					acceptText='Save'
-					acceptAction={() => console.log('save here')}
+					acceptAction={handlePlaylistEdit}
 					isOpen={displayEditModal}
 				>
-					<EditModal name={playlist?.name} image={playlist?.image} description={playlist?.description} />
+					<EditModal
+						image={playlist?.image}
+						playlistName={playlistName}
+						playlistDesc={playlistDesc}
+						playlistIsPublic={playlistIsPublic}
+						setPlaylistName={setPlaylistName}
+						setPlaylistDesc={setPlaylistDesc}
+						setPlaylistIsPublic={setPlaylistIsPublic}
+					/>
 				</SimpleModal>
 			)}
 
@@ -175,7 +241,7 @@ const PlaylistDetailsView: FC = () => {
 					cancelText='Cancel'
 					cancelAction={() => setDisplayDeletePopup(false)}
 					acceptText='Remove'
-					acceptAction={() => console.log('remove handler here')}
+					acceptAction={handlePlaylistUnfollow}
 				>
 					<p>
 						Are you sure you want to <em tw='not-italic font-semibold text-bblue-light'>permanently remove</em>{' '}
@@ -193,12 +259,25 @@ const PareDownModal: FC = () => {
 	return <div>pare down 1 step here...</div>;
 };
 
-const EditModal: FC<{ name: string; image: string; description?: string }> = ({ name, image, description }) => {
-	const [playlistName, setPlaylistName] = useState<string>(name || null);
-	const [playlistDesc, setPlaylistDesc] = useState<string>(description || undefined);
-
+const EditModal: FC<{
+	image: string;
+	playlistName: string;
+	setPlaylistName: Dispatch<SetStateAction<string>>;
+	playlistDesc: string;
+	setPlaylistDesc: Dispatch<SetStateAction<string>>;
+	playlistIsPublic: boolean;
+	setPlaylistIsPublic: Dispatch<SetStateAction<boolean>>;
+}> = ({
+	image,
+	playlistName,
+	setPlaylistName,
+	playlistDesc,
+	setPlaylistDesc,
+	playlistIsPublic,
+	setPlaylistIsPublic,
+}) => {
 	return (
-		<div tw='grid grid-cols-3 col-gap-5'>
+		<div tw='grid grid-cols-3 col-gap-5 row-gap-5'>
 			{image ? (
 				<img src={image} alt='Playlist cover image' />
 			) : (
@@ -215,13 +294,31 @@ const EditModal: FC<{ name: string; image: string; description?: string }> = ({ 
 					value={playlistName}
 					onChange={(e) => setPlaylistName(e.target.value)}
 				/>
-				<label htmlFor='playlist-description'>Description</label>
+				<label htmlFor='playlist-description' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
+					Description
+				</label>
 				<textarea
 					tw='h-full text-black py-0.5 px-2 resize-none'
 					value={playlistDesc}
 					placeholder='Give your playlist a catchy description'
 					maxLength={300}
+					onChange={(e) => setPlaylistDesc(e.target.value)}
 				/>
+			</div>
+			<div tw='col-span-3 ml-auto'>
+				<label
+					htmlFor='playlist-ispublic'
+					tw='flex items-center text-sm mb-0.5 font-semibold text-white text-opacity-70'
+				>
+					<input
+						type='checkbox'
+						id='playlist-ispublic'
+						checked={playlistIsPublic}
+						onChange={(e) => setPlaylistIsPublic(e.target.checked)}
+						tw='mr-2'
+					/>
+					Public playlist
+				</label>
 			</div>
 		</div>
 	);
