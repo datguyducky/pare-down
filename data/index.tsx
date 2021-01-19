@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { useSWRInfinite } from 'swr';
 import { UseUserType, UseUserPlaylistsType, UsePlaylistDetailsType, UsePlaylistTracksType } from './types';
 
 export const UseUser = (): UseUserType => {
@@ -12,12 +12,23 @@ export const UseUser = (): UseUserType => {
 };
 
 export const UseUserPlaylists = (): UseUserPlaylistsType => {
-	const { data, error } = useSWR('/api/playlists');
+	const getKey = (pageIndex, previousPageData) => {
+		// reached the end
+		if (previousPageData && !previousPageData.next) return null;
+
+		// first page, we don't have `previousPageData`
+		if (pageIndex === 0) return `/api/playlists`;
+
+		// add the next (offset) to the API endpoint
+		return `/api/playlists?offset=${previousPageData.next}`;
+	};
+
+	const { data, size, setSize } = useSWRInfinite(getKey);
 
 	return {
 		data: data,
-		isLoading: !error && data,
-		isError: error,
+		size: size,
+		setSize: setSize,
 	};
 };
 

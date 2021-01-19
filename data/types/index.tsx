@@ -17,14 +17,16 @@ export interface _SpotifyPlaylist {
 	description?: string;
 }
 
-export interface UseUserPlaylistsType extends UseDataType {
-	data?: {
+export interface UseUserPlaylistsType {
+	data?: Array<{
 		items: Array<_SpotifyPlaylist>;
 		limit: number;
-		next: string | null;
+		next: number | null;
 		offset: number;
 		total: number;
-	};
+	}>;
+	size: number;
+	setSize: (size: number | ((size: number) => number)) => Promise<unknown[]>;
 }
 
 export interface _SpotifyOwnerType {

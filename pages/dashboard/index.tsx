@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import 'twin.macro';
 import { HeaderConstant, PlaylistCard } from '@/components';
 import { UseUser, UseUserPlaylists } from '../../data';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 const DashboardView: FC = () => {
 	const router = useRouter();
@@ -17,7 +18,7 @@ const DashboardView: FC = () => {
 		}
 	});
 
-	const { data: playlists, isError: playlistsIsError } = UseUserPlaylists();
+	const { data, size, setSize } = UseUserPlaylists();
 
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
@@ -34,8 +35,20 @@ const DashboardView: FC = () => {
 
 				<h1 tw='text-3xl font-bold'>To start the Pare Down process, you must select one of your playlists below:</h1>
 			</HeaderConstant>
-			<div tw='lg:px-72 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
-				{playlists && playlists.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} id={p.id} />)}
+			<div tw='lg:px-80 lg:mx-2'>
+				{data && (
+					<InfiniteScroll
+						dataLength={data.length}
+						hasMore={data[data.length - 1].next ? true : false}
+						next={() => setSize(size + 1)}
+						loader={<span>loading</span>}
+						tw='grid gap-y-7 pb-10 grid-cols-6 justify-items-center'
+					>
+						{data.map((playlist) =>
+							playlist.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} id={p.id} />),
+						)}
+					</InfiniteScroll>
+				)}
 			</div>
 		</div>
 	);

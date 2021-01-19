@@ -5,9 +5,14 @@ import { parse } from 'cookie';
 const playlistsListHandler: NextApiHandler = async (req, res) => {
 	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
+	const {
+		query: { offset },
+	} = req;
+	const parseOffset = offset ? offset : 0;
+
 	// make call to retrieve user data
 	await axios
-		.get(`https://api.spotify.com/v1/me/playlists?limit=50`, {
+		.get(`https://api.spotify.com/v1/me/playlists?limit=50&offset=${parseOffset}`, {
 			headers: {
 				'Authorization': 'Bearer ' + _ACCESS_TOKEN,
 			},
@@ -15,6 +20,11 @@ const playlistsListHandler: NextApiHandler = async (req, res) => {
 		.then((response) => {
 			if (response.statusText === 'OK') {
 				const data = response.data;
+				// query string from next url
+				const queryString = data.next ? data.next.split('?')[1] : null;
+				// list of params
+				const nextParams = new URLSearchParams(queryString);
+
 				// return from the API call only the data is needed on the frontend
 				const newData = {
 					items: data.items.map((p) => ({
@@ -24,7 +34,7 @@ const playlistsListHandler: NextApiHandler = async (req, res) => {
 						description: p.description,
 					})),
 					limit: data.limit,
-					next: data.next,
+					next: parseInt(nextParams.get('offset')),
 					offset: data.offset,
 					total: data.total,
 				};
