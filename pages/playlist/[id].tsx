@@ -1,7 +1,7 @@
 import { FC, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, TracksTable, Modal, SimpleModal, Popup } from '@/components';
+import { HeaderConstant, TracksTable, SimpleModal, Popup, PareDownModal } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 import axios from 'axios';
 import { mutate } from 'swr';
@@ -26,9 +26,13 @@ const PlaylistDetailsView: FC = () => {
 	// getInitialProps or something like that
 	const { data: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
 	const isPlaylistOwner = user?.id === playlist?.owner?.id ? true : false;
+
 	const [playlistName, setPlaylistName] = useState<string>(null);
 	const [playlistDesc, setPlaylistDesc] = useState<string>(null);
 	const [playlistIsPublic, setPlaylistIsPublic] = useState<boolean>(null);
+	const [playlistSongsNum, setPlaylistSongsNum] = useState<number>(0);
+
+	const [paredownStep, setParedownStep] = useState<number>(1);
 
 	useEffect(() => {
 		if (playlist) {
@@ -203,14 +207,29 @@ const PlaylistDetailsView: FC = () => {
 			</div>
 
 			{displayPDModal && (
-				<Modal
-					onClose={() => setDisplayPDModal(false)}
-					title='Pare Down'
-					description='Duplicate your playlist with a pared down number of songs.'
-					isOpen={displayPDModal}
-				>
-					<PareDownModal />
-				</Modal>
+				<PareDownModal
+					paredownStep={paredownStep}
+					setParedownStep={setParedownStep}
+					image={playlist?.image}
+					playlistName={playlistName}
+					playlistDesc={playlistDesc}
+					playlistIsPublic={playlistIsPublic}
+					setPlaylistName={setPlaylistName}
+					setPlaylistDesc={setPlaylistDesc}
+					setPlaylistIsPublic={setPlaylistIsPublic}
+					displayPDModal={displayPDModal}
+					setDisplayPDModal={setDisplayPDModal}
+					fullWidthAction={() => {
+						paredownStep === 3
+							? console.log('boom')
+							: paredownStep < 3 && paredownStep >= 1
+							? setParedownStep((paredownStep) => paredownStep + 1)
+							: setParedownStep((paredownStep) => paredownStep - 1);
+					}}
+					playlistSongsNum={playlistSongsNum}
+					setPlaylistSongsNum={setPlaylistSongsNum}
+					playlistId={playlist?.id}
+				/>
 			)}
 
 			{displayEditModal && (
@@ -254,10 +273,6 @@ const PlaylistDetailsView: FC = () => {
 };
 
 export default PlaylistDetailsView;
-
-const PareDownModal: FC = () => {
-	return <div>pare down 1 step here...</div>;
-};
 
 const EditModal: FC<{
 	image: string;
