@@ -16,6 +16,9 @@ module.exports = {
 					dark: '#388bf0',
 				},
 			},
+			screens: {
+				'3xl': '1780px',
+			},
 		},
 	},
 	plugins: [],

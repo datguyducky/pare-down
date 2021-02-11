@@ -1,23 +1,24 @@
-import { FC } from 'react';
-import 'twin.macro';
+import { FC, useState } from 'react';
+import tw, { css } from 'twin.macro';
 import { StyledHeroSVG } from '../styles/index';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const IndexPage: FC = () => {
 	const router = useRouter();
+	const [mobileNav, setMobileNav] = useState<boolean>(false);
 
 	return (
 		<>
-			<div tw='py-6 lg:px-96 flex w-full items-center bg-bgray text-white'>
+			<div tw='py-6 px-4 3xl:px-96 flex w-full items-center bg-bgray text-white'>
 				<header>
-					<h2 tw='text-3xl font-semibold'>
+					<h2 tw='text-xl lg:text-3xl font-semibold'>
 						<Link href='/'>
 							<a>Pare Down</a>
 						</Link>
 					</h2>
 				</header>
-				<nav tw='ml-12 flex items-center flex-1'>
+				<nav tw='ml-12 items-center flex-1 hidden lg:flex'>
 					<ul tw='flex font-medium'>
 						<li tw='mr-4 hover:underline'>
 							<a href='#features'>Features</a>
@@ -37,20 +38,60 @@ const IndexPage: FC = () => {
 						</a>
 					</Link>
 				</nav>
+				<nav tw='ml-auto lg:hidden'>
+					<button onClick={() => setMobileNav(true)}>
+						<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
+							<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
+						</svg>
+					</button>
+					<div
+						tw='fixed inset-0 bg-bgray-darkest items-center justify-center text-white z-50 hidden'
+						css={[mobileNav && tw`flex`]}
+						onClick={() => setMobileNav(false)}
+					>
+						<button
+							tw='absolute top-0 right-0 mt-6 mr-4 text-white text-opacity-80 hover:text-opacity-100'
+							onClick={() => setMobileNav(false)}
+						>
+							<svg
+								tw='w-6 h-6'
+								fill='none'
+								stroke='currentColor'
+								viewBox='0 0 24 24'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+							</svg>
+						</button>
+						<ul tw='flex flex-col font-medium text-4xl'>
+							<li tw='mb-6 hover:underline'>
+								<a href='#features'>Features</a>
+							</li>
+							<li tw='mb-6 hover:underline'>
+								<a href='#pricing'>Pricing</a>
+							</li>
+							<li tw='hover:underline'>
+								<a href='https://github.com/datguysheepy/pare-down'>Github</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
 			</div>
 			<div>
-				<div tw='w-full lg:px-96 pt-32 pb-64 text-center flex flex-col relative bg-bgray text-white'>
-					<h1 tw='text-7xl font-bold tracking-wide leading-relaxed'>Pare Down for Spotify</h1>
-					<p tw='text-2xl'>Easy and fast way to duplicate your playlists with a reduced number of songs.</p>
+				<div tw='w-full py-10 pb-24 px-4 lg:pt-32 lg:pb-64 3xl:px-96 text-center flex flex-col relative bg-bgray text-white'>
+					<h1 tw='text-3xl mb-4 lg:text-7xl lg:mb-0 font-bold lg:tracking-wide lg:leading-relaxed'>
+						Pare Down for Spotify
+					</h1>
+					<p tw='text-lg lg:text-2xl'>Easy and fast way to duplicate your playlists with a reduced number of songs.</p>
 
 					<button
-						tw='mt-8 bg-bblue flex-grow-0 self-start mx-auto py-3 px-8 text-lg font-bold shadow-md hover:bg-bblue-dark rounded'
+						tw='mt-8 bg-bblue flex-grow-0 self-start mx-auto py-3 px-4 lg:px-8 lg:text-lg font-bold shadow-md hover:bg-bblue-dark rounded'
 						onClick={() => router.push('/api/login')}
 					>
 						Log in with Spotify
 					</button>
 
-					<StyledHeroSVG>
+					<StyledHeroSVG tw='hidden xl:block'>
 						<svg
 							data-name='Layer 1'
 							xmlns='http://www.w3.org/2000/svg'
@@ -65,10 +106,10 @@ const IndexPage: FC = () => {
 					</StyledHeroSVG>
 				</div>
 
-				<div id='features' tw='pt-10 pb-24 w-full lg:px-96'>
-					<h3 tw='text-center text-3xl font-bold mb-10 tracking-wide'>Features & Pricing:</h3>
-					<div tw='grid grid-cols-4 gap-x-12'>
-						<div tw='border-solid border border-gray-300 py-9 px-7 rounded'>
+				<div id='features' tw='pt-10 lg:pb-24 w-full px-4 3xl:px-96'>
+					<h3 tw='text-center text-2xl lg:text-3xl font-bold mb-10 tracking-wide'>Features & Pricing:</h3>
+					<div tw='flex flex-col space-y-6 lg:space-y-0 lg:grid lg:grid-cols-4 lg:gap-x-12 items-center'>
+						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
 								<svg
 									tw='w-6 h-6 mr-2'
@@ -91,7 +132,7 @@ const IndexPage: FC = () => {
 								you.
 							</p>
 						</div>
-						<div tw='border-solid border border-gray-300 py-9 px-7 rounded'>
+						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
 								<svg
 									tw='w-6 h-6 mr-2'
@@ -114,7 +155,7 @@ const IndexPage: FC = () => {
 								library was never easier!
 							</p>
 						</div>
-						<div tw='border-solid border border-gray-300 py-9 px-7 rounded '>
+						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
 								<svg
 									tw='w-6 h-6 mr-2'
@@ -137,7 +178,7 @@ const IndexPage: FC = () => {
 								best interest to fix and improve this app.
 							</p>
 						</div>
-						<div tw='border-solid border border-gray-300 py-9 px-7 rounded '>
+						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
 								<svg
 									tw='w-6 h-6 mr-2'
@@ -162,15 +203,18 @@ const IndexPage: FC = () => {
 						</div>
 					</div>
 
-					<div tw='w-full mt-20 grid grid-cols-2 gap-x-12'>
-						<div tw='px-7 font-bold text-xl leading-relaxed flex items-center'>
+					<div
+						tw='w-full mt-24 lg:mt-20 flex flex-col lg:grid lg:grid-cols-2 lg:gap-x-12 max-w-lg lg:max-w-none mx-auto'
+						id='pricing'
+					>
+						<div tw='mb-12 lg:mb-0 text-center lg:px-7 font-bold text-lg lg:text-xl leading-relaxed flex items-center'>
 							Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora velit sint rerum molestias nulla. Officia
 							aut magnam, libero dolorum esse, expedita quasi eius voluptatem vero nobis vel odit laborum ducimus id
 							eum.
 						</div>
 
 						<div tw='px-7 pt-9 rounded border border-solid border-gray-300 flex items-center flex-col relative'>
-							<div tw='absolute -right-8 -top-4 bg-bblue flex text-white font-bold px-4 py-1 rounded-sm text-sm rotate-12 transform shadow'>
+							<div tw='absolute 3xl:-right-8 -top-4 bg-bblue flex text-white font-bold px-4 py-1 rounded-sm text-sm 3xl:transform 3xl:rotate-12 shadow'>
 								BEST DEAL!
 							</div>
 
@@ -184,7 +228,7 @@ const IndexPage: FC = () => {
 					</div>
 				</div>
 			</div>
-			<footer tw='w-full bg-gray-50 lg:px-96 mt-12 py-4 text-center font-semibold text-sm text-gray-900'>
+			<footer tw='w-full bg-gray-50 3xl:px-96 mt-12 py-4 text-center font-semibold text-sm text-gray-900'>
 				Made with ❤️ by
 				<a href='https://github.com/datguysheepy/pare-down'> @datguysheepy</a>
 			</footer>
@@ -193,3 +237,4 @@ const IndexPage: FC = () => {
 };
 
 export default IndexPage;
+//
