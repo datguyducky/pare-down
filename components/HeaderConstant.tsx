@@ -7,7 +7,7 @@ interface HeaderConstantTypes {
 }
 
 const StyledHeaderConstant = styled.div`
-	${tw`mb-10 bg-bgray lg:px-96 lg:py-20 shadow-md relative`}
+	${tw`mb-10 bg-bgray px-8 py-10 3xl:px-96 lg:py-20 shadow-md relative`}
 `;
 
 export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, children }) => {
@@ -19,8 +19,8 @@ export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, chil
 						Github
 					</a>
 				</li>
-				<li tw='mx-2'>|</li>
-				<li tw='text-gray-400 text-xs'>Created with ❤️ by @datguysheepy</li>
+				<li tw='mx-2 hidden xs:inline'>|</li>
+				<li tw='text-gray-400 text-xs hidden xs:inline'>Created with ❤️ by @datguysheepy</li>
 			</ul>
 			<div tw='flex flex-col'>
 				<Link href={href} passHref>

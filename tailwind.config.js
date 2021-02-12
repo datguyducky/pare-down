@@ -1,3 +1,6 @@
+//eslint-disable-next-line
+const defaultTheme = require('tailwindcss/defaultTheme');
+
 module.exports = {
 	darkMode: 'class', // or 'media' or 'class' or false
 	theme: {
@@ -17,6 +20,8 @@ module.exports = {
 				},
 			},
 			screens: {
+				'xs': '440px',
+				...defaultTheme.screens,
 				'3xl': '1780px',
 			},
 		},
