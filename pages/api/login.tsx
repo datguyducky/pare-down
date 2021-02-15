@@ -10,7 +10,8 @@ const loginHandler: NextApiHandler = (req, res) => {
 			querystring.stringify({
 				response_type: 'code',
 				client_id: client_id,
-				scope: 'playlist-read-private playlist-modify-public playlist-modify-private ugc-image-upload',
+				scope:
+					'playlist-read-private playlist-modify-public playlist-modify-private ugc-image-upload playlist-read-collaborative',
 				redirect_uri: redirect_url,
 			}),
 	);

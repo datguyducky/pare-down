@@ -24,6 +24,9 @@ module.exports = {
 				...defaultTheme.screens,
 				'3xl': '1780px',
 			},
+			minHeight: {
+				'cover': '190px',
+			},
 		},
 	},
 	plugins: [],

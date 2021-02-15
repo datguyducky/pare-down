@@ -84,45 +84,52 @@ const PlaylistDetailsView: FC = () => {
 	return (
 		<div tw='text-white bg-bgray-light w-full min-h-screen'>
 			<HeaderConstant href='/dashboard' text='Go Back'>
-				<div tw='flex'>
-					{playlist?.image ? (
-						<img tw='w-24 h-24 rounded ' src={playlist.image} />
-					) : playlist?.image === null ? (
-						<div tw='w-24 h-24 rounded bg-bgray-light' />
-					) : (
-						<div tw='w-24 h-24 rounded animate-pulse bg-bgray-light' />
-					)}
-					<div tw='flex flex-col ml-4 max-w-2xl'>
-						<h3 tw='text-2xl font-bold leading-8 text-bblue truncate'>
+				<div tw='flex flex-col sm:flex-row'>
+					<div tw='flex'>
+						{playlist?.image ? (
+							<img tw='w-24 h-24 rounded flex-shrink-0' src={playlist.image} />
+						) : playlist?.image === null ? (
+							<div tw='w-24 h-24 rounded bg-bgray-light flex-shrink-0' />
+						) : (
+							<div tw='w-24 h-24 rounded animate-pulse bg-bgray-light flex-shrink-0' />
+						)}
+						<h3 tw='text-4xl font-bold text-bblue truncate my-auto ml-4 inline sm:hidden'>
+							{playlist?.name || <span tw='bg-bgray-light mx-1 h-5 inline-block rounded-sm animate-pulse' />}
+						</h3>
+					</div>
+					<div tw='flex flex-col mt-1 sm:mt-0 sm:ml-4 max-w-2xl'>
+						<h3 tw='text-2xl font-bold leading-8 text-bblue truncate hidden sm:inline'>
 							{playlist?.name || <span tw='bg-bgray-light w-32 mx-1 inline-block h-5 rounded-sm animate-pulse' />}
 						</h3>
-						<ul tw='flex text-bblue text-opacity-90 font-semibold text-sm tracking-tighter'>
+						<ul tw='flex flex-wrap text-bblue text-opacity-90 font-semibold text-sm tracking-tighter'>
 							<li>Created by: {playlist?.owner?.display_name}</li>
-							<li tw='mx-1'>•</li>
 							<li>
+								<span tw='mx-1'>•</span>
 								{playlist?.tracksTotal} {playlist?.tracksTotal === 1 ? 'track' : 'tracks'}
 							</li>
-							<li tw='mx-1'>•</li>
 							<li>
+								<span tw='mx-1'>•</span>
 								{playlist?.followersNum} {playlist?.followersNum === 1 ? 'follower' : 'followers'}
 							</li>
-							<li tw='mx-1'>•</li>
-							<li>{playlist?.public ? 'Public' : 'Private'}</li>
+							<li>
+								<span tw='mx-1'>•</span>
+								{playlist?.public ? 'Public' : 'Private'}
+							</li>
 						</ul>
-						<p tw='mt-2 break-words break-all leading-snug'> {playlist?.description}</p>
+						<p tw='mt-2 break-words break-all leading-snug hidden sm:block'> {playlist?.description}</p>
 					</div>
 				</div>
 
-				<div tw='my-3'>
+				<div tw='my-5 sm:my-3'>
 					<h1 tw='text-sm text-white text-opacity-60 font-bold'>
 						Make sure you have selected the correct playlist, then click one of the buttons below to continue.
 					</h1>
 				</div>
 
-				<div tw='flex'>
+				<div tw='flex flex-col gap-y-3 sm:flex-row'>
 					{playlist?.tracksTotal > 0 && (
 						<button
-							tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-bblue-dark flex items-center justify-center'
+							tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-0 sm:mr-4 sm:shadow-md hover:bg-bblue-dark flex items-center justify-center'
 							onClick={() => setDisplayPDModal(true)}
 						>
 							<svg
@@ -134,12 +141,12 @@ const PlaylistDetailsView: FC = () => {
 								<path d='M7 9a2 2 0 012-2h6a2 2 0 012 2v6a2 2 0 01-2 2H9a2 2 0 01-2-2V9z' />
 								<path d='M5 3a2 2 0 00-2 2v6a2 2 0 002 2V5h8a2 2 0 00-2-2H5z' />
 							</svg>
-							<span>Pare Down</span>
+							<span tw='whitespace-nowrap'>Pare Down</span>
 						</button>
 					)}
 					{isPlaylistOwner && (
 						<button
-							tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm mr-4 shadow-md hover:bg-opacity-75 flex items-center justify-center'
+							tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm mr-0 sm:mr-4 sm:shadow-md hover:bg-opacity-75 flex items-center justify-center'
 							onClick={() => setDisplayEditModal(true)}
 						>
 							<svg
@@ -155,11 +162,11 @@ const PlaylistDetailsView: FC = () => {
 									clipRule='evenodd'
 								/>
 							</svg>
-							<span>Edit</span>
+							<span tw='whitespace-nowrap'>Edit</span>
 						</button>
 					)}
 					<button
-						tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm shadow-md hover:bg-opacity-75 flex items-center justify-center'
+						tw='bg-bgray-darkest text-sm font-semibold py-1 px-4 rounded-sm sm:shadow-md hover:bg-opacity-75 flex items-center justify-center'
 						onClick={() => setDisplayDeletePopup(true)}
 					>
 						{isPlaylistOwner ? (
@@ -176,7 +183,7 @@ const PlaylistDetailsView: FC = () => {
 										clipRule='evenodd'
 									/>
 								</svg>
-								<span>Delete</span>
+								<span tw='whitespace-nowrap'>Delete</span>
 							</>
 						) : (
 							<>
@@ -192,7 +199,7 @@ const PlaylistDetailsView: FC = () => {
 										clipRule='evenodd'
 									/>
 								</svg>
-								<span>Unfollow</span>
+								<span tw='whitespace-nowrap'>Unfollow</span>
 							</>
 						)}
 					</button>
@@ -202,7 +209,7 @@ const PlaylistDetailsView: FC = () => {
 				{playlist?.tracksTotal > 0 ? (
 					<TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />
 				) : (
-					<h2 tw='font-bold text-xl text-gray-300'>Sorry, it looks like this playlist is empty. 🧐</h2>
+					<h2 tw='font-bold text-xl text-gray-300 text-center'>Sorry, it looks like this playlist is empty. 🧐</h2>
 				)}
 			</div>
 
@@ -292,13 +299,13 @@ const EditModal: FC<{
 	setPlaylistIsPublic,
 }) => {
 	return (
-		<div tw='grid grid-cols-3 col-gap-5 row-gap-5'>
+		<div tw='sm:grid sm:grid-cols-3 sm:col-gap-5 sm:row-gap-5 flex flex-col'>
 			{image ? (
-				<img src={image} alt='Playlist cover image' />
+				<img src={image} alt='Playlist cover image' tw='flex-grow-0 w-36 h-36 sm:h-full sm:w-full mx-auto sm:mx-0' />
 			) : (
-				<div tw='w-full rounded bg-bgray' style={{ minHeight: 190 }} />
+				<div tw='sm:w-full rounded bg-bgray w-36 h-36! sm:h-full sm:w-full sm:min-h-cover mx-auto sm:mx-0' />
 			)}
-			<div tw='col-span-2 flex flex-col'>
+			<div tw='sm:col-span-2 flex flex-col'>
 				<label htmlFor='playlist-name' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
 					Name
 				</label>
@@ -320,7 +327,7 @@ const EditModal: FC<{
 					onChange={(e) => setPlaylistDesc(e.target.value)}
 				/>
 			</div>
-			<div tw='col-span-3 ml-auto'>
+			<div tw='sm:col-span-3 ml-auto mt-2 sm:mt-0'>
 				<label
 					htmlFor='playlist-ispublic'
 					tw='flex items-center text-sm mb-0.5 font-semibold text-white text-opacity-70'

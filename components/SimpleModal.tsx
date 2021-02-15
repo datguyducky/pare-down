@@ -4,9 +4,13 @@ import ReactDOM from 'react-dom';
 
 const SimpleModalContent = styled.div(() => [
 	`
-		width: 34vw;
-		height: 360px;
-		min-width: 652px;
+		width: 100vw;
+		height: 100vh;
+		@media (min-width: 640px) {
+			width: 34vw;
+			height: 360px;
+			min-width: 652px;
+		}
 	`,
 	tw`bg-bgray-light rounded-md overflow-hidden relative flex flex-col`,
 ]);
@@ -80,7 +84,7 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 					</button>
 				</div>
 				<div tw='px-5 overflow-hidden'>{children}</div>
-				<div tw='my-auto flex justify-center pb-2'>
+				<div tw='mb-auto mt-3 flex justify-center pb-2 sm:my-auto'>
 					{acceptText && acceptAction ? (
 						<button
 							tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'
