@@ -4,8 +4,20 @@ import { TracksTable } from './TracksTable';
 import { Modal } from './Modal';
 import { SimpleModal } from './SimpleModal';
 import { Popup } from './Popup';
-import PareDownModal from './PareDownModal';
-import Tracklist from './PareDownModal/Steps/Tracklist';
-import Details from './PareDownModal/Steps/Details';
+import ParedownPlaylist from './ParedownPlaylist';
+import Tracklist from './ParedownPlaylist/Steps/Tracklist';
+import Details from './ParedownPlaylist/Steps/Details';
+import EditPlaylist from './EditPlaylist';
 
-export { HeaderConstant, PlaylistCard, TracksTable, Modal, SimpleModal, Popup, PareDownModal, Tracklist, Details };
+export {
+	HeaderConstant,
+	PlaylistCard,
+	TracksTable,
+	Modal,
+	SimpleModal,
+	Popup,
+	ParedownPlaylist,
+	Tracklist,
+	Details,
+	EditPlaylist,
+};

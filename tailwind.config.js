@@ -19,14 +19,14 @@ module.exports = {
 					dark: '#388bf0',
 				},
 			},
-			screens: {
-				'xs': '440px',
-				...defaultTheme.screens,
-				'3xl': '1780px',
-			},
 			minHeight: {
 				'cover': '190px',
 			},
+		},
+		screens: {
+			'xs': '440px',
+			...defaultTheme.screens,
+			'3xl': '1780px',
 		},
 	},
 	plugins: [],

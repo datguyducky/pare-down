@@ -1,10 +1,9 @@
 import { FC, useEffect, useState, Dispatch, SetStateAction } from 'react';
 import { useRouter } from 'next/router';
 import 'twin.macro';
-import { HeaderConstant, TracksTable, SimpleModal, Popup, PareDownModal } from '@/components';
+import { HeaderConstant, TracksTable, EditPlaylist, Popup, ParedownPlaylist } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 import axios from 'axios';
-import { mutate } from 'swr';
 
 const PlaylistDetailsView: FC = () => {
 	const [displayPDModal, setDisplayPDModal] = useState<boolean>(false);
@@ -27,23 +26,6 @@ const PlaylistDetailsView: FC = () => {
 	const { data: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
 	const isPlaylistOwner = user?.id === playlist?.owner?.id ? true : false;
 
-	const [playlistName, setPlaylistName] = useState<string>(null);
-	const [playlistDesc, setPlaylistDesc] = useState<string>(null);
-	const [playlistIsPublic, setPlaylistIsPublic] = useState<boolean>(null);
-	const [playlistSongsNum, setPlaylistSongsNum] = useState<number>(0);
-
-	const [paredownStep, setParedownStep] = useState<number>(1);
-
-	useEffect(() => {
-		if (playlist) {
-			// save playlist data to states (used by inputs)
-			// TODO: find if there's a better way to do this
-			setPlaylistName(playlist?.name);
-			setPlaylistDesc(playlist?.description);
-			setPlaylistIsPublic(playlist?.public);
-		}
-	}, [playlist]);
-
 	function handlePlaylistUnfollow() {
 		axios
 			.delete(`/api/playlists/${playlist?.id}`)
@@ -55,28 +37,7 @@ const PlaylistDetailsView: FC = () => {
 			})
 			.catch((error) => {
 				//TODO: toast here
-				setDisplayDeletePopup(false); // hide popup just because why not
-				console.log(error);
-			});
-	}
-
-	function handlePlaylistEdit() {
-		axios
-			.put(`/api/playlists/${playlist?.id}`, {
-				data: {
-					name: playlistName,
-					isPublic: playlistIsPublic,
-					description: playlistDesc,
-				},
-			})
-			.then((response) => {
-				if (response.status === 200) {
-					setDisplayEditModal(false);
-					mutate(`/api/playlists/${playlist?.id}`);
-				}
-			})
-			.catch((error) => {
-				//TODO: toast here
+				setDisplayDeletePopup(false); // hide popup, cause' why not
 				console.log(error);
 			});
 	}
@@ -214,49 +175,20 @@ const PlaylistDetailsView: FC = () => {
 			</div>
 
 			{displayPDModal && (
-				<PareDownModal
-					paredownStep={paredownStep}
-					setParedownStep={setParedownStep}
-					image={playlist?.image}
-					playlistName={playlistName}
-					playlistDesc={playlistDesc}
-					playlistIsPublic={playlistIsPublic}
-					setPlaylistName={setPlaylistName}
-					setPlaylistDesc={setPlaylistDesc}
-					setPlaylistIsPublic={setPlaylistIsPublic}
+				<ParedownPlaylist
 					displayPDModal={displayPDModal}
 					setDisplayPDModal={setDisplayPDModal}
-					fullWidthAction={() => {
-						paredownStep === 3
-							? console.log('boom')
-							: paredownStep < 3 && paredownStep >= 1
-							? setParedownStep((paredownStep) => paredownStep + 1)
-							: setParedownStep((paredownStep) => paredownStep - 1);
-					}}
-					playlistSongsNum={playlistSongsNum}
-					setPlaylistSongsNum={setPlaylistSongsNum}
 					playlistId={playlist?.id}
+					playlist={playlist}
 				/>
 			)}
 
 			{displayEditModal && (
-				<SimpleModal
-					onClose={() => setDisplayEditModal(false)}
-					title='Edit Playlist Details'
-					acceptText='Save'
-					acceptAction={handlePlaylistEdit}
-					isOpen={displayEditModal}
-				>
-					<EditModal
-						image={playlist?.image}
-						playlistName={playlistName}
-						playlistDesc={playlistDesc}
-						playlistIsPublic={playlistIsPublic}
-						setPlaylistName={setPlaylistName}
-						setPlaylistDesc={setPlaylistDesc}
-						setPlaylistIsPublic={setPlaylistIsPublic}
-					/>
-				</SimpleModal>
+				<EditPlaylist
+					playlist={playlist}
+					displayEditModal={displayEditModal}
+					setDisplayEditModal={setDisplayEditModal}
+				/>
 			)}
 
 			{displayDeletePopup && (
@@ -280,68 +212,3 @@ const PlaylistDetailsView: FC = () => {
 };
 
 export default PlaylistDetailsView;
-
-const EditModal: FC<{
-	image: string;
-	playlistName: string;
-	setPlaylistName: Dispatch<SetStateAction<string>>;
-	playlistDesc: string;
-	setPlaylistDesc: Dispatch<SetStateAction<string>>;
-	playlistIsPublic: boolean;
-	setPlaylistIsPublic: Dispatch<SetStateAction<boolean>>;
-}> = ({
-	image,
-	playlistName,
-	setPlaylistName,
-	playlistDesc,
-	setPlaylistDesc,
-	playlistIsPublic,
-	setPlaylistIsPublic,
-}) => {
-	return (
-		<div tw='sm:grid sm:grid-cols-3 sm:col-gap-5 sm:row-gap-5 flex flex-col'>
-			{image ? (
-				<img src={image} alt='Playlist cover image' tw='flex-grow-0 w-36 h-36 sm:h-full sm:w-full mx-auto sm:mx-0' />
-			) : (
-				<div tw='sm:w-full rounded bg-bgray w-36 h-36! sm:h-full sm:w-full sm:min-h-cover mx-auto sm:mx-0' />
-			)}
-			<div tw='sm:col-span-2 flex flex-col'>
-				<label htmlFor='playlist-name' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
-					Name
-				</label>
-				<input
-					id='playlist-name'
-					type='text'
-					tw='text-black rounded-sm px-2 py-0.5 mb-4'
-					value={playlistName}
-					onChange={(e) => setPlaylistName(e.target.value)}
-				/>
-				<label htmlFor='playlist-description' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
-					Description
-				</label>
-				<textarea
-					tw='h-full text-black py-0.5 px-2 resize-none'
-					value={playlistDesc}
-					placeholder='Give your playlist a catchy description'
-					maxLength={300}
-					onChange={(e) => setPlaylistDesc(e.target.value)}
-				/>
-			</div>
-			<div tw='sm:col-span-3 ml-auto mt-2 sm:mt-0'>
-				<label
-					htmlFor='playlist-ispublic'
-					tw='flex items-center text-sm mb-0.5 font-semibold text-white text-opacity-70'
-				>
-					<input
-						type='checkbox'
-						id='playlist-ispublic'
-						checked={playlistIsPublic}
-						onChange={(e) => setPlaylistIsPublic(e.target.checked)}
-						tw='mr-2'
-					/>
-					Public playlist
-				</label>
-			</div>
-		</div>
-	);
-};

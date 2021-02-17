@@ -1,12 +1,12 @@
 import { FC, Dispatch, SetStateAction } from 'react';
-import { UsePlaylistDetails } from 'data';
 import 'twin.macro';
+import { ParedownDetails } from '../';
 
 const Tracklist: FC<{
-	playlistSongsNum: number;
-	setPlaylistSongsNum: Dispatch<SetStateAction<number>>;
+	paredownDetails: ParedownDetails;
+	setParedownDetails: Dispatch<SetStateAction<ParedownDetails>>;
 	playlistId: string;
-}> = ({ playlistSongsNum, setPlaylistSongsNum, playlistId }) => {
+}> = ({ paredownDetails, setParedownDetails, playlistId }) => {
 	return (
 		<div tw='grid grid-cols-3'>
 			<div tw='flex flex-col'>
@@ -17,8 +17,8 @@ const Tracklist: FC<{
 					id='playlist-name'
 					type='number'
 					tw='text-black rounded-sm px-2 py-0.5 mb-6'
-					value={playlistSongsNum}
-					onChange={(e) => setPlaylistSongsNum(parseInt(e.target.value))}
+					value={paredownDetails.tracksTotal}
+					onChange={(e) => setParedownDetails({ ...paredownDetails, tracksTotal: parseInt(e.target.value) })}
 				/>
 			</div>
 		</div>
