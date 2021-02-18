@@ -16,7 +16,11 @@ const Details: FC<{
 				type='text'
 				tw='text-black rounded-sm px-2 py-0.5 mb-6'
 				value={paredownDetails.name}
-				onChange={(e) => setParedownDetails({ ...paredownDetails, name: e.target.value })}
+				onChange={(e) =>
+					setParedownDetails((prevState) => {
+						return { ...prevState, name: e.target.value };
+					})
+				}
 			/>
 			<label htmlFor='playlist-description' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
 				Description
@@ -26,7 +30,11 @@ const Details: FC<{
 				value={paredownDetails.description}
 				placeholder='Give your playlist a catchy description'
 				maxLength={300}
-				onChange={(e) => setParedownDetails({ ...paredownDetails, description: e.target.value })}
+				onChange={(e) =>
+					setParedownDetails((prevState) => {
+						return { ...prevState, description: e.target.value };
+					})
+				}
 			/>
 			<label tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>Other Options</label>
 			<label htmlFor='playlist-ispublic' tw='flex items-center text-sm mb-0.5 font-semibold'>
@@ -34,7 +42,11 @@ const Details: FC<{
 					type='checkbox'
 					id='playlist-ispublic'
 					checked={paredownDetails.public}
-					onChange={(e) => setParedownDetails({ ...paredownDetails, public: e.target.checked })}
+					onChange={(e) =>
+						setParedownDetails((prevState) => {
+							return { ...prevState, public: e.target.checked };
+						})
+					}
 					tw='mr-2'
 				/>
 				Public playlist

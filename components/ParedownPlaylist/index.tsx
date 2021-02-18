@@ -2,12 +2,21 @@ import { FC, Dispatch, SetStateAction, useState } from 'react';
 import { Modal, Tracklist, Details } from '@/components';
 import { UsePlaylistDetailsType } from '../../data/types';
 import 'twin.macro';
+import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
+import { Icons } from '@/icons';
 
 export interface ParedownDetails {
 	name: string;
 	description: string;
 	tracksTotal: number;
+	tracksMax: number;
+	tracksIsPercent: boolean;
 	public: boolean;
+}
+
+export interface ParedownStep {
+	done: Array<number>;
+	active: number;
 }
 
 const ParedownPlaylist: FC<{
@@ -20,65 +29,111 @@ const ParedownPlaylist: FC<{
 		name: playlist.name,
 		description: playlist.description,
 		tracksTotal: playlist.tracksTotal,
+		tracksMax: playlist.tracksTotal,
+		tracksIsPercent: false,
 		public: playlist.public,
 	});
-	const [paredownStep, setParedownStep] = useState<number>(1);
+	const [paredownStep, setParedownStep] = useState<ParedownStep>({
+		done: [],
+		active: 1,
+	});
 
 	return (
 		<Modal
 			onClose={() => {
 				setDisplayPDModal(false);
-				setParedownStep(1);
 			}}
 			title='Pare Down'
 			description='Duplicate your playlist with a pared down number of songs.'
 			isOpen={displayPDModal}
 			fullWidthAction={() => {
-				paredownStep === 3
+				paredownStep.active === 3
 					? console.log('boom', paredownDetails)
-					: paredownStep < 3 && paredownStep >= 1
-					? setParedownStep((paredownStep) => paredownStep + 1)
-					: setParedownStep((paredownStep) => paredownStep - 1);
+					: paredownStep.active < 3 && paredownStep.active >= 1
+					? setParedownStep((prevState) => {
+							return {
+								...prevState,
+								done:
+									prevState.done.indexOf(prevState.active) > -1
+										? [...prevState.done]
+										: [...prevState.done, prevState.active],
+								active: prevState.active + 1,
+							};
+					  })
+					: setParedownStep((prevState) => {
+							return { ...prevState, active: prevState.active - 1 };
+					  });
 			}}
-			fullWidthText='Save Details'
+			fullWidthText={
+				(paredownStep.active === 1 && 'Save Details') ||
+				(paredownStep.active === 2 && 'Save Tracklist') ||
+				(paredownStep.active === 3 && 'Pare Down')
+			}
 		>
 			<div tw='flex h-full flex-col px-6'>
 				<ul tw='flex col-gap-4 pt-6 pb-8'>
-					<li tw='flex items-center cursor-pointer' onClick={() => setParedownStep(1)}>
-						<span tw='bg-bblue rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white'>
-							<svg
-								tw='w-6 h-6'
-								fill='none'
-								stroke='currentColor'
-								viewBox='0 0 24 24'
-								xmlns='http://www.w3.org/2000/svg'
-							>
-								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M5 13l4 4L19 7' />
-							</svg>
+					<li
+						className='group'
+						tw='flex items-center cursor-pointer'
+						onClick={() =>
+							setParedownStep((prevState) => {
+								return { ...prevState, active: 1 };
+							})
+						}
+					>
+						<span css={[paredownStep.done.indexOf(1) > -1 || paredownStep.active === 1 ? stepIcon : nextStepIcon]}>
+							{paredownStep.done.indexOf(1) > -1 ? <Icons.Check tw='w-6 h-6' /> : '1'}
 						</span>
-						<span tw='text-white font-medium hover:underline'>Details</span>
+						<span css={[paredownStep.done.indexOf(1) > -1 || paredownStep.active === 1 ? stepText : nextStepText]}>
+							Details
+						</span>
 					</li>
 					<li tw='inline border-b-2 border-bgray-lightest flex-grow mb-3' />
-					<li tw='flex items-center  cursor-pointer' onClick={() => setParedownStep(2)}>
-						<span tw='bg-bblue rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white'>2</span>
-						<span tw='text-white font-medium hover:underline'>Tracklist</span>
-					</li>
-					<li tw='inline border-b-2 border-bgray-lightest flex-grow mb-3' onClick={() => setParedownStep(3)} />
-					<li tw='flex items-center cursor-pointer'>
-						<span tw='bg-bgray-lightest rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white text-opacity-50'>
-							3
+					<li
+						className='group'
+						tw='flex items-center  cursor-pointer'
+						onClick={() =>
+							setParedownStep((prevState) => {
+								return { ...prevState, active: 2 };
+							})
+						}
+					>
+						<span css={[paredownStep.done.indexOf(2) > -1 || paredownStep.active === 2 ? stepIcon : nextStepIcon]}>
+							{paredownStep.done.indexOf(2) > -1 ? <Icons.Check tw='w-6 h-6' /> : '2'}
 						</span>
-						<span tw='text-white text-opacity-75 hover:underline'>Pare Down</span>
+						<span css={[paredownStep.done.indexOf(2) > -1 || paredownStep.active === 2 ? stepText : nextStepText]}>
+							Tracklist
+						</span>
+					</li>
+					<li tw='inline border-b-2 border-bgray-lightest flex-grow mb-3' />
+					<li
+						className='group'
+						tw='flex items-center cursor-pointer'
+						onClick={() =>
+							setParedownStep((prevState) => {
+								return { ...prevState, active: 3 };
+							})
+						}
+					>
+						<span css={[paredownStep.done.indexOf(3) > -1 || paredownStep.active === 3 ? stepIcon : nextStepIcon]}>
+							{paredownStep.done.indexOf(3) > -1 ? <Icons.Check tw='w-6 h-6' /> : '3'}
+						</span>
+						<span css={[paredownStep.done.indexOf(3) > -1 || paredownStep.active === 3 ? stepText : nextStepText]}>
+							Pare Down
+						</span>
 					</li>
 				</ul>
-				{paredownStep === 1 && <Details paredownDetails={paredownDetails} setParedownDetails={setParedownDetails} />}
-				{paredownStep === 2 && (
+				{paredownStep.active === 1 && (
+					<Details paredownDetails={paredownDetails} setParedownDetails={setParedownDetails} />
+				)}
+				{paredownStep.active === 2 && (
 					<Tracklist
 						paredownDetails={paredownDetails}
 						setParedownDetails={setParedownDetails}
 						playlistId={playlistId}
 					/>
 				)}
+				{paredownStep.active === 3 && <span>a</span>}
 			</div>
 		</Modal>
 	);

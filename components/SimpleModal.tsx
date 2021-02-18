@@ -9,7 +9,8 @@ const SimpleModalContent = styled.div(() => [
 		@media (min-width: 640px) {
 			width: 34vw;
 			height: 360px;
-			min-width: 652px;
+			min-width: 520px;
+			max-width: 720px;
 		}
 	`,
 	tw`bg-bgray-light rounded-md overflow-hidden relative flex flex-col`,

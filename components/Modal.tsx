@@ -9,7 +9,7 @@ const ModalContent = styled.div(() => [
 		@media (min-width: 640px) {
 			width: 35vw;
 			height: 78vh;
-			min-width: 440px;
+			min-width: 520px;
 			max-width: 720px;
 		}
 	`,

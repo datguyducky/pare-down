@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import tw from 'twin.macro';
 
 export const StyledHeroSVG = styled.div`
 	position: absolute;
@@ -20,3 +21,8 @@ export const StyledHeroSVG = styled.div`
 		fill: #fff;
 	}
 `;
+
+export const stepIcon = tw`bg-bblue rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white`;
+export const stepText = tw`text-white font-medium group-hover:underline`;
+export const nextStepIcon = tw`bg-bgray-lightest rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white text-opacity-50`;
+export const nextStepText = tw`text-white text-opacity-75 group-hover:underline`;

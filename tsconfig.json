@@ -15,7 +15,8 @@
 		"jsx": "preserve",
 		"baseUrl": ".",
 		"paths": {
-			"@/components": ["components/index.tsx"]
+			"@/components": ["components/index.tsx"],
+			"@/icons": ["icons/index.tsx"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "twin.d.ts"],

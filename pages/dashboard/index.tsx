@@ -44,7 +44,7 @@ const DashboardView: FC = () => {
 						hasMore={data[data.length - 1].next ? true : false}
 						next={() => setSize(size + 1)}
 						loader={<span>loading</span>}
-						tw='grid gap-y-7 pb-10 grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 justify-items-center'
+						tw='grid gap-y-7 pb-10 grid-cols-2 xs:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 justify-items-center'
 					>
 						{data.map((playlist) =>
 							playlist.items.map((p) => <PlaylistCard key={p.id} image={p.image} name={p.name} id={p.id} />),
@@ -56,4 +56,3 @@ const DashboardView: FC = () => {
 	);
 };
 export default DashboardView;
-//TODO add xs:grid-cols-3 to infinite scroll - needs twin.macro or tailwind fix
