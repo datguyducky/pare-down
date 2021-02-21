@@ -20,7 +20,11 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 }) => {
 	const [recentlyAdded, setRecentlyAdded] = useState<boolean>(true);
 	const offset = recentlyAdded ? tracksTotal - 25 : 0;
-	const { data: playlistTracks, isError: tracksIsError } = UsePlaylistTracks(playlistId, offset, 25);
+	const { data: playlistTracks, isError: tracksIsError, mutate: mutatePlaylistTracks } = UsePlaylistTracks(
+		playlistId,
+		offset,
+		25,
+	);
 
 	return (
 		<>
@@ -35,7 +39,13 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 						<th tw='pb-3 text-white text-opacity-70'>Artist</th>
 						<th tw='pb-3 text-white text-opacity-70'>Album</th>
 						<th tw='pb-3 text-white text-opacity-70 hover:text-opacity-100 '>
-							<button tw='ml-1 flex items-center' onClick={() => setRecentlyAdded((recentlyAdded) => !recentlyAdded)}>
+							<button
+								tw='ml-1 flex items-center'
+								onClick={() => {
+									setRecentlyAdded((recentlyAdded) => !recentlyAdded);
+									mutatePlaylistTracks();
+								}}
+							>
 								<svg
 									tw='w-4 h-4 mr-1'
 									fill='none'

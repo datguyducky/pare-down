@@ -72,6 +72,7 @@ export interface UsePlaylistTracksType extends UseDataType {
 		limit: number;
 		next: string;
 	};
+	mutate?(): unknown;
 }
 
 export interface UsePlaylistTracksPagesType {

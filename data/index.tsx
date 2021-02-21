@@ -50,15 +50,14 @@ export const UsePlaylistDetails = (id: string | string[]): UsePlaylistDetailsTyp
 
 export const UsePlaylistTracks = (id: string | string[], offset: number, limit?: number): UsePlaylistTracksType => {
 	limit = limit ? limit : 100;
-	offset = offset < 0 ? 0 : offset;
-	const { data, error } = useSWR(
-		offset && id && limit ? `/api/playlists/${id}/tracks?offset=${offset}&limit=${limit}` : null,
-	);
+	offset = offset <= 0 ? 0 : offset;
+	const { data, error, mutate } = useSWR(id ? `/api/playlists/${id}/tracks?offset=${offset}&limit=${limit}` : null);
 
 	return {
 		data: data,
 		isLoading: !error && data,
 		isError: error,
+		mutate: mutate,
 	};
 };
 
