@@ -7,12 +7,14 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
 	// retrieve dynamic playlist id
 	const {
-		query: { playlistId, offset, limit },
+		query: { playlistId, offset, limit, disableSort },
 	} = req;
 
+	const newOffset = offset ? offset : 0;
+	const newLimit = limit ? limit : 100;
 	// make call to retrieve user data
 	await axios
-		.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${offset}&limit=${limit}`, {
+		.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${newOffset}&limit=${newLimit}`, {
 			headers: {
 				'Authorization': 'Bearer ' + _ACCESS_TOKEN,
 			},
@@ -20,12 +22,17 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 		.then((response) => {
 			if (response.statusText === 'OK') {
 				const data = response.data;
+				// query string from next url
+				const queryString = data.next ? data.next.split('?')[1] : null;
+				// list of params
+				const nextParams = new URLSearchParams(queryString);
+
 				// return from the API call only the data is needed on the frontend
 				const newData = {
 					offset: data.offset,
 					total: data.total,
 					limit: data.limit,
-					next: data.next,
+					next: parseInt(nextParams.get('offset')),
 					items: data.items.map((i) => ({
 						added_at: i.added_at,
 						albumName: i.track.album.name,
@@ -37,7 +44,7 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 					})),
 				};
 
-				if (offset !== '0') {
+				if (offset !== '0' && !disableSort) {
 					newData.items.reverse();
 				}
 

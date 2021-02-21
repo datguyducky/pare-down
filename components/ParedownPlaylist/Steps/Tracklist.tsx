@@ -1,7 +1,15 @@
+import { TracksSmallTable } from '@/components';
+import { UsePlaylistTracksPages } from 'data';
 import { FC, Dispatch, SetStateAction } from 'react';
 import tw from 'twin.macro';
 import { ParedownDetails } from '../';
 
+/* 
+	TODO:
+	- tracks "sort by" functionality (button, find and fix bugs caused by that change)
+	- display text how many tracks will be added to the pared down playlist (number and & (?))
+	- paredownDetails state change - add "real value" key - used to store num of tracks that user whishes to use to pare down the playlist (mostly needed when % in input are used)
+*/
 const Tracklist: FC<{
 	paredownDetails: ParedownDetails;
 	setParedownDetails: Dispatch<SetStateAction<ParedownDetails>>;
@@ -26,6 +34,8 @@ const Tracklist: FC<{
 			});
 		}
 	}
+
+	const { data, size, setSize } = UsePlaylistTracksPages(playlistId);
 
 	return (
 		<div>
@@ -77,6 +87,31 @@ const Tracklist: FC<{
 						%
 					</button>
 				</div>
+
+				{data && data.length > 0 && playlistId && (
+					<>
+						<table tw='w-full text-left block overflow-y-auto' css={{ height: 366 }}>
+							<tbody tw='w-full block'>
+								{data.map((tracksPage, index) => (
+									<TracksSmallTable playlistTracks={tracksPage.items} key={index} />
+								))}
+							</tbody>
+						</table>
+						{data[data.length - 1].next && data[data.length - 1].limit >= 100 && (
+							<button
+								tw='my-2 rounded-sm py-1 bg-bgray-lightest bg-opacity-50 font-bold tracking-wider'
+								onClick={() => {
+									const tracksLimitDif = paredownDetails.tracksTotal - data[data.length - 1].next;
+									data[data.length - 1].limit =
+										tracksLimitDif > 0 ? (tracksLimitDif < 100 ? tracksLimitDif : 100) : 100;
+									setSize((size) => size + 1);
+								}}
+							>
+								Load More
+							</button>
+						)}
+					</>
+				)}
 			</div>
 		</div>
 	);

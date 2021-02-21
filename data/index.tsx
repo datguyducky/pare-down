@@ -1,5 +1,11 @@
 import useSWR, { useSWRInfinite } from 'swr';
-import { UseUserType, UseUserPlaylistsType, UsePlaylistDetailsType, UsePlaylistTracksType } from './types';
+import {
+	UseUserType,
+	UseUserPlaylistsType,
+	UsePlaylistDetailsType,
+	UsePlaylistTracksType,
+	UsePlaylistTracksPagesType,
+} from './types';
 
 export const UseUser = (): UseUserType => {
 	const { data, error } = useSWR('/api/current-user');
@@ -53,5 +59,26 @@ export const UsePlaylistTracks = (id: string | string[], offset: number, limit?:
 		data: data,
 		isLoading: !error && data,
 		isError: error,
+	};
+};
+
+export const UsePlaylistTracksPages = (id: string | string[]): UsePlaylistTracksPagesType => {
+	const getKey = (pageIndex, previousPageData) => {
+		// reached the end
+		if (previousPageData && !previousPageData.next) return null;
+
+		// first page, we don't have `previousPageData`
+		if (pageIndex === 0) return `/api/playlists/${id}/tracks?disableSort=true`;
+
+		// add the next (offset) to the API endpoint
+		return `/api/playlists/${id}/tracks?offset=${previousPageData.next}&limit=${previousPageData.limit}&disableSort=true`;
+	};
+
+	const { data, size, setSize } = useSWRInfinite(getKey);
+
+	return {
+		data: data,
+		size: size,
+		setSize: setSize,
 	};
 };

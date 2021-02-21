@@ -8,6 +8,7 @@ import ParedownPlaylist from './ParedownPlaylist';
 import Tracklist from './ParedownPlaylist/Steps/Tracklist';
 import Details from './ParedownPlaylist/Steps/Details';
 import EditPlaylist from './EditPlaylist';
+import { TracksSmallTable } from './TracksSmallTable';
 
 export {
 	HeaderConstant,
@@ -20,4 +21,5 @@ export {
 	Tracklist,
 	Details,
 	EditPlaylist,
+	TracksSmallTable,
 };

@@ -73,3 +73,15 @@ export interface UsePlaylistTracksType extends UseDataType {
 		next: string;
 	};
 }
+
+export interface UsePlaylistTracksPagesType {
+	data: Array<{
+		items: Array<_SpotifyTrack>;
+		limit: number;
+		next: number | null;
+		offset: number;
+		total: number;
+	}>;
+	size: number;
+	setSize: (size: number | ((size: number) => number)) => Promise<unknown[]>;
+}
