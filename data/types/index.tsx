@@ -57,6 +57,7 @@ export interface UsePlaylistDetailsType extends UseDataType {
 export interface _SpotifyTrack {
 	added_at: string;
 	albumName: string;
+	albumImage: string;
 	artists: Array<string>;
 	id: string;
 	name: string;

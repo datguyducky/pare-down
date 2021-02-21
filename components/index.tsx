@@ -7,6 +7,7 @@ import { Popup } from './Popup';
 import ParedownPlaylist from './ParedownPlaylist';
 import Tracklist from './ParedownPlaylist/Steps/Tracklist';
 import Details from './ParedownPlaylist/Steps/Details';
+import Summary from './ParedownPlaylist/Steps/Summary';
 import EditPlaylist from './EditPlaylist';
 import { TracksSmallTable } from './TracksSmallTable';
 
@@ -22,4 +23,5 @@ export {
 	Details,
 	EditPlaylist,
 	TracksSmallTable,
+	Summary,
 };

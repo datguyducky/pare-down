@@ -13,7 +13,7 @@ const ModalContent = styled.div(() => [
 			max-width: 720px;
 		}
 	`,
-	tw`bg-bgray-light rounded-md overflow-hidden relative flex flex-col`,
+	tw`bg-bgray-light rounded-md overflow-y-auto relative flex flex-col`,
 ]);
 
 interface ModalType {

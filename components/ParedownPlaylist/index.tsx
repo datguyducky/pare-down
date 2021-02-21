@@ -1,5 +1,5 @@
 import { FC, Dispatch, SetStateAction, useState } from 'react';
-import { Modal, Tracklist, Details } from '@/components';
+import { Modal, Tracklist, Details, Summary } from '@/components';
 import { UsePlaylistDetailsType } from '../../data/types';
 import 'twin.macro';
 import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
@@ -11,7 +11,9 @@ export interface ParedownDetails {
 	tracksTotal: number;
 	tracksMax: number;
 	tracksIsPercent: boolean;
+	tracksRealTotal: number;
 	public: boolean;
+	imgArr: Array<string> | undefined;
 }
 
 export interface ParedownStep {
@@ -29,9 +31,11 @@ const ParedownPlaylist: FC<{
 		name: playlist.name,
 		description: playlist.description,
 		tracksTotal: playlist.tracksTotal,
+		tracksRealTotal: playlist.tracksTotal,
 		tracksMax: playlist.tracksTotal,
 		tracksIsPercent: false,
 		public: playlist.public,
+		imgArr: undefined,
 	});
 	const [paredownStep, setParedownStep] = useState<ParedownStep>({
 		done: [],
@@ -133,7 +137,7 @@ const ParedownPlaylist: FC<{
 						playlistId={playlistId}
 					/>
 				)}
-				{paredownStep.active === 3 && <span>a</span>}
+				{paredownStep.active === 3 && <Summary paredownDetails={paredownDetails} playlist={playlist} />}
 			</div>
 		</Modal>
 	);

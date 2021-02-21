@@ -26,7 +26,7 @@ const Details: FC<{
 				Description
 			</label>
 			<textarea
-				tw='h-full text-black py-0.5 px-2 resize-none mb-6'
+				tw='h-full text-black py-0.5 px-2 h-32 resize-none mb-6'
 				value={paredownDetails.description}
 				placeholder='Give your playlist a catchy description'
 				maxLength={300}
