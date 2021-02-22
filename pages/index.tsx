@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import tw, { css } from 'twin.macro';
+import tw from 'twin.macro';
 import { StyledHeroSVG } from '../styles/index';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -86,7 +86,7 @@ const IndexPage: FC = () => {
 
 					<button
 						tw='mt-8 bg-bblue flex-grow-0 self-start mx-auto py-3 px-4 lg:px-8 lg:text-lg font-bold shadow-md hover:bg-bblue-dark rounded'
-						onClick={() => router.push('/api/login')}
+						onClick={() => router.push('/dashboard')}
 					>
 						Log in with Spotify
 					</button>

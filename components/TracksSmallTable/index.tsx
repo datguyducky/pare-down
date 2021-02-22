@@ -1,7 +1,11 @@
 import 'twin.macro';
 import { _SpotifyTrack } from 'data/types';
+import dayjs from 'dayjs';
 
-export const TracksSmallTable: React.FC<{ playlistTracks: Array<_SpotifyTrack> }> = ({ playlistTracks }) => {
+export const TracksSmallTable: React.FC<{ playlistTracks: Array<_SpotifyTrack>; withSort?: boolean }> = ({
+	playlistTracks,
+	withSort,
+}) => {
 	return (
 		<>
 			{playlistTracks &&
@@ -17,6 +21,9 @@ export const TracksSmallTable: React.FC<{ playlistTracks: Array<_SpotifyTrack> }
 								{track.albumName}
 							</span>
 						</td>
+						{withSort && (
+							<td tw='py-2.5 truncate text-base hidden xs:block'>{dayjs(track.added_at).format('YYYY-MM-DD')}</td>
+						)}
 					</tr>
 				))}
 		</>

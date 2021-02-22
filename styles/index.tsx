@@ -22,7 +22,7 @@ export const StyledHeroSVG = styled.div`
 	}
 `;
 
-export const stepIcon = tw`bg-bblue rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white`;
+export const stepIcon = tw`bg-bblue rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center font-bold mr-2 text-white`;
 export const stepText = tw`text-white font-medium group-hover:underline`;
-export const nextStepIcon = tw`bg-bgray-lightest rounded-full w-8 h-8 flex items-center justify-center font-bold mr-2 text-white text-opacity-50`;
+export const nextStepIcon = tw`bg-bgray-lightest rounded-full w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center font-bold mr-2 text-white text-opacity-50`;
 export const nextStepText = tw`text-white text-opacity-75 group-hover:underline`;

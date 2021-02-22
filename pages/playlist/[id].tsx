@@ -166,7 +166,7 @@ const PlaylistDetailsView: FC = () => {
 					</button>
 				</div>
 			</HeaderConstant>
-			<div tw='lg:px-80 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
+			<div tw='lg:px-8 3xl:px-80 lg:mx-2 flex flex-wrap flex-none gap-5 justify-center pb-10'>
 				{playlist?.tracksTotal > 0 ? (
 					<TracksTable playlistId={id} tracksTotal={playlist?.tracksTotal} />
 				) : (
