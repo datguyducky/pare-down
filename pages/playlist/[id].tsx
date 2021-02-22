@@ -176,6 +176,7 @@ const PlaylistDetailsView: FC = () => {
 
 			{displayPDModal && (
 				<ParedownPlaylist
+					userId={user?.id}
 					displayPDModal={displayPDModal}
 					setDisplayPDModal={setDisplayPDModal}
 					playlistId={playlist?.id}

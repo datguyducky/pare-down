@@ -5,6 +5,7 @@ import 'twin.macro';
 import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
 import { Icons } from '@/icons';
 import { UsePlaylistTracksPages } from 'data';
+import axios from 'axios';
 
 export interface ParedownDetails {
 	name: string;
@@ -23,11 +24,12 @@ export interface ParedownStep {
 }
 
 const ParedownPlaylist: FC<{
+	userId: string;
 	playlist: UsePlaylistDetailsType['data'];
 	playlistId: string;
 	setDisplayPDModal: Dispatch<SetStateAction<boolean>>;
 	displayPDModal: boolean;
-}> = ({ playlist, playlistId, setDisplayPDModal, displayPDModal }) => {
+}> = ({ playlist, playlistId, setDisplayPDModal, displayPDModal, userId }) => {
 	const [paredownDetails, setParedownDetails] = useState<ParedownDetails>({
 		name: playlist.name,
 		description: playlist.description,
@@ -76,10 +78,59 @@ const ParedownPlaylist: FC<{
 			// when the last call to the API to retrieve the tracks was called, then make a different call to an API
 			// in order to create the Pared Down playlist
 			if (pages === size) {
-				console.log('call here');
+				// Spotify API doesn't let to create a playlist with tracks in it with the same call
+				// so we need to make seperate call to create the playlist, and X ammount of other calls
+				// to add tracks to it (100 tracks per call)
+				axios
+					.post(`/api/playlists?userId=${userId}`, {
+						data: {
+							name: playlist.name === paredownDetails.name ? playlist.name + ' Pared Down' : paredownDetails.name,
+							isPublic: paredownDetails.public,
+							description: paredownDetails.description,
+						},
+					})
+					.then((response) => {
+						if (response.statusText === 'OK') {
+							const playlistId = response?.data.id;
+							// making X calls to add tracks to the freshly created pared down playlist
+							for (let i = 0; i < paredownTracks.length; i++) {
+								const tracksData: Array<string> = paredownTracks[i].items.map((i) => i.uri);
+
+								axios
+									.post(`/api/playlists/${playlistId}/tracks`, {
+										data: {
+											uris: tracksData,
+										},
+									})
+									.then((response) => {
+										if (response.statusText === 'OK') {
+											// TODO: toast here
+											console.log('Tracks were added to playlist, Pare Down was successfull', response?.data);
+										}
+									})
+									.catch((error) => {
+										//TODO: toast here
+										console.log(error);
+									});
+							}
+						}
+					})
+					.catch((error) => {
+						//TODO: toast here
+						console.log(error);
+					});
 			}
 		}
-	}, [paredownDetails.tracksRealTotal, size, paredownTracks]);
+	}, [
+		paredownDetails.tracksRealTotal,
+		size,
+		paredownTracks,
+		userId,
+		paredownDetails.name,
+		paredownDetails.public,
+		paredownDetails.description,
+		playlist.name,
+	]);
 
 	return (
 		<Modal

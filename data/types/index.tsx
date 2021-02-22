@@ -63,6 +63,7 @@ export interface _SpotifyTrack {
 	name: string;
 	type: string;
 	duration_ms: number;
+	uri: string;
 }
 
 export interface UsePlaylistTracksType extends UseDataType {
