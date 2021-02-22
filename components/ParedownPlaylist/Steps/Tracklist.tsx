@@ -40,7 +40,6 @@ const Tracklist: FC<{
 	}
 
 	const { data, size, setSize } = UsePlaylistTracksPages(playlistId);
-
 	useEffect(() => {
 		if (data && data.length > 0) {
 			if (data[0].items.length >= 4) {
@@ -63,7 +62,7 @@ const Tracklist: FC<{
 
 	return (
 		<div>
-			<div tw='flex flex-col'>
+			<div tw='flex flex-col flex-1'>
 				<label htmlFor='playlist-name' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
 					Number of Songs
 				</label>
@@ -139,7 +138,7 @@ const Tracklist: FC<{
 							<button
 								tw='my-2 rounded-sm py-1 bg-bgray-lightest bg-opacity-50 font-bold tracking-wider'
 								onClick={() => {
-									const tracksLimitDif = paredownDetails.tracksTotal - data[data.length - 1].next;
+									const tracksLimitDif = paredownDetails.tracksRealTotal - data[data.length - 1].next;
 									data[data.length - 1].limit =
 										tracksLimitDif > 0 ? (tracksLimitDif < 100 ? tracksLimitDif : 100) : 100;
 									setSize((size) => size + 1);

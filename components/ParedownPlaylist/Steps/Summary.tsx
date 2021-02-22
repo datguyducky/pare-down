@@ -1,14 +1,15 @@
 import { UsePlaylistDetailsType } from 'data/types';
 import { FC } from 'react';
 import 'twin.macro';
-import { ParedownDetails } from '../';
+import { ParedownDetails, ParedownStep } from '../';
 
 const Summary: FC<{
 	paredownDetails: ParedownDetails;
 	playlist: UsePlaylistDetailsType['data'];
-}> = ({ paredownDetails, playlist }) => {
+	paredownStep: ParedownStep;
+}> = ({ paredownDetails, playlist, paredownStep }) => {
 	return (
-		<div tw='flex flex-col'>
+		<div tw='flex flex-col flex-1'>
 			<h2 tw='font-bold mt-1.5 mb-2 text-base text-white text-opacity-70'>Original Playlist</h2>
 			<div tw='mb-1.5 flex'>
 				<img tw='w-36 h-36 rounded flex-shrink-0' src={playlist.image} />
@@ -45,6 +46,13 @@ const Summary: FC<{
 					<li>{paredownDetails.public ? 'Public playlist' : 'Private playlist'}</li>
 				</ul>
 			</div>
+
+			{[1, 2].every((val) => paredownStep.done.includes(val)) ? null : (
+				<p tw='mt-auto mb-4 text-center text-lg font-bold text-bblue'>
+					Complete both the step 1 and 2 to be <br />
+					able to Pare Down the playlist
+				</p>
+			)}
 		</div>
 	);
 };

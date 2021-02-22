@@ -36,7 +36,7 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 					items: data.items.map((i) => ({
 						added_at: i.added_at,
 						albumName: i.track.album.name,
-						albumImage: i.track.album.images[0].url,
+						albumImage: i.track.album.images[0]?.url,
 						artists: i.track.artists.map((a) => a.name),
 						id: i.track.id,
 						name: i.track.name,

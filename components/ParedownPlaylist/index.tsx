@@ -1,9 +1,10 @@
-import { FC, Dispatch, SetStateAction, useState } from 'react';
+import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { Modal, Tracklist, Details, Summary } from '@/components';
 import { UsePlaylistDetailsType } from '../../data/types';
 import 'twin.macro';
 import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
 import { Icons } from '@/icons';
+import { UsePlaylistTracksPages } from 'data';
 
 export interface ParedownDetails {
 	name: string;
@@ -42,6 +43,44 @@ const ParedownPlaylist: FC<{
 		active: 1,
 	});
 
+	const { data: paredownTracks, size, setSize } = UsePlaylistTracksPages(
+		paredownStep.done.indexOf(3) > -1 ? playlistId : null,
+	);
+
+	function handleParedown() {
+		setParedownStep((prevState) => {
+			return {
+				...prevState,
+				done: [...prevState.done, prevState.active],
+			};
+		});
+	}
+
+	useEffect(() => {
+		if (paredownTracks && paredownTracks.length > 0) {
+			// call API as long as number of tracks typed by an user is bigger than the "next" param on the last data object retrieved from API
+			if (paredownDetails.tracksRealTotal > paredownTracks[paredownTracks.length - 1].next) {
+				const tracksLimitDif = paredownDetails.tracksRealTotal - paredownTracks[paredownTracks.length - 1].next;
+				// change "limit" value on the last data object from API in order to make the last call to an API with the proper limit param value
+				// example: for 320 of tracks, the last call should have the limit set to 20
+				paredownTracks[paredownTracks.length - 1].limit =
+					tracksLimitDif > 0 ? (tracksLimitDif < 100 ? tracksLimitDif : 100) : 100;
+				setSize((size) => size + 1);
+			}
+		}
+	}, [paredownDetails.tracksRealTotal, paredownTracks, setSize]);
+
+	useEffect(() => {
+		if (paredownTracks && paredownTracks.length > 0) {
+			const pages = Math.ceil(paredownDetails.tracksRealTotal / 100);
+			// when the last call to the API to retrieve the tracks was called, then make a different call to an API
+			// in order to create the Pared Down playlist
+			if (pages === size) {
+				console.log('call here');
+			}
+		}
+	}, [paredownDetails.tracksRealTotal, size, paredownTracks]);
+
 	return (
 		<Modal
 			onClose={() => {
@@ -52,7 +91,7 @@ const ParedownPlaylist: FC<{
 			isOpen={displayPDModal}
 			fullWidthAction={() => {
 				paredownStep.active === 3
-					? console.log('boom', paredownDetails)
+					? handleParedown()
 					: paredownStep.active < 3 && paredownStep.active >= 1
 					? setParedownStep((prevState) => {
 							return {
@@ -71,7 +110,10 @@ const ParedownPlaylist: FC<{
 			fullWidthText={
 				(paredownStep.active === 1 && 'Save Details') ||
 				(paredownStep.active === 2 && 'Save Tracklist') ||
-				(paredownStep.active === 3 && 'Pare Down')
+				(paredownStep.active === 3 &&
+					// make sure that both the first and second step were completed by the user in order to
+					// display the pare down button
+					([1, 2].every((val) => paredownStep.done.includes(val)) ? 'Pare Down' : undefined))
 			}
 		>
 			<div tw='flex h-full flex-col px-6'>
@@ -86,7 +128,7 @@ const ParedownPlaylist: FC<{
 						}
 					>
 						<span css={[paredownStep.done.indexOf(1) > -1 || paredownStep.active === 1 ? stepIcon : nextStepIcon]}>
-							{paredownStep.done.indexOf(1) > -1 ? <Icons.Check tw='w-6 h-6' /> : '1'}
+							{paredownStep.done.indexOf(1) > -1 && paredownStep.active !== 1 ? <Icons.Check tw='w-6 h-6' /> : '1'}
 						</span>
 						<span css={[paredownStep.done.indexOf(1) > -1 || paredownStep.active === 1 ? stepText : nextStepText]}>
 							Details
@@ -103,7 +145,7 @@ const ParedownPlaylist: FC<{
 						}
 					>
 						<span css={[paredownStep.done.indexOf(2) > -1 || paredownStep.active === 2 ? stepIcon : nextStepIcon]}>
-							{paredownStep.done.indexOf(2) > -1 ? <Icons.Check tw='w-6 h-6' /> : '2'}
+							{paredownStep.done.indexOf(2) > -1 && paredownStep.active !== 2 ? <Icons.Check tw='w-6 h-6' /> : '2'}
 						</span>
 						<span css={[paredownStep.done.indexOf(2) > -1 || paredownStep.active === 2 ? stepText : nextStepText]}>
 							Tracklist
@@ -137,7 +179,9 @@ const ParedownPlaylist: FC<{
 						playlistId={playlistId}
 					/>
 				)}
-				{paredownStep.active === 3 && <Summary paredownDetails={paredownDetails} playlist={playlist} />}
+				{paredownStep.active === 3 && (
+					<Summary paredownDetails={paredownDetails} playlist={playlist} paredownStep={paredownStep} />
+				)}
 			</div>
 		</Modal>
 	);

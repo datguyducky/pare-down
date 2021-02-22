@@ -67,10 +67,12 @@ export const UsePlaylistTracksPages = (id: string | string[]): UsePlaylistTracks
 		if (previousPageData && !previousPageData.next) return null;
 
 		// first page, we don't have `previousPageData`
-		if (pageIndex === 0) return `/api/playlists/${id}/tracks?disableSort=true`;
+		if (pageIndex === 0) return id ? `/api/playlists/${id}/tracks?disableSort=true` : null;
 
 		// add the next (offset) to the API endpoint
-		return `/api/playlists/${id}/tracks?offset=${previousPageData.next}&limit=${previousPageData.limit}&disableSort=true`;
+		return id
+			? `/api/playlists/${id}/tracks?offset=${previousPageData.next}&limit=${previousPageData.limit}&disableSort=true`
+			: null;
 	};
 
 	const { data, size, setSize } = useSWRInfinite(getKey);

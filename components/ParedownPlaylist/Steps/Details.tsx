@@ -7,7 +7,7 @@ const Details: FC<{
 	setParedownDetails: Dispatch<SetStateAction<ParedownDetails>>;
 }> = ({ paredownDetails, setParedownDetails }) => {
 	return (
-		<div tw='flex flex-col'>
+		<div tw='flex flex-col flex-1'>
 			<label htmlFor='playlist-name' tw='text-sm mb-0.5 font-semibold text-white text-opacity-70'>
 				Name
 			</label>

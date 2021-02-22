@@ -99,7 +99,7 @@ export const Modal: React.FC<ModalType> = ({
 						</svg>
 					</button>
 				</div>
-				<div tw='py-3 px-5'>{children}</div>
+				<div tw='py-3 px-5 flex-1'>{children}</div>
 				<div tw='mt-auto'>
 					{fullWidthText && fullWidthAction && !acceptText && !cancelText && (
 						<button tw='text-center w-full py-3 bg-bblue font-bold text-lg' onClick={fullWidthAction}>
