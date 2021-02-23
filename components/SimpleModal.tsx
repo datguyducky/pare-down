@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
 import ReactDOM from 'react-dom';
+import ClientOnlyPortal from './ClientOnlyPortal';
 
 const SimpleModalContent = styled.div(() => [
 	`
@@ -66,37 +67,44 @@ export const SimpleModal: React.FC<SimpleModalType> = ({
 		return null;
 	}
 
-	return ReactDOM.createPortal(
-		<div
-			tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
-			onClick={() => onClose(false)}
-		>
-			<SimpleModalContent onClick={(e) => e.stopPropagation()}>
-				<div tw='px-5 py-3 relative flex items-center justify-center'>
-					<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
+	return (
+		<ClientOnlyPortal selector='#__next'>
+			<div
+				tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
+				onClick={() => onClose(false)}
+			>
+				<SimpleModalContent onClick={(e) => e.stopPropagation()}>
+					<div tw='px-5 py-3 relative flex items-center justify-center'>
+						<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
 
-					<button
-						tw='absolute right-0 mx-5 text-white text-opacity-80 hover:text-opacity-100'
-						onClick={() => onClose(false)}
-					>
-						<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-							<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-						</svg>
-					</button>
-				</div>
-				<div tw='px-5 overflow-hidden'>{children}</div>
-				<div tw='mb-auto mt-3 flex justify-center pb-2 sm:my-auto'>
-					{acceptText && acceptAction ? (
 						<button
-							tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'
-							onClick={acceptAction}
+							tw='absolute right-0 mx-5 text-white text-opacity-80 hover:text-opacity-100'
+							onClick={() => onClose(false)}
 						>
-							{acceptText}
+							<svg
+								tw='w-6 h-6'
+								fill='none'
+								stroke='currentColor'
+								viewBox='0 0 24 24'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+							</svg>
 						</button>
-					) : null}
-				</div>
-			</SimpleModalContent>
-		</div>,
-		document.getElementById('__next'),
+					</div>
+					<div tw='px-5 overflow-hidden'>{children}</div>
+					<div tw='mb-auto mt-3 flex justify-center pb-2 sm:my-auto'>
+						{acceptText && acceptAction ? (
+							<button
+								tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark'
+								onClick={acceptAction}
+							>
+								{acceptText}
+							</button>
+						) : null}
+					</div>
+				</SimpleModalContent>
+			</div>
+		</ClientOnlyPortal>
 	);
 };

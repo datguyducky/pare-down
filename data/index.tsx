@@ -17,6 +17,7 @@ export const UseUser = (): UseUserType => {
 	};
 };
 
+// TODO: option to mutate this endpoint, needed when pared down playlist is created, or the existing playlist has been unfollowed
 export const UseUserPlaylists = (): UseUserPlaylistsType => {
 	const getKey = (pageIndex, previousPageData) => {
 		// reached the end
@@ -61,13 +62,20 @@ export const UsePlaylistTracks = (id: string | string[], offset: number, limit?:
 	};
 };
 
-export const UsePlaylistTracksPages = (id: string | string[]): UsePlaylistTracksPagesType => {
+export const UsePlaylistTracksPages = (id: string | string[], limit?: number): UsePlaylistTracksPagesType => {
 	const getKey = (pageIndex, previousPageData) => {
 		// reached the end
 		if (previousPageData && !previousPageData.next) return null;
 
 		// first page, we don't have `previousPageData`
-		if (pageIndex === 0) return id ? `/api/playlists/${id}/tracks?disableSort=true` : null;
+		if (pageIndex === 0)
+			return limit
+				? id
+					? `/api/playlists/${id}/tracks?disableSort=true&limit=${limit}`
+					: null
+				: id
+				? `/api/playlists/${id}/tracks?disableSort=true`
+				: null;
 
 		// add the next (offset) to the API endpoint
 		return id

@@ -14,7 +14,6 @@ const Tracklist: FC<{
 	playlistId: string;
 }> = ({ paredownDetails, setParedownDetails, playlistId }) => {
 	function tracksNumValidate(value: number) {
-		// TODO?: value = value > 1 ? value : 1 =? make that the number 1 is a min;
 		if (paredownDetails.tracksIsPercent && value >= 100) {
 			// when input uses percents, then don't let the user type a number bigger than 100
 			setParedownDetails((prevState) => {

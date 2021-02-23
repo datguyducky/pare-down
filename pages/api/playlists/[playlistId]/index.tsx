@@ -86,6 +86,7 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 			.put(
 				`https://api.spotify.com/v1/playlists/${playlistId}
 		`,
+				// TODO: remove playlist description - it looks like is not supported by Spotify API right now
 				{
 					name: name,
 					description: description,

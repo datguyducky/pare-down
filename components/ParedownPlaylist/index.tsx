@@ -49,18 +49,25 @@ const ParedownPlaylist: FC<{
 
 	const { data: paredownTracks, size, setSize } = UsePlaylistTracksPages(
 		paredownStep.done.indexOf(3) > -1 ? playlistId : null,
+		paredownDetails.tracksRealTotal < 100 ? paredownDetails.tracksRealTotal : 100,
 	);
 
 	const toast = useToast();
 	const router = useRouter();
 
 	function handleParedown() {
-		setParedownStep((prevState) => {
-			return {
-				...prevState,
-				done: [...prevState.done, prevState.active],
-			};
-		});
+		// make sure that user added at least 1 song to a playlist
+		// if not display toast in order to inform him to fix that
+		if (paredownDetails.tracksRealTotal > 0) {
+			setParedownStep((prevState) => {
+				return {
+					...prevState,
+					done: [...prevState.done, prevState.active],
+				};
+			});
+		} else {
+			toast.add({ message: 'The pared down playlist must contain at least 1 song', appearance: 'error' });
+		}
 	}
 
 	useEffect(() => {
@@ -114,6 +121,7 @@ const ParedownPlaylist: FC<{
 											toast.add({
 												message: 'The playlist has been successfully pared down',
 											});
+
 											setTimeout(() => router.push(`/dashboard`), 600);
 										}
 									})

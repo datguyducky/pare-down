@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
-import ReactDOM from 'react-dom';
+import ClientOnlyPortal from './ClientOnlyPortal';
 
 const PopupContent = styled.div(() => [
 	`
@@ -64,42 +64,49 @@ export const Popup: React.FC<PopupType> = ({
 		return null;
 	}
 
-	return ReactDOM.createPortal(
-		<div
-			tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
-			onClick={() => onClose(false)}
-		>
-			<PopupContent onClick={(e) => e.stopPropagation()}>
-				<div tw='px-5 py-3 relative flex'>
-					<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
+	return (
+		<ClientOnlyPortal selector='#__next'>
+			<div
+				tw='fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center text-white'
+				onClick={() => onClose(false)}
+			>
+				<PopupContent onClick={(e) => e.stopPropagation()}>
+					<div tw='px-5 py-3 relative flex'>
+						<h2 tw='text-xl font-bold leading-relaxed'>{title}</h2>
 
-					<button tw='ml-auto text-white text-opacity-80 hover:text-opacity-100' onClick={() => onClose(false)}>
-						<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-							<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-						</svg>
-					</button>
-				</div>
-				<div tw='px-5'>{children}</div>
-				<div tw='my-auto ml-auto flex py-3 px-5'>
-					{cancelText && cancelAction ? (
-						<button
-							tw='tracking-wider rounded-sm px-5 py-0.5 font-bold text-white text-opacity-70'
-							onClick={cancelAction}
-						>
-							{cancelText}
+						<button tw='ml-auto text-white text-opacity-80 hover:text-opacity-100' onClick={() => onClose(false)}>
+							<svg
+								tw='w-6 h-6'
+								fill='none'
+								stroke='currentColor'
+								viewBox='0 0 24 24'
+								xmlns='http://www.w3.org/2000/svg'
+							>
+								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
+							</svg>
 						</button>
-					) : null}
-					{acceptText && acceptAction ? (
-						<button
-							tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark ml-2'
-							onClick={acceptAction}
-						>
-							{acceptText}
-						</button>
-					) : null}
-				</div>
-			</PopupContent>
-		</div>,
-		document.getElementById('__next'),
+					</div>
+					<div tw='px-5'>{children}</div>
+					<div tw='my-auto ml-auto flex py-3 px-5'>
+						{cancelText && cancelAction ? (
+							<button
+								tw='tracking-wider rounded-sm px-5 py-0.5 font-bold text-white text-opacity-70'
+								onClick={cancelAction}
+							>
+								{cancelText}
+							</button>
+						) : null}
+						{acceptText && acceptAction ? (
+							<button
+								tw='tracking-wider font-bold bg-bblue rounded-sm px-5 py-0.5 hover:bg-bblue-dark ml-2'
+								onClick={acceptAction}
+							>
+								{acceptText}
+							</button>
+						) : null}
+					</div>
+				</PopupContent>
+			</div>
+		</ClientOnlyPortal>
 	);
 };

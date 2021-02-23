@@ -12,6 +12,7 @@ export interface EditDetails {
 	description: string;
 }
 
+// TODO: fix XML Parsing Error: no root element found Location: host:/api/playlists/[:id]
 const EditPlaylist: FC<{
 	playlist: UsePlaylistDetailsType['data'];
 	setDisplayEditModal: Dispatch<SetStateAction<boolean>>;
@@ -81,7 +82,9 @@ const EditPlaylist: FC<{
 						value={editDetails.description}
 						placeholder='Give your playlist a catchy description'
 						maxLength={300}
-						onChange={(e) => setEditDetails({ ...editDetails, description: e.target.value })}
+						onChange={(e) =>
+							setEditDetails({ ...editDetails, description: e.target.value.length > 0 ? e.target.value : undefined })
+						}
 					/>
 				</div>
 				<div tw='sm:col-span-3 ml-auto mt-2 sm:mt-0'>

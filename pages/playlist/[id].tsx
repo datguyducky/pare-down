@@ -26,7 +26,7 @@ const PlaylistDetailsView: FC = () => {
 
 	// TODO: right now it's a little bit buggy with passing the ID router query prop, test how it would work with the Nextjs
 	// getInitialProps or something like that
-	const { data: playlist, isError: playlistDetailsIsError } = UsePlaylistDetails(id);
+	const { data: playlist } = UsePlaylistDetails(id);
 	const isPlaylistOwner = user?.id === playlist?.owner?.id ? true : false;
 
 	function handlePlaylistUnfollow() {
