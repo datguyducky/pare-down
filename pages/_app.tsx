@@ -5,6 +5,8 @@ import { GlobalStyles } from 'twin.macro';
 import { SWRConfig } from 'swr';
 import axios from 'axios';
 
+import { withToastProvider } from '@/toast';
+
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
 	<>
 		<GlobalStyles />
@@ -18,4 +20,4 @@ const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
 	</>
 );
 
-export default App;
+export default withToastProvider(App);

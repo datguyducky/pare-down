@@ -16,7 +16,8 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/components": ["components/index.tsx"],
-			"@/icons": ["icons/index.tsx"]
+			"@/icons": ["icons/index.tsx"],
+			"@/toast": ["components/Toast/index.tsx"]
 		}
 	},
 	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "twin.d.ts"],

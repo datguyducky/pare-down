@@ -32,12 +32,13 @@ const PlaylistDetailsView: FC = () => {
 			.then((response) => {
 				if (response.status === 204) {
 					// TODO: add timeout and toast here
+					setDisplayDeletePopup(false);
 					router.push(`/dashboard`);
 				}
 			})
 			.catch((error) => {
 				//TODO: toast here
-				setDisplayDeletePopup(false); // hide popup, cause' why not
+				setDisplayDeletePopup(false);
 				console.log(error);
 			});
 	}
