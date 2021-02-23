@@ -49,7 +49,7 @@ const ParedownPlaylist: FC<{
 		inProgress: false,
 	});
 
-	const { data: paredownTracks, size, setSize } = UsePlaylistTracksPages(
+	const { data: paredownTracks, setSize } = UsePlaylistTracksPages(
 		paredownStep.done.indexOf(3) > -1 ? playlistId : null,
 		paredownDetails.tracksRealTotal < 100 ? paredownDetails.tracksRealTotal : 100,
 	);
@@ -57,7 +57,7 @@ const ParedownPlaylist: FC<{
 	const toast = useToast();
 	const router = useRouter();
 
-	function handleParedown() {
+	function startParedown() {
 		// make sure that user added at least 1 song to a playlist
 		// if not display toast in order to inform him to fix that
 		if (paredownDetails.tracksRealTotal > 0) {
@@ -83,88 +83,68 @@ const ParedownPlaylist: FC<{
 					tracksLimitDif > 0 ? (tracksLimitDif < 100 ? tracksLimitDif : 100) : 100;
 				setSize((size) => size + 1);
 			}
-		}
-	}, [paredownDetails.tracksRealTotal, paredownTracks, setSize]);
 
-	useEffect(() => {
-		if (paredownTracks && paredownTracks.length > 0) {
-			const pages = Math.ceil(paredownDetails.tracksRealTotal / 100);
-			// when the last call to the API to retrieve the tracks was called, then make a different call to an API
-			// in order to create the Pared Down playlist
-			if (pages === size && !paredownStep.inProgress) {
-				// without this, there's a bug that 2 pared down playlists are created
-				// one with proper num. of songs and second one misses tracks from the last API call
-				// TODO: maybe there's a better way to fix this?
-				setParedownStep((prevState) => {
-					return {
-						...prevState,
-						inProgress: true,
-					};
-				});
-				// Spotify API doesn't let to create a playlist with tracks in it with the same call
-				// so we need to make seperate call to create the playlist, and X ammount of other calls
-				// to add tracks to it (100 tracks per call)
-				axios
-					.post(`/api/playlists?userId=${userId}`, {
-						data: {
-							name: playlist.name === paredownDetails.name ? playlist.name + ' Pared Down' : paredownDetails.name,
-							isPublic: paredownDetails.public,
-							description: paredownDetails.description,
-						},
-					})
-					.then((response) => {
-						if (response.statusText === 'OK') {
-							const playlistId = response?.data.id;
-							// making X calls to add tracks to the freshly created pared down playlist
-							for (let i = 0; i < paredownTracks.length; i++) {
-								const tracksData: Array<string> = paredownTracks[i].items.map((i) => i.uri);
-
-								axios
-									.post(`/api/playlists/${playlistId}/tracks`, {
-										data: {
-											uris: tracksData,
-										},
-									})
-									.then((response) => {
-										if (response.statusText === 'OK') {
-											setDisplayPDModal(false);
-
-											toast.add({
-												message: 'The playlist has been successfully pared down',
-											});
-
-											setTimeout(() => router.push(`/dashboard`), 600);
-										}
-									})
-									.catch((error) => {
-										toast.add({
-											message: 'Sorry, something went wrong: ' + error.response?.data?.message,
-											appearance: 'error',
-										});
-										console.log(error.response?.data);
-									});
-							}
-						}
-					})
-					.catch((error) => {
-						toast.add({
-							message: 'Sorry, something went wrong: ' + error.response?.data?.message,
-							appearance: 'error',
-						});
-						console.log(error.response?.data);
-					});
+			if (Math.ceil(paredownDetails.tracksRealTotal / 100) === paredownTracks.length) {
+				handleParedown();
 			}
 		}
-	}, [
-		paredownDetails.tracksRealTotal,
-		size,
-		paredownTracks,
-		userId,
-		paredownDetails.name,
-		paredownDetails.public,
-		paredownDetails.description,
-		playlist.name,
-	]);
+		//eslint-disable-next-line
+	}, [paredownDetails.tracksRealTotal, paredownTracks, setSize]);
+
+	function handleParedown() {
+		// Spotify API doesn't let to create a playlist with tracks in it with the same call
+		// so we need to make seperate call to create the playlist, and X ammount of other calls
+		// to add tracks to it (100 tracks per call)
+		axios
+			.post(`/api/playlists?userId=${userId}`, {
+				data: {
+					name: playlist.name === paredownDetails.name ? playlist.name + ' Pared Down' : paredownDetails.name,
+					isPublic: paredownDetails.public,
+					description: paredownDetails.description,
+				},
+			})
+			.then((response) => {
+				if (response.statusText === 'OK') {
+					const playlistId = response?.data.id;
+					// making X calls to add tracks to the freshly created pared down playlist
+					for (let i = 0; i < paredownTracks.length; i++) {
+						const tracksData: Array<string> = paredownTracks[i].items.map((i) => i.uri);
+
+						axios
+							.post(`/api/playlists/${playlistId}/tracks`, {
+								data: {
+									uris: tracksData,
+								},
+							})
+							.then((response) => {
+								if (response.statusText === 'OK') {
+									setDisplayPDModal(false);
+
+									toast.add({
+										message: 'The playlist has been successfully pared down',
+									});
+
+									setTimeout(() => router.push(`/dashboard`), 600);
+								}
+							})
+							.catch((error) => {
+								toast.add({
+									message: 'Sorry, something went wrong: ' + error.response?.data?.message,
+									appearance: 'error',
+								});
+								console.log(error.response?.data);
+							});
+					}
+				}
+			})
+			.catch((error) => {
+				toast.add({
+					message: 'Sorry, something went wrong: ' + error.response?.data?.message,
+					appearance: 'error',
+				});
+				console.log(error.response?.data);
+			});
+	}
 
 	return (
 		<Modal
@@ -176,7 +156,7 @@ const ParedownPlaylist: FC<{
 			isOpen={displayPDModal}
 			fullWidthAction={() => {
 				paredownStep.active === 3
-					? handleParedown()
+					? startParedown()
 					: paredownStep.active < 3 && paredownStep.active >= 1
 					? setParedownStep((prevState) => {
 							return {

@@ -175,7 +175,7 @@ const IndexPage: FC = () => {
 							</h5>
 							<p tw='text-center py-8'>
 								PareDown is a tool that I personally frequently use so it&apos;s in my best interest to fix and improve
-								it. So you don't have to worry about it being abandoned any time soon.
+								it. So you don&apos;t have to worry about it being abandoned any time soon.
 							</p>
 						</div>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>

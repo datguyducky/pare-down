@@ -38,7 +38,7 @@ const Tracklist: FC<{
 		}
 	}
 
-	const { data, size, setSize } = UsePlaylistTracksPages(playlistId);
+	const { data, setSize } = UsePlaylistTracksPages(playlistId);
 	useEffect(() => {
 		if (data && data.length > 0) {
 			if (data[0].items.length >= 4) {

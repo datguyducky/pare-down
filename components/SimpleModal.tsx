@@ -1,6 +1,5 @@
 import { Dispatch, SetStateAction, useEffect } from 'react';
 import tw, { styled } from 'twin.macro';
-import ReactDOM from 'react-dom';
 import ClientOnlyPortal from './ClientOnlyPortal';
 
 const SimpleModalContent = styled.div(() => [

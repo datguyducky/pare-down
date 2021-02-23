@@ -4,7 +4,7 @@ import { SWRConfig } from 'swr';
 import axios from 'axios';
 
 import { withToastProvider } from '@/toast';
-import { AppHead, GlobalStyles } from '@/components';
+import { AppHead, GlobalStyles } from '../components/';
 
 const App: FC<AppProps> = ({ Component, pageProps }: AppProps) => (
 	<>

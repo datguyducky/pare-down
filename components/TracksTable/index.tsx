@@ -36,11 +36,7 @@ export const TracksTable: React.FC<{ playlistId: string | string[]; tracksTotal:
 }) => {
 	const [recentlyAdded, setRecentlyAdded] = useState<boolean>(true);
 	const offset = recentlyAdded ? tracksTotal - 25 : 0;
-	const { data: playlistTracks, isError: tracksIsError, mutate: mutatePlaylistTracks } = UsePlaylistTracks(
-		playlistId,
-		offset,
-		25,
-	);
+	const { data: playlistTracks, mutate: mutatePlaylistTracks } = UsePlaylistTracks(playlistId, offset, 25);
 
 	return (
 		<>
