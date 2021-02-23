@@ -4,6 +4,7 @@ import 'twin.macro';
 import { HeaderConstant, TracksTable, EditPlaylist, Popup, ParedownPlaylist } from '@/components';
 import { UsePlaylistDetails, UseUser } from 'data';
 import axios from 'axios';
+import { useToast } from '@/toast';
 
 const PlaylistDetailsView: FC = () => {
 	const [displayPDModal, setDisplayPDModal] = useState<boolean>(false);
@@ -12,6 +13,8 @@ const PlaylistDetailsView: FC = () => {
 
 	const router = useRouter();
 	const { id } = router.query;
+
+	const toast = useToast();
 
 	// check if the user is logged in
 	const { data: user, isError: userIsError } = UseUser();
@@ -31,15 +34,16 @@ const PlaylistDetailsView: FC = () => {
 			.delete(`/api/playlists/${playlist?.id}`)
 			.then((response) => {
 				if (response.status === 204) {
-					// TODO: add timeout and toast here
 					setDisplayDeletePopup(false);
-					router.push(`/dashboard`);
+					toast.add({ message: 'Playlist has been unfollowed' });
+
+					setTimeout(() => router.push(`/dashboard`), 600);
 				}
 			})
 			.catch((error) => {
-				//TODO: toast here
 				setDisplayDeletePopup(false);
-				console.log(error);
+				toast.add({ message: 'Sorry, something went wrong: ' + error.response?.data?.message, appearance: 'error' });
+				console.log(error.response?.data);
 			});
 	}
 

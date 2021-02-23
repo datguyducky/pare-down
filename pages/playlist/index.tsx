@@ -1,9 +1,15 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import 'twin.macro';
 
 const PlaylistIndexView: FC = () => {
-	// TODO: log in with spotify button in here
-	return <div tw='text-white bg-bgray-light w-full min-h-screen'>something wrong</div>;
+	const router = useRouter();
+
+	useEffect(() => {
+		router.replace('/dashboard');
+		//eslint-disable-next-line
+	}, []);
+	return <div tw='text-white bg-bgray w-full min-h-screen' />;
 };
 
 export default PlaylistIndexView;

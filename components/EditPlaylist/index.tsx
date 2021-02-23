@@ -4,6 +4,7 @@ import { UsePlaylistDetailsType } from '../../data/types';
 import 'twin.macro';
 import axios from 'axios';
 import { mutate } from 'swr';
+import { useToast } from '@/toast';
 
 export interface EditDetails {
 	name: string;
@@ -22,6 +23,8 @@ const EditPlaylist: FC<{
 		isPublic: playlist.public,
 	});
 
+	const toast = useToast();
+
 	function handlePlaylistEdit() {
 		axios
 			.put(`/api/playlists/${playlist?.id}`, {
@@ -30,12 +33,14 @@ const EditPlaylist: FC<{
 			.then((response) => {
 				if (response.status === 200) {
 					setDisplayEditModal(false);
+					toast.add({ message: 'The playlist has been successfully edited' });
+
 					mutate(`/api/playlists/${playlist?.id}`);
 				}
 			})
 			.catch((error) => {
-				//TODO: toast here
-				console.log(error);
+				toast.add({ message: 'Sorry, something went wrong: ' + error.response?.data?.message, appearance: 'error' });
+				console.log(error.response?.data);
 			});
 	}
 

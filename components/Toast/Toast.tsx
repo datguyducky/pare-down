@@ -7,7 +7,7 @@ const Toast: FC<{ remove: () => void; message: string; appearance: string }> = (
 	removeRef.current = remove;
 
 	useEffect(() => {
-		const duration = 2500;
+		const duration = 3400;
 		const id = setTimeout(() => removeRef.current(), duration);
 
 		return () => clearTimeout(id);

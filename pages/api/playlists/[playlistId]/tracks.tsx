@@ -62,7 +62,7 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 				// catch error and send error message back to frontend, where useSWR can do its magic
 				if (error.response) {
 					res.statusCode = error.response.status;
-					res.send(error.response.data);
+					res.send(error.response.data.error);
 					res.end();
 					return;
 				}
@@ -98,7 +98,7 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 			.catch((error) => {
 				if (error.response) {
 					res.statusCode = error.response.status;
-					res.send(error.response.data);
+					res.send(error.response.data.error);
 					res.end();
 					return;
 				}

@@ -6,6 +6,8 @@ import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
 import { Icons } from '@/icons';
 import { UsePlaylistTracksPages } from 'data';
 import axios from 'axios';
+import { useToast } from '@/toast';
+import { useRouter } from 'next/router';
 
 export interface ParedownDetails {
 	name: string;
@@ -48,6 +50,9 @@ const ParedownPlaylist: FC<{
 	const { data: paredownTracks, size, setSize } = UsePlaylistTracksPages(
 		paredownStep.done.indexOf(3) > -1 ? playlistId : null,
 	);
+
+	const toast = useToast();
+	const router = useRouter();
 
 	function handleParedown() {
 		setParedownStep((prevState) => {
@@ -104,23 +109,34 @@ const ParedownPlaylist: FC<{
 									})
 									.then((response) => {
 										if (response.statusText === 'OK') {
-											// TODO: toast here
-											console.log('Tracks were added to playlist, Pare Down was successfull', response?.data);
+											setDisplayPDModal(false);
+
+											toast.add({
+												message: 'The playlist has been successfully pared down',
+											});
+											setTimeout(() => router.push(`/dashboard`), 600);
 										}
 									})
 									.catch((error) => {
-										//TODO: toast here
-										console.log(error);
+										toast.add({
+											message: 'Sorry, something went wrong: ' + error.response?.data?.message,
+											appearance: 'error',
+										});
+										console.log(error.response?.data);
 									});
 							}
 						}
 					})
 					.catch((error) => {
-						//TODO: toast here
-						console.log(error);
+						toast.add({
+							message: 'Sorry, something went wrong: ' + error.response?.data?.message,
+							appearance: 'error',
+						});
+						console.log(error.response?.data);
 					});
 			}
 		}
+		//eslint-disable-next-line
 	}, [
 		paredownDetails.tracksRealTotal,
 		size,
