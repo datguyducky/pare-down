@@ -1,41 +1,50 @@
 {
-  "name": "pare-down",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "https://pare-down.mtymon.me",
-  "dependencies": {
-    "gh-pages": "^2.1.1",
-    "react": "^16.10.2",
-    "react-dom": "^16.10.2",
-    "react-feather": "^2.0.3",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
-    "styled-components": "^5.0.1"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "gh-pages": "^2.1.1"
-  }
+	"name": "pare-down",
+	"version": "0.2.0",
+	"main": "index.js",
+	"homepage": "https://pare-down.mtymon.me",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/node": "^14.14.16",
+		"@types/react": "^17.0.0",
+		"@types/styled-components": "^5.1.7",
+		"@typescript-eslint/eslint-plugin": "^4.11.0",
+		"@typescript-eslint/parser": "^4.11.0",
+		"eslint": "^7.16.0",
+		"eslint-config-prettier": "^8.0.0",
+		"eslint-plugin-jsx-a11y": "^6.4.1",
+		"eslint-plugin-prettier": "^3.3.1",
+		"eslint-plugin-react": "^7.22.0",
+		"eslint-plugin-react-hooks": "^4.2.0",
+		"prettier": "^2.2.1",
+		"typescript": "^4.1.3"
+	},
+	"dependencies": {
+		"@types/cookie": "^0.4.0",
+		"autoprefixer": "^10.1.0",
+		"axios": "^0.21.1",
+		"cookie": "^0.4.1",
+		"dayjs": "^1.10.3",
+		"next": "^10.0.4",
+		"postcss": "^8.2.1",
+		"query-string": "^6.13.8",
+		"react": "^17.0.1",
+		"react-dom": "^17.0.1",
+		"react-infinite-scroll-component": "^6.0.0",
+		"styled-components": "^5.2.1",
+		"swr": "^0.4.2",
+		"tailwindcss": "^2.0.2",
+		"twin.macro": "^2.0.7"
+	},
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start"
+	},
+	"babelMacros": {
+		"twin": {
+			"preset": "styled-components",
+			"config": "tailwind.config.js"
+		}
+	}
 }

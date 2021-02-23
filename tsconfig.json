@@ -1,0 +1,25 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": false,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"baseUrl": ".",
+		"paths": {
+			"@/components": ["components/index.tsx"],
+			"@/icons": ["icons/index.tsx"],
+			"@/toast": ["components/Toast/index.tsx"]
+		}
+	},
+	"include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "twin.d.ts"],
+	"exclude": ["node_modules"]
+}
