@@ -6,12 +6,12 @@ const Toast: FC<{ remove: () => void; message: string; appearance: string }> = (
 	const removeRef = useRef(null);
 	removeRef.current = remove;
 
-	/*useEffect(() => {
+	useEffect(() => {
 		const duration = 3400;
 		const id = setTimeout(() => removeRef.current(), duration);
 
 		return () => clearTimeout(id);
-	}, []);*/
+	}, []);
 
 	useEffect(() => {
 		// disabe scroll for the whole page when Popup is opened (but still display the scrollbar)

@@ -17,7 +17,7 @@ const StyledPlaylistCard = styled.div<{ image: string }>(({ image }) => [
 		}
 	`,
 	image ? `background: linear-gradient(0deg, #00000072 30%, #ffffff44 100%), url('${image}');` : tw`bg-bgray-darkest`,
-	tw`bg-bgray-light relative cursor-pointer rounded bg-no-repeat bg-center hover:shadow-inner hover:shadow-lg bg-cover hover:opacity-95`,
+	tw`relative cursor-pointer rounded bg-no-repeat bg-center hover:shadow-inner hover:shadow-lg bg-cover hover:opacity-95`,
 ]);
 
 const PlaylistName = styled.span`

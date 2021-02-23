@@ -102,12 +102,7 @@ const PlaylistDetailsView: FC = () => {
 						{playlist?.tracksTotal > 0 && (
 							<button
 								tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-0 sm:mr-4 sm:shadow-md hover:bg-bblue-dark flex items-center justify-center'
-								onClick={() =>
-									toast.add({
-										message: 'Sorry, something went wrong: ',
-										appearance: 'error',
-									})
-								}
+								onClick={() => setDisplayPDModal(true)}
 							>
 								<svg
 									tw='w-5 h-5 inline-block mr-2'
@@ -160,7 +155,7 @@ const PlaylistDetailsView: FC = () => {
 											clipRule='evenodd'
 										/>
 									</svg>
-									<span tw='whitespace-nowrap'>Delete</span>
+									<span tw='whitespace-nowrap'>Remove</span>
 								</>
 							) : (
 								<>

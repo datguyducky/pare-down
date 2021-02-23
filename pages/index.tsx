@@ -148,10 +148,10 @@ const IndexPage: FC = () => {
 										d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
 									/>
 								</svg>
-								<span tw='text-lg font-semibold leading-tight'>Edit & Delete</span>
+								<span tw='text-lg font-semibold leading-tight'>Edit & Remove</span>
 							</h5>
 							<p tw='text-center py-8'>
-								PareDown also comes with a functionality to edit and delete selected playlists. Managing your music
+								PareDown also comes with a functionality to edit and remove selected playlists. Managing your music
 								library was never easier!
 							</p>
 						</div>

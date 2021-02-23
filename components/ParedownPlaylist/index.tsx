@@ -23,6 +23,7 @@ export interface ParedownDetails {
 export interface ParedownStep {
 	done: Array<number>;
 	active: number;
+	inProgress: boolean;
 }
 
 const ParedownPlaylist: FC<{
@@ -45,6 +46,7 @@ const ParedownPlaylist: FC<{
 	const [paredownStep, setParedownStep] = useState<ParedownStep>({
 		done: [],
 		active: 1,
+		inProgress: false,
 	});
 
 	const { data: paredownTracks, size, setSize } = UsePlaylistTracksPages(
@@ -89,7 +91,16 @@ const ParedownPlaylist: FC<{
 			const pages = Math.ceil(paredownDetails.tracksRealTotal / 100);
 			// when the last call to the API to retrieve the tracks was called, then make a different call to an API
 			// in order to create the Pared Down playlist
-			if (pages === size) {
+			if (pages === size && !paredownStep.inProgress) {
+				// without this, there's a bug that 2 pared down playlists are created
+				// one with proper num. of songs and second one misses tracks from the last API call
+				// TODO: maybe there's a better way to fix this?
+				setParedownStep((prevState) => {
+					return {
+						...prevState,
+						inProgress: true,
+					};
+				});
 				// Spotify API doesn't let to create a playlist with tracks in it with the same call
 				// so we need to make seperate call to create the playlist, and X ammount of other calls
 				// to add tracks to it (100 tracks per call)
@@ -144,7 +155,6 @@ const ParedownPlaylist: FC<{
 					});
 			}
 		}
-		//eslint-disable-next-line
 	}, [
 		paredownDetails.tracksRealTotal,
 		size,

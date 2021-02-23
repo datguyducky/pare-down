@@ -16,7 +16,6 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 		const newOffset = offset ? offset : 0;
 		const newLimit = limit ? limit : 100;
 
-		console.log(limit, newLimit);
 		await axios
 			.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${newOffset}&limit=${newLimit}`, {
 				headers: {
