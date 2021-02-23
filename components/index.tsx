@@ -10,6 +10,8 @@ import Details from './ParedownPlaylist/Steps/Details';
 import Summary from './ParedownPlaylist/Steps/Summary';
 import EditPlaylist from './EditPlaylist';
 import { TracksSmallTable } from './TracksSmallTable';
+import AppHead from './AppHead';
+import GlobalStyles from './GlobalStyles';
 
 export {
 	HeaderConstant,
@@ -24,4 +26,6 @@ export {
 	EditPlaylist,
 	TracksSmallTable,
 	Summary,
+	AppHead,
+	GlobalStyles,
 };

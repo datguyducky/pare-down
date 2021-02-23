@@ -174,8 +174,8 @@ const IndexPage: FC = () => {
 								<span tw='text-lg font-semibold leading-tight'>Actively Developed</span>
 							</h5>
 							<p tw='text-center py-8'>
-								As always with all my projects - PareDown is a tool that I personally and often use so it&apos;s in my
-								best interest to fix and improve this app.
+								PareDown is a tool that I personally frequently use so it&apos;s in my best interest to fix and improve
+								it. So you don't have to worry about it being abandoned any time soon.
 							</p>
 						</div>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
@@ -197,7 +197,7 @@ const IndexPage: FC = () => {
 								<span tw='text-lg font-semibold leading-tight'>Open-source</span>
 							</h5>
 							<p tw='py-8 text-center'>
-								Each of us should be interested in our privacy on the web, and nothing is better than open-source
+								Each of us should be worried about our privacy on the web, and nothing is better than open-source
 								projects which allows us to check how and whether our data is used.
 							</p>
 						</div>
@@ -208,9 +208,9 @@ const IndexPage: FC = () => {
 						id='pricing'
 					>
 						<div tw='mb-12 lg:mb-0 text-center lg:px-7 font-bold text-lg lg:text-xl leading-relaxed flex items-center'>
-							Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora velit sint rerum molestias nulla. Officia
-							aut magnam, libero dolorum esse, expedita quasi eius voluptatem vero nobis vel odit laborum ducimus id
-							eum.
+							This app was made and is fully developed by only one person; Initially, this project was created to
+							develop my skills and to give me something to enter in my resume, and therefore I am never going to add a
+							paid plan to this app.
 						</div>
 
 						<div tw='px-7 pt-9 rounded border border-solid border-gray-300 flex items-center flex-col relative'>

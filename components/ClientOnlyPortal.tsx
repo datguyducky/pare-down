@@ -6,7 +6,6 @@ export const ClientOnlyPortal: FC<{ selector: string }> = ({ children, selector 
 	const [mounted, setMounted] = useState(false);
 
 	useEffect(() => {
-		console.log(selector);
 		ref.current = document.querySelector(selector);
 		setMounted(true);
 	}, [selector]);

@@ -6,12 +6,12 @@ const Toast: FC<{ remove: () => void; message: string; appearance: string }> = (
 	const removeRef = useRef(null);
 	removeRef.current = remove;
 
-	useEffect(() => {
+	/*useEffect(() => {
 		const duration = 3400;
 		const id = setTimeout(() => removeRef.current(), duration);
 
 		return () => clearTimeout(id);
-	}, []);
+	}, []);*/
 
 	useEffect(() => {
 		// disabe scroll for the whole page when Popup is opened (but still display the scrollbar)
@@ -44,7 +44,7 @@ const Toast: FC<{ remove: () => void; message: string; appearance: string }> = (
 
 	return (
 		<ToastContent onClick={(e) => e.stopPropagation()} appearance={appearance}>
-			<p tw='font-bold text-center text-lg tracking-wide'>{message}</p>
+			<p tw='font-bold text-center text-base xs:text-lg tracking-wide'>{message}</p>
 			<button tw='absolute right-0 mr-4' onClick={() => remove()}>
 				<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
 					<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />

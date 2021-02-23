@@ -39,6 +39,3 @@ build/
 *.sublime-project
 *.sublime-workspace
 .idea
-
-# DELETE THIS LINE LATER, ONLY USED WHILE REDESIGN IS IN THE WORKS
-backend/

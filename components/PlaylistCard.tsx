@@ -16,8 +16,8 @@ const StyledPlaylistCard = styled.div<{ image: string }>(({ image }) => [
 			height: 180px;
 		}
 	`,
+	image ? `background: linear-gradient(0deg, #00000072 30%, #ffffff44 100%), url('${image}');` : tw`bg-bgray-darkest`,
 	tw`bg-bgray-light relative cursor-pointer rounded bg-no-repeat bg-center hover:shadow-inner hover:shadow-lg bg-cover hover:opacity-95`,
-	image ? `background-image: url('${image}')` : tw`bg-bgray-darkest`,
 ]);
 
 const PlaylistName = styled.span`
@@ -26,7 +26,7 @@ const PlaylistName = styled.span`
 	@media (min-width: 640px) {
 		width: 160px;
 	}
-	${tw`font-bold truncate text-white text-sm xl:text-lg absolute top-0 right-0 left-0 text-right mx-2 mt-3 inline-block`}
+	${tw`font-bold truncate text-white text-sm xl:text-lg absolute bottom-0 right-0 left-0 text-right mx-2 mb-3 inline-block`}
 `;
 
 export const PlaylistCard: React.FC<HeaderConstantTypes> = ({ image, name, id }) => {
