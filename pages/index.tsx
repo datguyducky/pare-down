@@ -209,8 +209,8 @@ const IndexPage: FC = () => {
 					>
 						<div tw='mb-12 lg:mb-0 text-center lg:px-7 font-bold text-lg lg:text-xl leading-relaxed flex items-center'>
 							This app was made and is fully developed by only one person; Initially, this project was created to
-							develop my skills and to give me something to enter in my resume, and therefore I am never going to add a
-							paid plan to this app.
+							develop my skills and to give me something to enter into my resume, and therefore I am never going to add
+							a paid plan to this app.
 						</div>
 
 						<div tw='px-7 pt-9 rounded border border-solid border-gray-300 flex items-center flex-col relative'>
