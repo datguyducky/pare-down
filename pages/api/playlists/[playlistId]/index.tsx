@@ -2,8 +2,28 @@ import type { NextApiHandler } from 'next';
 import axios from 'axios';
 import { parse } from 'cookie';
 
+type playlistDetailsType = {
+	collaborative: boolean;
+	description: string;
+	followers: {
+		total: number;
+	};
+	href: string;
+	id: number;
+	name: string;
+	owner: Record<string, unknown>;
+	public: boolean;
+	tracks: {
+		total: number;
+	};
+	type: string;
+	images: {
+		url: string;
+	}[];
+};
+
 const playlistDetailsHandler: NextApiHandler = async (req, res) => {
-	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
+	// retrieve HttpOnly and secure cookie which stores users access-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
 	// retrieve dynamic playlist id
 	const {
@@ -13,7 +33,7 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 	// make call to retrieve user data
 	if (req.method === 'GET') {
 		await axios
-			.get(
+			.get<playlistDetailsType>(
 				`https://api.spotify.com/v1/playlists/${playlistId}?fields=collaborative,description,followers,href,id,name,owner,public,tracks(total),type,images`,
 				{
 					headers: {
