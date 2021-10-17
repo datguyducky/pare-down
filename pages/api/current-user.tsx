@@ -2,12 +2,17 @@ import type { NextApiHandler } from 'next';
 import axios from 'axios';
 import { parse } from 'cookie';
 
+type currentUserType = {
+	display_name: string;
+	id: number;
+};
+
 const currentUserHandler: NextApiHandler = async (req, res) => {
 	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
 	// make call to retrieve user data
 	await axios
-		.get('https://api.spotify.com/v1/me', {
+		.get<currentUserType>('https://api.spotify.com/v1/me', {
 			headers: {
 				'Authorization': 'Bearer ' + _ACCESS_TOKEN,
 			},

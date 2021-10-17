@@ -96,7 +96,7 @@ const ParedownPlaylist: FC<{
 		// so we need to make seperate call to create the playlist, and X ammount of other calls
 		// to add tracks to it (100 tracks per call)
 		axios
-			.post(`/api/playlists?userId=${userId}`, {
+			.post<{ id: number }>(`/api/playlists?userId=${userId}`, {
 				data: {
 					name: playlist.name === paredownDetails.name ? playlist.name + ' Pared Down' : paredownDetails.name,
 					isPublic: paredownDetails.public,

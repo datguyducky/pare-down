@@ -2,6 +2,32 @@ import type { NextApiHandler } from 'next';
 import axios from 'axios';
 import { parse } from 'cookie';
 
+type playlistTracksType = {
+	next: string;
+	offset: number;
+	total: number;
+	limit: number;
+	items: {
+		added_at: number;
+		track: {
+			album: {
+				name: string;
+				images: {
+					url: string;
+				}[];
+			};
+			artists: {
+				name: string;
+			}[];
+			id: string;
+			name: string;
+			type: string;
+			duration_ms: number;
+			uri: string;
+		};
+	}[];
+};
+
 const playlistTracksHandler: NextApiHandler = async (req, res) => {
 	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
@@ -17,11 +43,14 @@ const playlistTracksHandler: NextApiHandler = async (req, res) => {
 		const newLimit = limit ? limit : 100;
 
 		await axios
-			.get(`https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${newOffset}&limit=${newLimit}`, {
-				headers: {
-					'Authorization': 'Bearer ' + _ACCESS_TOKEN,
+			.get<playlistTracksType>(
+				`https://api.spotify.com/v1/playlists/${playlistId}/tracks?offset=${newOffset}&limit=${newLimit}`,
+				{
+					headers: {
+						'Authorization': 'Bearer ' + _ACCESS_TOKEN,
+					},
 				},
-			})
+			)
 			.then((response) => {
 				if (response.statusText === 'OK') {
 					const data = response.data;

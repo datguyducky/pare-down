@@ -2,6 +2,21 @@ import type { NextApiHandler } from 'next';
 import axios from 'axios';
 import { parse } from 'cookie';
 
+type playlistsType = {
+	next: string;
+	items: {
+		id: string;
+		name: string;
+		images: {
+			url: string;
+		}[];
+		description: string;
+	}[];
+	limit: number;
+	offset: number;
+	total: number;
+};
+
 const playlistsListHandler: NextApiHandler = async (req, res) => {
 	// retrieve HttpOnly and secure cookie which stores users access-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
@@ -14,7 +29,7 @@ const playlistsListHandler: NextApiHandler = async (req, res) => {
 		const parseOffset = offset ? offset : 0;
 
 		await axios
-			.get(`https://api.spotify.com/v1/me/playlists?limit=50&offset=${parseOffset}`, {
+			.get<playlistsType>(`https://api.spotify.com/v1/me/playlists?limit=50&offset=${parseOffset}`, {
 				headers: {
 					'Authorization': 'Bearer ' + _ACCESS_TOKEN,
 				},
