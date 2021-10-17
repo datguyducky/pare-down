@@ -3,7 +3,7 @@ import axios from 'axios';
 import { parse } from 'cookie';
 
 const playlistDetailsHandler: NextApiHandler = async (req, res) => {
-	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
+	// retrieve HttpOnly and secure cookie which stores users access-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
 	// retrieve dynamic playlist id
 	const {

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { parse } from 'cookie';
 
 const playlistsListHandler: NextApiHandler = async (req, res) => {
-	// retrieve HttpOnly and secure cookie which stores users acess-token to the Spotify API
+	// retrieve HttpOnly and secure cookie which stores users access-token to the Spotify API
 	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
 
 	// make call to retrieve user data
@@ -96,7 +96,7 @@ const playlistsListHandler: NextApiHandler = async (req, res) => {
 			});
 	} else {
 		res.status(405);
-		res.send('Method Mot Allowed');
+		res.send('Method Not Allowed');
 		res.end();
 	}
 };
