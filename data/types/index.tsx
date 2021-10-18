@@ -51,6 +51,7 @@ export interface UsePlaylistDetailsType extends UseDataType {
 		tracksTotal: number;
 		type: string;
 		image: string;
+		externalUrl: string;
 	};
 }
 
