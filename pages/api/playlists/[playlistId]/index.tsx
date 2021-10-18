@@ -20,6 +20,9 @@ type playlistDetailsType = {
 	images: {
 		url: string;
 	}[];
+	external_urls: {
+		spotify: string;
+	};
 };
 
 const playlistDetailsHandler: NextApiHandler = async (req, res) => {
@@ -34,7 +37,7 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 	if (req.method === 'GET') {
 		await axios
 			.get<playlistDetailsType>(
-				`https://api.spotify.com/v1/playlists/${playlistId}?fields=collaborative,description,followers,href,id,name,owner,public,tracks(total),type,images`,
+				`https://api.spotify.com/v1/playlists/${playlistId}?fields=collaborative,description,followers,href,id,name,owner,public,tracks(total),type,images,external_urls`,
 				{
 					headers: {
 						'Authorization': 'Bearer ' + _ACCESS_TOKEN,
@@ -57,6 +60,7 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 						tracksTotal: data.tracks.total,
 						type: data.type,
 						image: data.images[0]?.url || null,
+						externalUrl: data.external_urls.spotify,
 					};
 
 					// send response status

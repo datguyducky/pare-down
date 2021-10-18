@@ -18,6 +18,9 @@ module.exports = {
 					DEFAULT: '#4392f1',
 					dark: '#388bf0',
 				},
+				spotify: {
+					green: '#1DB954',
+				},
 			},
 			minHeight: {
 				'cover': '190px',

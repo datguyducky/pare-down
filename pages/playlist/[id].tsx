@@ -99,6 +99,14 @@ const PlaylistDetailsView: FC = () => {
 					</div>
 
 					<div tw='flex flex-col gap-y-3 sm:flex-row'>
+						<a
+							href={playlist?.externalUrl}
+							tw='bg-spotify-green text-sm font-semibold py-1 px-4 rounded-sm mr-0 sm:mr-4 sm:shadow-md flex items-center justify-center'
+						>
+							<img src='/spotify_icon_white.png' tw='mr-2 h-4 w-4' />
+							<span>Listen on Spotify</span>
+						</a>
+
 						{playlist?.tracksTotal > 0 && (
 							<button
 								tw='bg-bblue text-sm font-semibold py-1 px-4 rounded-sm mr-0 sm:mr-4 sm:shadow-md hover:bg-bblue-dark flex items-center justify-center'
