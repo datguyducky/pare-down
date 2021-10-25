@@ -1,7 +1,7 @@
 import { FC, Dispatch, SetStateAction, useState, useEffect } from 'react';
 import { Modal, Tracklist, Details, Summary } from '@/components';
 import { UsePlaylistDetailsType } from '../../data/types';
-import 'twin.macro';
+import tw from 'twin.macro';
 import { nextStepIcon, nextStepText, stepIcon, stepText } from '../../styles';
 import { Icons } from '@/icons';
 import { UsePlaylistTracksPages } from 'data';
@@ -194,7 +194,7 @@ const ParedownPlaylist: FC<{
 					>
 						<span css={[paredownStep.done.indexOf(1) > -1 || paredownStep.active === 1 ? stepIcon : nextStepIcon]}>
 							{paredownStep.done.indexOf(1) > -1 && paredownStep.active !== 1 ? (
-								<Icons.Check tw='w-4 h-4 sm:w-6 sm:h-6' />
+								<Icons.Check iconStyle={tw`w-4 h-4 sm:w-6 sm:h-6`} />
 							) : (
 								'1'
 							)}
@@ -215,7 +215,7 @@ const ParedownPlaylist: FC<{
 					>
 						<span css={[paredownStep.done.indexOf(2) > -1 || paredownStep.active === 2 ? stepIcon : nextStepIcon]}>
 							{paredownStep.done.indexOf(2) > -1 && paredownStep.active !== 2 ? (
-								<Icons.Check tw='w-4 h-4 sm:w-6 sm:h-6' />
+								<Icons.Check iconStyle={tw`w-4 h-4 sm:w-6 sm:h-6`} />
 							) : (
 								'2'
 							)}
@@ -235,7 +235,7 @@ const ParedownPlaylist: FC<{
 						}
 					>
 						<span css={[paredownStep.done.indexOf(3) > -1 || paredownStep.active === 3 ? stepIcon : nextStepIcon]}>
-							{paredownStep.done.indexOf(3) > -1 ? <Icons.Check tw='w-4 h-4 sm:w-6 sm:h-6' /> : '3'}
+							{paredownStep.done.indexOf(3) > -1 ? <Icons.Check iconStyle={tw`w-4 h-4 sm:w-6 sm:h-6`} /> : '3'}
 						</span>
 						<span css={[paredownStep.done.indexOf(3) > -1 || paredownStep.active === 3 ? stepText : nextStepText]}>
 							Pare Down

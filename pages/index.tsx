@@ -1,3 +1,4 @@
+import { Icons } from '@/icons';
 import { FC, useState } from 'react';
 import tw from 'twin.macro';
 import { StyledHeroSVG } from '../styles/index';
@@ -40,9 +41,7 @@ const IndexPage: FC = () => {
 				</nav>
 				<nav tw='ml-auto lg:hidden'>
 					<button onClick={() => setMobileNav(true)}>
-						<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-							<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M4 6h16M4 12h16M4 18h16' />
-						</svg>
+						<Icons.Menu iconStyle={tw`h-6 w-6`} />
 					</button>
 					<div
 						tw='fixed inset-0 bg-bgray-darkest items-center justify-center text-white z-50 hidden'
@@ -53,15 +52,7 @@ const IndexPage: FC = () => {
 							tw='absolute top-0 right-0 mt-6 mr-4 text-white text-opacity-80 hover:text-opacity-100'
 							onClick={() => setMobileNav(false)}
 						>
-							<svg
-								tw='w-6 h-6'
-								fill='none'
-								stroke='currentColor'
-								viewBox='0 0 24 24'
-								xmlns='http://www.w3.org/2000/svg'
-							>
-								<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-							</svg>
+							<Icons.Close iconStyle={tw`h-6 w-6`} />
 						</button>
 						<ul tw='flex flex-col font-medium text-4xl'>
 							<li tw='mb-6 hover:underline'>
@@ -111,20 +102,7 @@ const IndexPage: FC = () => {
 					<div tw='flex flex-col space-y-6 lg:space-y-0 lg:grid lg:grid-cols-4 lg:gap-x-12 items-center'>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
-								<svg
-									tw='w-6 h-6 mr-2'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth='2'
-										d='M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z'
-									></path>
-								</svg>
+								<Icons.Duplicate iconStyle={tw`w-6 h-6 mr-2`} />
 								<span tw='text-lg font-semibold'>Duplicate Playlists</span>
 							</h5>
 							<p tw='text-center py-8'>
@@ -134,20 +112,7 @@ const IndexPage: FC = () => {
 						</div>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
-								<svg
-									tw='w-6 h-6 mr-2'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z'
-									/>
-								</svg>
+								<Icons.Edit iconStyle={tw`w-6 h-6 mr-2`} />
 								<span tw='text-lg font-semibold leading-tight'>Edit & Remove</span>
 							</h5>
 							<p tw='text-center py-8'>
@@ -157,20 +122,7 @@ const IndexPage: FC = () => {
 						</div>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
-								<svg
-									tw='w-6 h-6 mr-2'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z'
-									/>
-								</svg>
+								<Icons.Flask iconStyle={tw`w-6 h-6 mr-2`} />
 								<span tw='text-lg font-semibold leading-tight'>Actively Developed</span>
 							</h5>
 							<p tw='text-center py-8'>
@@ -180,20 +132,7 @@ const IndexPage: FC = () => {
 						</div>
 						<div tw='border-solid border border-gray-300 py-9 px-7 rounded max-w-lg lg:h-full'>
 							<h5 tw='flex items-center justify-center'>
-								<svg
-									tw='w-6 h-6 mr-2'
-									fill='none'
-									stroke='currentColor'
-									viewBox='0 0 24 24'
-									xmlns='http://www.w3.org/2000/svg'
-								>
-									<path
-										strokeLinecap='round'
-										strokeLinejoin='round'
-										strokeWidth={2}
-										d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'
-									/>
-								</svg>
+								<Icons.BookOpen iconStyle={tw`w-6 h-6 mr-2`} />
 								<span tw='text-lg font-semibold leading-tight'>Open-source</span>
 							</h5>
 							<p tw='py-8 text-center'>

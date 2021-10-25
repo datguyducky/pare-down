@@ -16,7 +16,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/components": ["components/index.tsx"],
-			"@/icons": ["icons/index.tsx"],
+			"@/icons": ["icons/index.ts"],
 			"@/toast": ["components/Toast/index.tsx"]
 		}
 	},

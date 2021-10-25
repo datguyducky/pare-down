@@ -1,20 +1,20 @@
+import { Icons } from '@/icons';
 import React, { useRef, FC, useEffect } from 'react';
 import { ToastContent } from './styles';
-import 'twin.macro';
+import tw from 'twin.macro';
 
 const Toast: FC<{ remove: () => void; message: string; appearance: string }> = ({ message, remove, appearance }) => {
 	const removeRef = useRef(null);
 	removeRef.current = remove;
 
 	useEffect(() => {
-		const duration = 2800;
-		const id = setTimeout(() => removeRef.current(), duration);
+		const id = setTimeout(() => removeRef.current(), 2800);
 
 		return () => clearTimeout(id);
 	}, []);
 
 	useEffect(() => {
-		// disabe scroll for the whole page when Popup is opened (but still display the scrollbar)
+		// disable scroll for the whole page when Popup is opened (but still display the scrollbar)
 		const withScroll = document.body.scrollHeight > document.documentElement.clientHeight;
 		document.body.style.top = `-${window.scrollY}px`;
 		document.body.style.overflowY = withScroll ? 'scroll' : 'unset';
@@ -46,9 +46,7 @@ const Toast: FC<{ remove: () => void; message: string; appearance: string }> = (
 		<ToastContent onClick={(e) => e.stopPropagation()} appearance={appearance}>
 			<p tw='font-bold text-center text-base xs:text-lg tracking-wide'>{message}</p>
 			<button tw='absolute right-0 mr-4' onClick={() => remove()}>
-				<svg tw='w-6 h-6' fill='none' stroke='currentColor' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'>
-					<path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M6 18L18 6M6 6l12 12' />
-				</svg>
+				<Icons.Close iconStyle={tw`w-5 h-5`} />
 			</button>
 		</ToastContent>
 	);
