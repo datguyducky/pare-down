@@ -1,6 +1,8 @@
 import tw, { styled } from 'twin.macro';
 import Link from 'next/link';
 
+import { Icons } from '@/icons';
+
 interface HeaderConstantTypes {
 	href: string;
 	text: string;
@@ -25,13 +27,7 @@ export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, chil
 			<div tw='flex flex-col'>
 				<Link href={href} passHref>
 					<a tw='flex items-center text-sm font-bold mb-3 underline cursor-pointer opacity-90 hover:opacity-80'>
-						<svg tw='w-5 h-5' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-							<path
-								fillRule='evenodd'
-								d='M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z'
-								clipRule='evenodd'
-							/>
-						</svg>
+						<Icons.ChevronLeft iconStyle={tw`w-5 h-5`} />
 						<span>{text}</span>
 					</a>
 				</Link>
