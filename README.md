@@ -76,7 +76,6 @@ Something doesn't work like it should? Or maybe page looks like it shouldn't? If
 - now you can go to [http://localhost:3000](http://localhost:3000) to view it in the browser.
 - here you have 2 options in order to make the REST API of Pare Down to work:
   - create new app on the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/) website, set the `redirect_url` to `localhost:3000` and then copy `client_id` **and** `client_secret` from there to `.env.local` file (which you need to create on the root folder of Pare Down).
-  - change every occurence of the `location.hostname === 'localhost'` to `location.hostname === '_localhost'` in the whole app.
 - After all of that you should be available to develop and test Pare Down locally.
 
 **Remember!**\
