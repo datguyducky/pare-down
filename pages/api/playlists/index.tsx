@@ -19,8 +19,7 @@ type playlistsType = {
 
 const playlistsListHandler: NextApiHandler = async (req, res) => {
 	// retrieve HttpOnly and secure cookie which stores users access-token to the Spotify API
-	const _ACCESS_TOKEN = parse(req.headers.cookie)['access-token'];
-
+	const _ACCESS_TOKEN = parse(req?.headers?.cookie || '')?.['access-token'];
 	// make call to retrieve user data
 	if (req.method === 'GET') {
 		const {
