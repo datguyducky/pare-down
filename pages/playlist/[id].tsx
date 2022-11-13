@@ -39,7 +39,7 @@ const PlaylistDetailsView: FC = () => {
 					setDisplayDeletePopup(false);
 					toast.add({ message: 'Playlist has been unfollowed' });
 
-					setTimeout(() => router.push(`/dashboard`), 600);
+					setTimeout(() => router.push('/dashboard'), 600);
 				}
 			})
 			.catch((error) => {

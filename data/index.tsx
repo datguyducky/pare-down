@@ -25,7 +25,7 @@ export const UseUserPlaylists = (): UseUserPlaylistsType => {
 		if (previousPageData && !previousPageData.next) return null;
 
 		// first page, we don't have `previousPageData`
-		if (pageIndex === 0) return `/api/playlists`;
+		if (pageIndex === 0) return '/api/playlists';
 
 		// add the next (offset) to the API endpoint
 		return `/api/playlists?offset=${previousPageData.next}`;

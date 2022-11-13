@@ -124,7 +124,7 @@ const ParedownPlaylist: FC<{
 										message: 'The playlist has been successfully pared down',
 									});
 
-									setTimeout(() => router.push(`/dashboard`), 600);
+									setTimeout(() => router.push('/dashboard'), 600);
 								}
 							})
 							.catch((error) => {
