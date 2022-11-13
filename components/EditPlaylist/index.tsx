@@ -53,7 +53,7 @@ const EditPlaylist: FC<{
 			acceptAction={handlePlaylistEdit}
 			isOpen={displayEditModal}
 		>
-			<div tw='sm:grid sm:grid-cols-3 sm:col-gap-5 sm:row-gap-5 flex flex-col'>
+			<div tw='sm:grid sm:grid-cols-3 sm:gap-x-5 sm:gap-y-5 flex flex-col'>
 				{playlist.image ? (
 					<img
 						src={playlist.image}

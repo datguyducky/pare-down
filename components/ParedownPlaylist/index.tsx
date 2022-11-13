@@ -124,7 +124,7 @@ const ParedownPlaylist: FC<{
 										message: 'The playlist has been successfully pared down',
 									});
 
-									setTimeout(() => router.push(`/dashboard`), 600);
+									setTimeout(() => router.push('/dashboard'), 600);
 								}
 							})
 							.catch((error) => {
@@ -182,7 +182,7 @@ const ParedownPlaylist: FC<{
 			}
 		>
 			<div tw='flex h-full flex-col px-6'>
-				<ul tw='flex col-gap-4 pt-6 pb-4 md:pb-8 flex-wrap justify-center row-gap-4'>
+				<ul tw='flex gap-x-4 pt-6 pb-4 md:pb-8 flex-wrap justify-center gap-y-4'>
 					<li
 						className='group'
 						tw='flex items-center cursor-pointer'
