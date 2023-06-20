@@ -17,12 +17,12 @@ export const HeaderConstant: React.FC<HeaderConstantTypes> = ({ href, text, chil
 		<StyledHeaderConstant>
 			<ul tw='absolute top-0 pt-3 px-8 right-0 opacity-90 text-sm font-bold flex items-center'>
 				<li>
-					<a href='https://github.com/datguysheepy/pare-down' tw='hover:underline'>
+					<a href='https://github.com/datguyducky/pare-down' tw='hover:underline'>
 						Github
 					</a>
 				</li>
 				<li tw='mx-2 hidden xs:inline'>|</li>
-				<li tw='text-gray-400 text-xs hidden xs:inline'>Created with ❤️ by @datguysheepy</li>
+				<li tw='text-gray-400 text-xs hidden xs:inline'>Created with ❤️ by @datguyducky</li>
 			</ul>
 			<div tw='flex flex-col'>
 				<Link href={href} passHref>

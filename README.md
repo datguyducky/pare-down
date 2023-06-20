@@ -28,7 +28,7 @@ Do you have one or more big playlists (+1000 songs) and your mobile data is limi
 
 ## 🐞 Hey I found a bug!
 
-Something doesn't work like it should? Or maybe page looks like it shouldn't? If so, [go here to create issue](https://github.com/datguysheepy/pare-down/issues/new) - please choose appropriate title and in description include everything that you think will be useful for fixing this bug!
+Something doesn't work like it should? Or maybe page looks like it shouldn't? If so, [go here to create issue](https://github.com/datguyducky/pare-down/issues/new) - please choose appropriate title and in description include everything that you think will be useful for fixing this bug!
 
 ## 🙋 FAQ:
 
@@ -52,10 +52,10 @@ Something doesn't work like it should? Or maybe page looks like it shouldn't? If
 **A:** Yes, but only using Spotify app. Pare Down don't offer option to do it from inside of it.
 
 **Q:** Something didn't work as it should, can I somehow report it?\
-**A:** [Yes, here](https://github.com/datguysheepy/pare-down/issues/new). Please choose appropriate title and in description describe this problem as accurately as you can.
+**A:** [Yes, here](https://github.com/datguyducky/pare-down/issues/new). Please choose appropriate title and in description describe this problem as accurately as you can.
 
 **Q:** I have this great idea for Pare Down, where I can share it with you?\
-**A:** [Here](https://github.com/datguysheepy/pare-down/issues/new). Please choose appropriate title and description.
+**A:** [Here](https://github.com/datguyducky/pare-down/issues/new). Please choose appropriate title and description.
 
 #### **_For developers_**
 
@@ -83,4 +83,4 @@ In order to test the build version of the app locally you need to use 2 commands
 
 ## 📝 License
 
-Pare Down for Spotify is an open-source project licensed under the [MIT License](https://github.com/datguysheepy/pare-down/blob/master/LICENSE).
+Pare Down for Spotify is an open-source project licensed under the [MIT License](https://github.com/datguyducky/pare-down/blob/master/LICENSE).

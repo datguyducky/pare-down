@@ -28,7 +28,7 @@ const IndexPage: FC = () => {
 							<a href='#pricing'>Pricing</a>
 						</li>
 						<li tw='hover:underline'>
-							<a href='https://github.com/datguysheepy/pare-down'>Github</a>
+							<a href='https://github.com/datguyducky/pare-down'>Github</a>
 						</li>
 					</ul>
 					<Link href='/dashboard'>
@@ -62,7 +62,7 @@ const IndexPage: FC = () => {
 								<a href='#pricing'>Pricing</a>
 							</li>
 							<li tw='hover:underline'>
-								<a href='https://github.com/datguysheepy/pare-down'>Github</a>
+								<a href='https://github.com/datguyducky/pare-down'>Github</a>
 							</li>
 						</ul>
 					</div>
@@ -169,7 +169,7 @@ const IndexPage: FC = () => {
 			</div>
 			<footer tw='w-full bg-gray-50 3xl:px-96 mt-12 py-4 text-center font-semibold text-sm text-gray-900'>
 				Made with ❤️ by
-				<a href='https://github.com/datguysheepy/pare-down'> @datguysheepy</a>
+				<a href='https://github.com/datguyducky/pare-down'> @datguyducky</a>
 			</footer>
 		</>
 	);

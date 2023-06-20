@@ -22,7 +22,7 @@ const PlaylistDetailsView: FC = () => {
 	const { data: user, isError: userIsError } = UseUser();
 	useEffect(() => {
 		if (userIsError) {
-			router.replace(location.hostname === 'localhost' ? '/api/login' : 'https://pare-down.mtymon.me/api/login');
+			router.replace(location.hostname === 'localhost' ? '/api/login' : 'https://pare-down.mytymon.com/api/login');
 		}
 	});
 
