@@ -46,7 +46,7 @@ const playlistsListHandler: NextApiHandler = async (req, res) => {
 						items: data.items.map((p) => ({
 							id: p.id,
 							name: p.name,
-							image: p?.images[0]?.url,
+							image: p?.images?.[0]?.url,
 							description: p.description,
 						})),
 						limit: data.limit,

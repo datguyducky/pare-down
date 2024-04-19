@@ -59,7 +59,7 @@ const playlistDetailsHandler: NextApiHandler = async (req, res) => {
 						public: data.public,
 						tracksTotal: data.tracks.total,
 						type: data.type,
-						image: data.images[0]?.url || null,
+						image: data?.images?.[0]?.url || null,
 						externalUrl: data.external_urls.spotify,
 					};
 
