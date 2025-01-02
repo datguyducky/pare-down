@@ -1,3 +1,9 @@
+> [!WARNING]  
+> This project is no longer maintained or hosted by me. It was created a long time ago when I was beginning to learn React.
+> I've decided to archive this repository as I have no plans to update it, and the code here likely does not follow current best practices.
+>
+> I'm leaving this repository public in case it might help someone in the future. However, please note that it is probably very outdated by the time you are reading this.
+
 # Pare Down for Spotify
 
 Do you have one or more big playlists (+1000 songs) and your mobile data is limited? If so, you can use Pare Down for Spotify to create copy of selected playlist with amount of songs you've choosen to. Now you can download smaller version of your playlist and still enjoy your music without worrying about data limit.
